@@ -46,3 +46,18 @@ body {
     animation: none;
   }
 }
+
+/* Custom cursor — the hook sets data-custom-cursor="on" on <html> only on
+   fine-pointer devices. Hide the native cursor everywhere, but keep it native
+   over text fields so editing and selection stay unaffected. */
+html[data-custom-cursor="on"],
+html[data-custom-cursor="on"] * {
+  cursor: none;
+}
+
+html[data-custom-cursor="on"] input,
+html[data-custom-cursor="on"] textarea,
+html[data-custom-cursor="on"] select,
+html[data-custom-cursor="on"] [contenteditable="true"] {
+  cursor: auto;
+}
