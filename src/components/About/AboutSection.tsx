@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Magnetic from "@/src/components/CustomCursor/Magnetic";
 import {
   motion,
   useReducedMotion,
@@ -155,6 +156,7 @@ export default function AboutSection({
             className="relative m-0"
           >
             <motion.div
+              data-cursor="image"
               variants={imageV}
               initial="hidden"
               whileInView="show"
@@ -191,8 +193,10 @@ export default function AboutSection({
               viewport={VIEWPORT}
               className="mt-10 w-full sm:w-auto lg:mt-14"
             >
+              <Magnetic className="block w-full sm:inline-block sm:w-auto">
               <Link
                 href={buttonLink}
+                data-cursor="button"
                 className="group inline-flex w-full items-center justify-center gap-3 bg-[#6b6479] px-8 py-4 text-[13px] font-medium uppercase tracking-[0.14em] text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#5c556a] hover:shadow-lg hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6b6479] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F0EE] active:translate-y-0 active:scale-[0.99] sm:w-auto sm:px-10 sm:py-5"
               >
                 {buttonText}
@@ -211,6 +215,7 @@ export default function AboutSection({
                   />
                 </svg>
               </Link>
+              </Magnetic>
             </motion.div>
           </div>
         </div>

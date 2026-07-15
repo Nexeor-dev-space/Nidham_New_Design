@@ -1,16 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-  type Variants,
-} from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import AnnouncementBar from "./AnnouncementBar";
 import Navbar from "./Navbar";
+import { useHeroScroll } from "@/src/hooks/useHeroScroll";
 
 /** Shared premium easing — a soft, expensive-feeling ease-out. */
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -21,34 +15,20 @@ export default function Hero() {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Scroll-linked parallax: as the section leaves the viewport, the text
-  // layers lift away at different speeds while the video sinks and scales,
-  // creating cinematic depth. A spring smooths the raw scroll into a fluid,
-  // premium feel instead of a rigid 1:1 mapping.
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-    mass: 0.4,
-  });
-  const p = (v: number) => (reduce ? 0 : v);
+  // GSAP ScrollTrigger owns the scroll-driven parallax (see useHeroScroll).
+  // These wrappers are deliberately *not* Framer-controlled so the two motion
+  // systems never fight over the same node's transform — Framer runs the
+  // entrance reveal on the inner elements, GSAP scrubs these layers on scroll.
+  const contentRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const decorRef = useRef<HTMLDivElement>(null);
 
-  // Differential text parallax — heading travels fastest, description slowest.
-  const eyebrowY = useTransform(smooth, [0, 1], [0, p(-40)]);
-  const headingY = useTransform(smooth, [0, 1], [0, p(-90)]);
-  const descY = useTransform(smooth, [0, 1], [0, p(-55)]);
-  const textScale = useTransform(smooth, [0, 1], [1, reduce ? 1 : 0.96]);
-  const textFade = useTransform(smooth, [0, 0.75], [1, reduce ? 1 : 0]);
-
-  // Video: sinks downward (opposite the text) and scales, with the cinematic
-  // overlay deepening as it exits for a fade-to-black feel.
-  const videoY = useTransform(smooth, [0, 1], [0, p(120)]);
-  const videoScale = useTransform(smooth, [0, 1], [1, reduce ? 1 : 1.16]);
-  const cardScale = useTransform(smooth, [0, 1], [1, reduce ? 1 : 0.97]);
-  const exitOverlay = useTransform(smooth, [0, 1], [0, reduce ? 0 : 0.5]);
+  useHeroScroll({
+    section: sectionRef,
+    video: videoRef,
+    content: contentRef,
+    decor: decorRef,
+  });
 
   // Entrance orchestration.
   const container: Variants = {
@@ -92,22 +72,26 @@ export default function Hero() {
       id="top"
       className="relative w-full overflow-hidden bg-[#f1efec] font-[family-name:var(--font-dm-sans)] text-neutral-900"
     >
-      {/* Ambient floating glow — decorative, purely atmospheric. */}
+      {/* Ambient floating glow (Layer 2) — decorative, purely atmospheric.
+          The wrapper gets the scroll parallax; the inner glows keep their own
+          idle float, so parent-translate and child-float compose cleanly. */}
       {!reduce && (
-        <>
+        <div
+          ref={decorRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 will-change-transform"
+        >
           <motion.div
-            aria-hidden="true"
-            className="pointer-events-none absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[#6E1B45]/[0.07] blur-3xl"
+            className="absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[#6E1B45]/[0.07] blur-3xl"
             animate={{ y: [0, -28, 0], x: [0, 12, 0], opacity: [0.5, 0.85, 0.5] }}
             transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-32 top-64 h-[30rem] w-[30rem] rounded-full bg-amber-300/[0.10] blur-3xl"
+            className="absolute -right-32 top-64 h-[30rem] w-[30rem] rounded-full bg-amber-300/[0.10] blur-3xl"
             animate={{ y: [0, 26, 0], x: [0, -16, 0], opacity: [0.4, 0.7, 0.4] }}
             transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
           />
-        </>
+        </div>
       )}
 
       <AnnouncementBar />
@@ -119,10 +103,11 @@ export default function Hero() {
         animate="show"
         className="relative mx-auto max-w-[1600px] px-6 pb-14 pt-12 sm:pt-14 lg:px-10"
       >
-        <motion.div style={{ scale: textScale, opacity: textFade }} className="origin-left">
+        {/* Content layer (Layer 3) — GSAP scrubs this wrapper's transform on
+            scroll; Framer drives the entrance reveal on the children inside. */}
+        <div ref={contentRef} className="origin-left will-change-transform">
           <motion.p
             variants={item}
-            style={{ y: eyebrowY }}
             className="text-xl font-normal tracking-tight text-neutral-900 will-change-transform sm:text-2xl lg:text-3xl"
           >
             Vision. Impact. Excellence.
@@ -131,7 +116,6 @@ export default function Hero() {
           {/* Masked per-word reveal. Each word rises out of a clipped row. */}
           <motion.h1
             variants={container}
-            style={{ y: headingY }}
             className="mt-2 flex flex-wrap font-[family-name:Arial,Helvetica,sans-serif] text-[clamp(3rem,12vw,4rem)] font-normal uppercase leading-[0.95] tracking-[-0.03em] text-neutral-900 will-change-transform sm:flex-nowrap sm:text-[clamp(2rem,11.5vw,11.6rem)] sm:leading-[0.92] lg:mt-3"
           >
             {HEADING_WORDS.map((w, i) => (
@@ -150,18 +134,23 @@ export default function Hero() {
 
           <motion.p
             variants={item}
-            style={{ y: descY }}
             className="mt-4 max-w-2xl text-lg text-neutral-500 will-change-transform sm:text-xl lg:text-2xl"
           >
             A Strategic Studio for Technology, Entertainment &amp; Media.
           </motion.p>
-        </motion.div>
+        </div>
 
-        {/* Cinematic background video with scroll parallax + overlay. */}
-        <motion.div variants={media} style={{ scale: cardScale }} className="mt-12 lg:mt-14">
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-[0_40px_80px_-32px_rgba(0,0,0,0.45)] ring-1 ring-black/5 sm:aspect-[16/9] lg:aspect-[1280/672]">
-            <motion.video
-              style={{ y: videoY, scale: videoScale }}
+        {/* Cinematic background video (Layer 1). Framer runs the entrance;
+            GSAP scrubs the inner <video> transform (slow drift + 1.08→1.00
+            scale) for the parallax. The card sits still so the media parallaxes
+            within its fixed frame. */}
+        <motion.div variants={media} className="mt-12 lg:mt-14">
+          <div
+            data-cursor="video"
+            className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-[0_40px_80px_-32px_rgba(0,0,0,0.45)] ring-1 ring-black/5 sm:aspect-[16/9] lg:aspect-[1280/672]"
+          >
+            <video
+              ref={videoRef}
               className="absolute inset-0 h-[124%] w-full object-cover will-change-transform"
               src="/video/hero-banner-video.mp4"
               autoPlay
@@ -179,12 +168,6 @@ export default function Hero() {
             <div
               aria-hidden="true"
               className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,transparent_55%,rgba(0,0,0,0.25)_100%)]"
-            />
-            {/* Scroll-driven fade-to-black as the card exits the viewport. */}
-            <motion.div
-              aria-hidden="true"
-              style={{ opacity: exitOverlay }}
-              className="absolute inset-0 bg-black"
             />
           </div>
         </motion.div>
