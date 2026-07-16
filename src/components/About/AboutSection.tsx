@@ -108,14 +108,14 @@ export default function AboutSection({
   return (
     <section
       aria-labelledby="about-heading"
-      className="w-full bg-[#F1F0EE] py-14 font-[family-name:var(--font-geist-sans)] sm:py-20 lg:py-24"
+      className="w-full bg-[#F1F0EE] section-y font-[family-name:var(--font-geist-sans)]"
     >
       {/* Near full-bleed divider. */}
-      <div className="mx-auto max-w-[1760px] px-4 sm:px-6">
+      <div className="container-page">
         <div className="h-px w-full bg-[#d8d6d1]" />
       </div>
 
-      <div className="mx-auto max-w-[1760px] px-6 sm:px-10 lg:px-16 xl:px-24">
+      <div className="container-page">
         {/* Eyebrow */}
         <motion.p
           variants={eyebrowV}

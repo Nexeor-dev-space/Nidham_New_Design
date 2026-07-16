@@ -13,7 +13,7 @@ interface LogoCardProps {
 export default function LogoCard({ partner }: LogoCardProps) {
   return (
     <div
-      className="flex h-28 w-40 items-center justify-center border border-neutral-200 bg-white transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-[3px] hover:scale-[1.02] hover:border-neutral-300 hover:shadow-[0_14px_34px_-14px_rgba(0,0,0,0.22)] sm:h-32 sm:w-48 lg:h-40 lg:w-56"
+      className="flex h-28 w-40 items-center justify-center border border-[#9E9E9E] transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-[3px] hover:scale-[1.02] hover:border-[#7A7A7A] hover:shadow-[0_14px_34px_-14px_rgba(0,0,0,0.22)] sm:h-32 sm:w-48 lg:h-40 lg:w-56"
     >
       <Image
         src={partner.logo}

@@ -101,7 +101,7 @@ export default function Hero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative mx-auto max-w-[1600px] px-6 pb-14 pt-12 sm:pt-14 lg:px-10"
+        className="relative container-page section-y-b pt-12 sm:pt-14"
       >
         {/* Content layer (Layer 3) — GSAP scrubs this wrapper's transform on
             scroll; Framer drives the entrance reveal on the children inside. */}

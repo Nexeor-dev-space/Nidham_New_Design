@@ -25,6 +25,61 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ============================================================
+   Global layout system — one container + one vertical rhythm.
+   Every non-full-bleed section uses `.container-page` (shared
+   width + horizontal gutter) and `.section-y` (vertical padding).
+   Adjacent sections each contribute `--section-py`, so the gap
+   between two sections is 2× that value:
+     mobile 32px → ~64px | tablet 44px → ~88px | desktop 56px → ~112px
+   Change these tokens to reflow spacing across the whole homepage.
+   ============================================================ */
+:root {
+  --container-max: 1760px; /* shared content width */
+  --container-px: 1.5rem; /* 24px horizontal gutter */
+  --section-py: 2rem; /* 32px — half the gap between sections */
+  --grid-gap: 2rem; /* 32px — default grid / card gap */
+}
+
+@media (min-width: 640px) {
+  :root {
+    --container-px: 2.5rem; /* 40px */
+    --section-py: 2.75rem; /* 44px → ~88px between sections */
+    --grid-gap: 2.5rem; /* 40px */
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-px: 4rem; /* 64px */
+    --section-py: 3.5rem; /* 56px → ~112px between sections */
+    --grid-gap: 4rem; /* 64px */
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --container-px: 6rem; /* 96px */
+  }
+}
+
+/* One content container: shared max width + horizontal gutter. */
+.container-page {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-px);
+}
+
+/* One vertical rhythm — adjacent sections sum to the target gap. */
+.section-y {
+  padding-block: var(--section-py);
+}
+
+.section-y-b {
+  padding-bottom: var(--section-py);
+}
+
 /* Infinite marquee — the track holds two copies of the list, so translating
    by -50% lands exactly on the start of the second copy for a seamless loop. */
 @keyframes marquee {
@@ -44,6 +99,18 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
     animation: none;
+  }
+}
+
+/* Button ripple — an expanding, fading circle spawned at the press point. */
+@keyframes ripple {
+  from {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 

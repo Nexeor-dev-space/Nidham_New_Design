@@ -38,9 +38,9 @@ export default function WhyChooseUs({
   return (
     <section
       aria-labelledby="why-choose-us-heading"
-      className="w-full bg-[#F1F0EE] py-16 font-[family-name:var(--font-geist-sans)] sm:py-20 lg:py-28"
+      className="w-full bg-[#F1F0EE] section-y font-[family-name:var(--font-geist-sans)]"
     >
-      <div className="mx-auto max-w-[1760px] px-6 sm:px-10 lg:px-16 xl:px-24">
+      <div className="container-page">
         {/* Heading — split-word reveal, top-left. */}
         <motion.h2
           id="why-choose-us-heading"
