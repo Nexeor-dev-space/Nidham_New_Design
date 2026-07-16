@@ -13,7 +13,7 @@ export const EVENTS_HEADING: string[] = [
 ];
 
 export const EVENTS_DESCRIPTION =
-  "Join us for an unforgettable experience filled with world-class entertainment, inspiring performances, and exceptional moments. Secure your place today before registrations close.";
+  "The next chapter of Melody Dreamz comes to Dubai Opera. Following an acclaimed inaugural season featuring playback artist Naresh Iyer, the evening brings live orchestration and the region's most celebrated voices together on one stage.";
 
 export const EVENTS_INFO: EventInfo[] = [
   { id: "date", label: "Date", value: "15 October 2026", icon: "date" },

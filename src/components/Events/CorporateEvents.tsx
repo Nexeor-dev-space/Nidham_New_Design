@@ -26,6 +26,11 @@ import {
   EVENTS_STATUS_LABEL,
 } from "./constants";
 import type { CorporateEventsProps } from "./types";
+import {
+  SECTION_CONTENT_GAP,
+  SECTION_HEADING,
+  SECTION_HEADING_GAP,
+} from "@/src/lib/typography";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -241,7 +246,7 @@ export default function CorporateEvents({
 
         <h2
           id="corporate-events-title"
-          className="mt-14 overflow-hidden pb-[0.08em] text-center text-[clamp(2.2rem,5vw,4rem)] font-medium leading-[1.02] tracking-[-0.02em] text-neutral-900 sm:mt-16 lg:mt-20"
+          className={`${SECTION_HEADING_GAP} overflow-hidden pb-[0.08em] ${SECTION_HEADING}`}
         >
           <span className="ev-title-line block [will-change:transform]">
             {sectionTitle}
@@ -249,7 +254,9 @@ export default function CorporateEvents({
         </h2>
 
         {/* Two-column layout — flush split, no gap or rounding. */}
-        <div className="mt-12 grid grid-cols-1 lg:mt-16 lg:grid-cols-[48fr_52fr] lg:items-stretch">
+        <div
+          className={`${SECTION_CONTENT_GAP} grid grid-cols-1 lg:grid-cols-[48fr_52fr] lg:items-stretch`}
+        >
           {/* Left — content panel. */}
           <div className="flex flex-col bg-white p-8 sm:p-10 lg:p-14 xl:p-16">
             <div className="ev-meta flex flex-wrap items-center gap-4 [will-change:transform]">

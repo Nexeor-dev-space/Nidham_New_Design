@@ -4,6 +4,7 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Marquee from "./Marquee";
 import { PARTNERS } from "./constants";
 import type { Partner } from "./types";
+import { SECTION_HEADING, SECTION_HEADING_GAP } from "@/src/lib/typography";
 
 /** Shared premium easing. */
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -104,7 +105,7 @@ export default function PartnersSection({
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="mx-auto mt-6 max-w-4xl text-center text-[clamp(1.85rem,4.6vw,3.5rem)] font-normal leading-[1.12] tracking-[-0.02em] text-neutral-900"
+          className={`${SECTION_HEADING_GAP} ${SECTION_HEADING}`}
         >
           {title}
         </motion.h2>

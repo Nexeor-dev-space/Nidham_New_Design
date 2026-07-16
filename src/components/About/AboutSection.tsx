@@ -5,6 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import Magnetic from "@/src/components/CustomCursor/Magnetic";
 import {
+  SECTION_CONTENT_GAP,
+  SECTION_HEADING,
+  SECTION_HEADING_GAP,
+} from "@/src/lib/typography";
+import {
   motion,
   useReducedMotion,
   useScroll,
@@ -49,8 +54,6 @@ export default function AboutSection({
     reduce ? ["0%", "0%"] : ["-6%", "6%"],
   );
 
-  const lines = title.split("\n");
-
   // ----- entrance variants -----
   const imageV: Variants = {
     hidden: { opacity: 0, x: reduce ? 0 : -44, scale: reduce ? 1 : 1.05 },
@@ -76,14 +79,14 @@ export default function AboutSection({
     },
   };
 
-  // Heading: each line masked and lifted, staggered.
+  // Heading: fade up as a single block (unified section-heading motion).
   const headingV: Variants = {
-    hidden: {},
-    show: { transition: { delayChildren: 0.15, staggerChildren: 0.09 } },
-  };
-  const lineV: Variants = {
-    hidden: { y: reduce ? 0 : "115%" },
-    show: { y: "0%", transition: { duration: 0.85, ease: EASE } },
+    hidden: { opacity: 0, y: reduce ? 0 : 26 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: EASE, delay: 0.15 },
+    },
   };
 
   const paragraphV: Variants = {
@@ -122,7 +125,7 @@ export default function AboutSection({
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="mt-8 text-center text-[13px] font-medium uppercase tracking-[0.22em] text-neutral-500"
+          className="mt-8 text-center text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-500"
         >
           ({" "}
           {subtitle}
@@ -136,19 +139,15 @@ export default function AboutSection({
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="mt-14 text-center text-[clamp(2.4rem,5.4vw,4.5rem)] font-medium leading-[1.05] tracking-[-0.02em] text-neutral-900 lg:mt-20 lg:text-left"
+          className={`${SECTION_HEADING_GAP} ${SECTION_HEADING}`}
         >
-          {lines.map((line, i) => (
-            <span key={i} className="block overflow-hidden pb-[0.08em]">
-              <motion.span variants={lineV} className="block">
-                {line}
-              </motion.span>
-            </span>
-          ))}
+          {title}
         </motion.h2>
 
         {/* Two-column layout */}
-        <div className="mt-10 grid grid-cols-1 gap-10 sm:mt-12 lg:mt-14 lg:grid-cols-[1.12fr_0.88fr] lg:items-center lg:gap-16 xl:gap-20">
+        <div
+          className={`${SECTION_CONTENT_GAP} grid grid-cols-1 gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-center lg:gap-16 xl:gap-20`}
+        >
           {/* Left column — image */}
           <motion.figure
             ref={imageRef}
