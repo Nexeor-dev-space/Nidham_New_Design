@@ -73,9 +73,9 @@ export default function PartnersSection({
   return (
     <section
       aria-labelledby="partners-heading"
-      className="w-full bg-[#f1efec] py-20 font-[family-name:var(--font-dm-sans)] sm:py-24 lg:py-28"
+      className="w-full bg-[#f1efec] section-y font-[family-name:var(--font-dm-sans)]"
     >
-      <div className="mx-auto max-w-[1600px] px-6 lg:px-10">
+      <div className="container-page">
         {/* Thin divider that expands horizontally on enter. */}
         <motion.div
           aria-hidden="true"
