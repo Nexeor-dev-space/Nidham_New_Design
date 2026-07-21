@@ -1,16 +1,29 @@
 import type { NavLink, HeroSlide } from "./types";
 
-/** Brand logo shown in the navigation bar. */
+/**
+ * Brand logo shown in the navigation bar (desktop nav + mobile drawer).
+ *
+ * `width`/`height` must stay the file's true pixel size. The nav renders it at a
+ * fixed CSS width with `h-auto`, so the browser derives the height from *these*
+ * numbers, not from the file — if they disagree with the asset, the logo is
+ * silently stretched to fit.
+ */
 export const LOGO = {
   src: "/images/logo.png",
   alt: "Nidham Consultancy LLC",
-  width: 200,
-  height: 77,
+  width: 1993,
+  height: 789,
 } as const;
 
-/** Primary navigation links (left of the logo). */
+/**
+ * Primary navigation links. `href` must match a real element id on the page:
+ * #service → WhyChooseUs, #events → CorporateEvents (passed in page.tsx),
+ * #contact → Footer. The mobile drawer and FloatingNav derive from this list,
+ * so adding a link here surfaces it everywhere — add the target first.
+ */
 export const NAV_LINKS: readonly NavLink[] = [
   { label: "Service", href: "#service" },
+  { label: "Events", href: "#events" },
   { label: "Contact", href: "#contact" },
 ] as const;
 

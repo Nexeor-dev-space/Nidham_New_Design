@@ -229,16 +229,16 @@ export default function CorporateEvents({
       ref={sectionRef}
       id={id}
       aria-labelledby="corporate-events-title"
-      className="w-full bg-[#F1F0EE] section-y"
+      className="w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
         {/* Header: divider with centred label. */}
         <div className="relative flex items-center justify-center">
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#d8d6d1]"
+            className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-white/10"
           />
-          <span className="ev-eyebrow relative bg-[#F1F0EE] px-6 text-xs font-medium uppercase tracking-[0.25em] text-neutral-500 [will-change:transform,filter]">
+          <span className="ev-eyebrow relative bg-[#1F1F1F] px-6 text-xs font-medium uppercase tracking-[0.25em] text-neutral-400 [will-change:transform,filter]">
             (&nbsp;{sectionLabel}&nbsp;)
           </span>
         </div>
@@ -257,19 +257,19 @@ export default function CorporateEvents({
           className={`${SECTION_CONTENT_GAP} grid grid-cols-1 lg:grid-cols-[48fr_52fr] lg:items-stretch`}
         >
           {/* Left — content panel. */}
-          <div className="flex flex-col bg-white p-8 sm:p-10 lg:p-14 xl:p-16">
+          <div className="flex flex-col bg-[#2A2A2A] p-8 sm:p-10 lg:p-14 xl:p-16">
             <div className="ev-meta flex flex-wrap items-center gap-4 [will-change:transform]">
-              <span className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-900">
-                <span aria-hidden="true" className="h-px w-8 bg-neutral-400" />
+              <span className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-100">
+                <span aria-hidden="true" className="h-px w-8 bg-neutral-500" />
                 {featuredLabel}
               </span>
-              <span className="inline-flex items-center gap-2 rounded-md border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700">
-                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-neutral-800" />
+              <span className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-200">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#C79A2E]" />
                 {statusLabel}
               </span>
             </div>
 
-            <h3 className="mt-7 font-[family-name:var(--font-helvetica-now)] text-[clamp(2rem,3.6vw,3.5rem)] font-medium leading-[1.04] tracking-[-0.02em] text-neutral-900">
+            <h3 className="mt-7 font-[family-name:var(--font-cabinet)] text-[clamp(2rem,3.6vw,3.5rem)] font-medium leading-[1.04] tracking-[-0.02em] text-neutral-100">
               {headingLines.map((line, i) => (
                 <span key={i} className="block overflow-hidden pb-[0.06em]">
                   <span className="ev-head-line block [will-change:transform]">
@@ -279,7 +279,7 @@ export default function CorporateEvents({
               ))}
             </h3>
 
-            <p className="ev-desc mt-6 max-w-[32rem] text-base leading-relaxed text-neutral-500 [will-change:transform]">
+            <p className="ev-desc mt-6 max-w-[32rem] text-base leading-relaxed text-neutral-400 [will-change:transform]">
               {description}
             </p>
 
@@ -307,8 +307,8 @@ export default function CorporateEvents({
                   />
                 ))}
               </div>
-              <p className="text-sm text-neutral-500">
-                <span className="font-semibold text-neutral-900">{seatsText}</span>
+              <p className="text-sm text-neutral-400">
+                <span className="font-semibold text-neutral-100">{seatsText}</span>
                 {" — "}
                 {attendeesText}
               </p>

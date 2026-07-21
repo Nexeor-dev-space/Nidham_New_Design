@@ -209,7 +209,7 @@ export default function CreativeVisionSection({
         )}
 
         <h2
-          className="font-[family-name:var(--font-helvetica-now)] text-[clamp(1.6rem,3.4vw,3.25rem)] font-light leading-[1.28] tracking-[-0.005em] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.28)]"
+          className="font-[family-name:var(--font-cabinet)] text-[clamp(1.6rem,3.4vw,3.25rem)] font-light leading-[1.28] tracking-[-0.005em] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.28)]"
         >
           {lines.map((line, i) => (
             <span

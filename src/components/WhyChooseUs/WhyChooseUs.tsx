@@ -34,7 +34,7 @@ export default function WhyChooseUs({
       id="service"
       aria-labelledby="why-choose-us-heading"
       data-particles="services"
-      className="w-full bg-[#F1F0EE] section-y"
+      className="w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
         {/* Heading — unified section-heading system. */}

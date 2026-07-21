@@ -53,7 +53,7 @@ export default function EventCard({ item, onPlay }: EventCardProps) {
           </button>
         </div>
 
-        <h3 className="mt-6 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-900 transition-colors duration-300 group-hover:text-[#6E1B45]">
+        <h3 className="mt-6 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-100 transition-colors duration-300 group-hover:text-[#6E1B45]">
           <span>
             {item.category} <span className="text-neutral-400">|</span> {item.tag}
           </span>
@@ -69,7 +69,7 @@ export default function EventCard({ item, onPlay }: EventCardProps) {
           </svg>
         </h3>
 
-        <p className="mt-4 max-w-xl text-[clamp(1.05rem,1.4vw,1.4rem)] leading-relaxed text-neutral-600 line-clamp-3">
+        <p className="mt-4 max-w-xl text-[clamp(1.05rem,1.4vw,1.4rem)] leading-relaxed text-neutral-300 line-clamp-3">
           {item.description}
         </p>
       </article>

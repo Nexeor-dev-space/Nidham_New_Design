@@ -1,4 +1,4 @@
-import type { AboutImage } from "./types";
+import type { AboutMedia } from "./types";
 
 /**
  * Default About-section content. Everything is overridable via props — these
@@ -16,12 +16,11 @@ export const ABOUT_BUTTON_TEXT = "View Our Services";
 export const ABOUT_BUTTON_LINK = "/services";
 
 /**
- * Placeholder team photo lives in `public/images/about/`. Swap `team.jpg` for
- * the official on-stage team shot — the container keeps the design's ratio.
+ * Left-column showreel. Plays muted and loops, and only once scrolled into view
+ * (see AboutSection) — it is a multi-MB file well below the fold, so it must not
+ * compete with the hero video for bandwidth on first paint.
  */
-export const ABOUT_IMAGE: AboutImage = {
-  src: "/images/about/team.jpg",
-  alt: "The Nidham Consultancy team on stage at a live event",
-  width: 986,
-  height: 842,
+export const ABOUT_MEDIA: AboutMedia = {
+  src: "/video/youtub-bg-3.mp4",
+  alt: "Showreel of Nidham Consultancy events",
 };

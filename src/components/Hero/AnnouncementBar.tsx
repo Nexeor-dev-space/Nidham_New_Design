@@ -26,7 +26,7 @@ export default function AnnouncementBar() {
     <motion.aside
       key="announcement"
       aria-label="Event announcement"
-      className="w-full overflow-hidden bg-[#251d30] text-white/90"
+      className="w-full overflow-hidden bg-[#391b2b] text-white/90"
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: "auto" }}
       exit={{ opacity: 0, height: 0 }}

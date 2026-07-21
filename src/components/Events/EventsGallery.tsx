@@ -65,7 +65,7 @@ export default function EventsGallery({
       id={id}
       aria-label="Event highlights"
       data-particles="gallery"
-      className="w-full bg-[#F1F0EE] section-y"
+      className="w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
         <ul className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-10 lg:gap-16">

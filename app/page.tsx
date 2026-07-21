@@ -13,7 +13,8 @@ export default function Home() {
       <PartnersSection />
       <AboutSection />
       <WhyChooseUs />
-      <CorporateEvents />
+      {/* `id` is the #events scroll target for the nav links (NAV_LINKS). */}
+      <CorporateEvents id="events" />
       <EventsGallery />
       <CreativeVisionSection />
     </>

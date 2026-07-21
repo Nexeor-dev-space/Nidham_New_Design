@@ -44,7 +44,7 @@ export default function CountdownCard({
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl border border-white/70 bg-white p-5 shadow-[0_30px_80px_-28px_rgba(58,42,58,0.6)] ring-1 ring-black/[0.04] sm:p-6 lg:p-7"
+      className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#2A2A2A] p-5 shadow-[0_30px_80px_-28px_rgba(58,42,58,0.6)] ring-1 ring-black/[0.04] sm:p-6 lg:p-7"
       aria-label={
         done
           ? `${title}: registration closed`
@@ -88,7 +88,7 @@ export default function CountdownCard({
             Live Event
           </p>
 
-          <h4 className="mt-2.5 text-[clamp(1.15rem,1.7vw,1.6rem)] font-semibold leading-tight tracking-[-0.01em] text-neutral-900">
+          <h4 className="mt-2.5 text-[clamp(1.15rem,1.7vw,1.6rem)] font-semibold leading-tight tracking-[-0.01em] text-neutral-100">
             {title}
           </h4>
 
@@ -110,7 +110,7 @@ export default function CountdownCard({
                     </span>
                   )}
                   <div className="text-center">
-                    <div className="relative flex justify-center overflow-hidden text-[clamp(1.65rem,2.4vw,2.25rem)] font-semibold leading-none tabular-nums text-neutral-900">
+                    <div className="relative flex justify-center overflow-hidden text-[clamp(1.65rem,2.4vw,2.25rem)] font-semibold leading-none tabular-nums text-neutral-100">
                       <AnimatePresence mode="popLayout" initial={false}>
                         <motion.span
                           key={value}
@@ -123,7 +123,7 @@ export default function CountdownCard({
                         </motion.span>
                       </AnimatePresence>
                     </div>
-                    <div className="mt-2 text-[9px] font-medium uppercase tracking-[0.16em] text-neutral-500 sm:text-[10px]">
+                    <div className="mt-2 text-[9px] font-medium uppercase tracking-[0.16em] text-neutral-400 sm:text-[10px]">
                       {LABELS[i]}
                     </div>
                   </div>
@@ -137,7 +137,7 @@ export default function CountdownCard({
         <Link
           href={linkHref}
           data-cursor="button"
-          className="group inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-[#6E1B45] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_-12px_rgba(110,27,69,0.65)] transition-[transform,box-shadow,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#5a1639] hover:shadow-[0_20px_44px_-14px_rgba(110,27,69,0.75)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6E1B45] focus-visible:ring-offset-2 focus-visible:ring-offset-white active:translate-y-0 sm:w-auto"
+          className="group inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-[#6E1B45] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_-12px_rgba(110,27,69,0.65)] transition-[transform,box-shadow,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#5a1639] hover:shadow-[0_20px_44px_-14px_rgba(110,27,69,0.75)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6E1B45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#2A2A2A] active:translate-y-0 sm:w-auto"
         >
           {linkText}
           <svg
