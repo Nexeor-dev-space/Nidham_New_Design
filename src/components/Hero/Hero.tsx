@@ -4,12 +4,22 @@ import { useRef } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import AnnouncementBar from "./AnnouncementBar";
 import Navbar from "./Navbar";
+import HeroAmbient from "./HeroAmbient";
+import HeroShape from "./HeroShape";
 import { useHeroScroll } from "@/src/hooks/useHeroScroll";
+import { HERO_HEADING } from "@/src/lib/typography";
 
 /** Shared premium easing — a soft, expensive-feeling ease-out. */
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const HEADING_WORDS = ["Creative", "Vision"] as const;
+/** Authored as balanced lines so the headline cascades like the reference.
+    "entertainment" is the widest line and governs the fluid size ceiling. */
+const HEADING_LINES = [
+  "Creative",
+  "experiences for",
+  "every audience",
+  
+] as const;
 
 export default function Hero() {
   const reduce = useReducedMotion();
@@ -70,8 +80,15 @@ export default function Hero() {
     <header
       ref={sectionRef}
       id="top"
-      className="relative w-full overflow-hidden bg-[#f1efec] font-[family-name:var(--font-dm-sans)] text-neutral-900"
+      data-particles="hero"
+      className="relative w-full overflow-hidden bg-[#f1efec] text-neutral-900"
     >
+      {/* Ambient lighting (Layer 0) — three small, masked + blurred Aurora
+          glows that fill only the empty cream areas (top-left / top-right /
+          behind the headline) plus faint film grain. Backmost, pointer-none;
+          never over the video, never touching the text. See HeroAmbient. */}
+      <HeroAmbient />
+
       {/* Ambient floating glow (Layer 2) — decorative, purely atmospheric.
           The wrapper gets the scroll parallax; the inner glows keep their own
           idle float, so parent-translate and child-float compose cleanly. */}
@@ -96,62 +113,80 @@ export default function Hero() {
 
       <AnnouncementBar />
       <Navbar />
+      {/* Handoff marker: once this scrolls above the viewport top (i.e. the top
+          nav has left), the global FloatingNav takes over. */}
+      <div id="hero-nav-sentinel" aria-hidden="true" className="h-0 w-full" />
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative container-page section-y-b pt-12 sm:pt-14"
+        className="relative section-y-b pt-10 sm:pt-24 lg:pt-36"
       >
         {/* Content layer (Layer 3) — GSAP scrubs this wrapper's transform on
             scroll; Framer drives the entrance reveal on the children inside. */}
-        <div ref={contentRef} className="origin-left will-change-transform">
-          <motion.p
-            variants={item}
-            className="text-xl font-normal tracking-tight text-neutral-900 will-change-transform sm:text-2xl lg:text-3xl"
-          >
-            Vision. Impact. Excellence.
-          </motion.p>
+        <div
+          ref={contentRef}
+          className="container-page origin-left will-change-transform"
+        >
 
-          {/* Masked per-word reveal. Each word rises out of a clipped row. */}
-          <motion.h1
-            variants={container}
-            className="mt-2 flex flex-wrap font-[family-name:Arial,Helvetica,sans-serif] text-[clamp(3rem,12vw,4rem)] font-normal uppercase leading-[0.95] tracking-[-0.03em] text-neutral-900 will-change-transform sm:flex-nowrap sm:text-[clamp(2rem,11.5vw,11.6rem)] sm:leading-[0.92] lg:mt-3"
-          >
-            {HEADING_WORDS.map((w, i) => (
-              <span
-                key={w}
-                className={`inline-block overflow-hidden pb-[0.08em] ${
-                  i < HEADING_WORDS.length - 1 ? "mr-[0.28em]" : ""
-                }`}
-              >
-                <motion.span variants={word} className="inline-block will-change-transform">
-                  {w}
-                </motion.span>
-              </span>
-            ))}
-          </motion.h1>
+          {/* Editorial headline left, supporting column bottom-aligned right. */}
+          <div className="relative mt-6 flex flex-col gap-8 lg:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
+            {/* Decorative rotating gradient blob — on the right: above the
+                supporting paragraph (desktop) / beside the last headline line
+                (mobile). */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute right-6 top-[5.5rem] z-[5] h-14 w-14 animate-[spin_18s_linear_infinite] motion-reduce:animate-none sm:right-10 sm:top-[8rem] sm:h-20 sm:w-20 lg:right-4 lg:top-4 lg:h-[6.5rem] lg:w-[6.5rem]"
+            >
+              <HeroShape />
+            </div>
 
-          <motion.p
-            variants={item}
-            className="mt-4 max-w-2xl text-lg text-neutral-500 will-change-transform sm:text-xl lg:text-2xl"
-          >
-            A Strategic Studio for Technology, Entertainment &amp; Media.
-          </motion.p>
+            {/* Masked per-line reveal — each line rises out of a clipped row,
+                giving a four-line editorial cascade in a clean, normal weight. */}
+            <motion.h1
+              variants={container}
+              className={`${HERO_HEADING} will-change-transform lg:min-w-0 lg:flex-1`}
+            >
+              {HEADING_LINES.map((line) => (
+                <span key={line} className="block overflow-hidden pb-[0.2em]">
+                  <motion.span
+                    variants={word}
+                    className="block will-change-transform"
+                  >
+                    {line}
+                  </motion.span>
+                </span>
+              ))}
+            </motion.h1>
+
+            <motion.p
+              variants={item}
+              className="max-w-2xl font-[family-name:var(--font-helvetica-now-text)] text-[18px] leading-[1.65] text-neutral-600 will-change-transform sm:text-[20px] lg:w-[17rem] lg:shrink-0 lg:pb-2 lg:text-[23px] xl:w-[22rem] 2xl:w-[25rem]"
+            >
+              Nidham Consultancy is a multidisciplinary entertainment and media
+              company delivering exceptional live events, artist collaborations,
+              strategic consulting, and immersive experiences that connect
+              audiences, brands, and communities across every stage.
+            </motion.p>
+          </div>
         </div>
 
-        {/* Cinematic background video (Layer 1). Framer runs the entrance;
-            GSAP scrubs the inner <video> transform (slow drift + 1.08→1.00
-            scale) for the parallax. The card sits still so the media parallaxes
-            within its fixed frame. */}
-        <motion.div variants={media} className="mt-12 lg:mt-14">
+        {/* Cinematic hero video (Layer 1) — full-bleed, edge-to-edge, tall and
+            immersive so it reads as the dominant focal point directly beneath
+            the headline. Framer runs the entrance; GSAP scrubs the inner <video>
+            transform (slow drift + 1.08→1.00 scale) for the parallax. */}
+        <motion.div
+          variants={media}
+          className="full-bleed mt-8 sm:mt-10 lg:mt-14"
+        >
           <div
             data-cursor="video"
-            className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-[0_40px_80px_-32px_rgba(0,0,0,0.45)] ring-1 ring-black/5 sm:aspect-[16/9] lg:aspect-[1280/672]"
+            className="relative h-[58vh] w-full overflow-hidden bg-neutral-900 sm:h-[70vh] lg:h-[82vh]"
           >
             <video
               ref={videoRef}
-              className="absolute inset-0 h-[124%] w-full object-cover will-change-transform"
+              className="absolute -top-[14%] left-0 h-[128%] w-full object-cover will-change-transform"
               src="/video/hero-banner-video.mp4"
               autoPlay
               loop

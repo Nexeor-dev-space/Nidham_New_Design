@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ANNOUNCEMENT, EVENT_DATE } from "./constants";
@@ -31,9 +32,16 @@ export default function AnnouncementBar() {
       exit={{ opacity: 0, height: 0 }}
       transition={{ duration: 0.55, ease: EASE }}
     >
-      <div className="relative mx-auto flex min-h-[52px] max-w-[1600px] flex-col items-center justify-center gap-2 px-12 py-2.5 text-center text-[13px] sm:flex-row sm:gap-5 sm:py-0 sm:pr-16 lg:px-14 lg:pr-20">
+      <div className="relative mx-auto flex min-h-[56px] max-w-[1760px] flex-col items-center justify-center gap-2 px-3 py-2.5 text-center text-[15px] sm:flex-row sm:gap-5 sm:px-12 sm:py-0 sm:pr-16 lg:px-14 lg:pr-20">
         <p className="flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:w-auto">
-          <span aria-hidden="true">{ANNOUNCEMENT.emoji}</span>
+          <Image
+            src="/images/calendar-icon.png"
+            alt=""
+            aria-hidden="true"
+            width={20}
+            height={20}
+            className="h-[18px] w-[18px] shrink-0 object-contain sm:h-5 sm:w-5"
+          />
           <a
             href={ANNOUNCEMENT.cta.href}
             className="font-medium text-white underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
@@ -43,7 +51,9 @@ export default function AnnouncementBar() {
           <span aria-hidden="true" className="hidden text-white/30 sm:inline">
             |
           </span>
-          <span className="text-white/65">{ANNOUNCEMENT.message}</span>
+          <span className="whitespace-nowrap text-white/65">
+            {ANNOUNCEMENT.message}
+          </span>
         </p>
 
         <div className="flex w-full justify-center sm:w-auto">
@@ -72,7 +82,7 @@ export default function AnnouncementBar() {
                       </motion.span>
                     </AnimatePresence>
                   </span>
-                  <span className="text-[0.65rem] uppercase tracking-wider text-white/55">
+                  <span className="text-[0.72rem] uppercase tracking-wider text-white/55">
                     {unit.label}
                   </span>
                 </span>

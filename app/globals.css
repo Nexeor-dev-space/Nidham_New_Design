@@ -1,14 +1,44 @@
 @import "tailwindcss";
 
+/*
+  Typography system — two licensed Monotype fonts (neither is on Google Fonts):
+    • Helvetica Now Display → headings / large editorial / marketing headlines
+    • Helvetica Now Text    → body, UI, navigation, buttons, captions
+  The stacks below fall back to Helvetica/Arial until the licensed web-font
+  files are added. To self-host: drop the .woff2 files in `public/fonts/` and
+  uncomment the matching @font-face blocks — the variables then render the real
+  fonts with no other code changes.
+
+  @font-face {
+    font-family: "Helvetica Now Display";
+    src: url("/fonts/HelveticaNowDisplay-Medium.woff2") format("woff2");
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "Helvetica Now Text";
+    src: url("/fonts/HelveticaNowText-Regular.woff2") format("woff2");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "Helvetica Now Text";
+    src: url("/fonts/HelveticaNowText-Medium.woff2") format("woff2");
+    font-weight: 500; font-style: normal; font-display: swap;
+  }
+*/
+
 :root {
   --background: #F1F0EE;
   --foreground: #171717;
+  --font-helvetica-now:
+    "Helvetica Now Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-helvetica-now-text:
+    "Helvetica Now Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-helvetica-now-text);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -22,7 +52,13 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Helvetica Now Text is the site-wide default for all body + UI text.
+     Headings opt into Helvetica Now Display via --font-helvetica-now. */
+  font-family: var(--font-helvetica-now-text);
+  font-size: 1.125rem; /* 18px base body */
+  line-height: 1.65; /* generous, readable */
+  letter-spacing: -0.006em;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ============================================================
@@ -35,40 +71,57 @@ body {
    Change these tokens to reflow spacing across the whole homepage.
    ============================================================ */
 :root {
-  --container-max: 1760px; /* shared content width */
   --container-px: 1.5rem; /* 24px horizontal gutter */
-  --section-py: 2rem; /* 32px — half the gap between sections */
+  --section-py: 2.5rem; /* 40px — half the gap between sections */
   --grid-gap: 2rem; /* 32px — default grid / card gap */
 }
 
 @media (min-width: 640px) {
   :root {
-    --container-px: 2.5rem; /* 40px */
-    --section-py: 2.75rem; /* 44px → ~88px between sections */
+    --container-px: 2rem; /* 32px */
+    --section-py: 3.5rem; /* 56px → ~112px between sections */
     --grid-gap: 2.5rem; /* 40px */
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --container-px: 4rem; /* 64px */
-    --section-py: 3.5rem; /* 56px → ~112px between sections */
+    --container-px: 2.5rem; /* 40px */
+    --section-py: 4.5rem; /* 72px → ~144px between sections */
     --grid-gap: 4rem; /* 64px */
   }
 }
 
 @media (min-width: 1280px) {
   :root {
-    --container-px: 6rem; /* 96px */
+    --container-px: 3rem; /* 48px */
   }
 }
 
-/* One content container: shared max width + horizontal gutter. */
+/* THE single content container for the whole site. Full available width with
+   one shared horizontal gutter and NO max-width cap — so every section's left
+   and right edges land on the exact same vertical line at any viewport width
+   (the hero included). Every content section uses this and nothing else; do not
+   add per-section left/right padding or nested width wrappers. */
 .container-page {
   width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
   padding-inline: var(--container-px);
+}
+
+/* Opt-in edge-to-edge: for media/banners that intentionally break past the
+   content gutter and span the full viewport width. */
+.full-bleed {
+  width: 100%;
+  padding-inline: 0;
+}
+
+/* Subtle film-grain overlay for solid-colour surfaces (e.g. buttons). Pair it
+   with a Tailwind bg-[...] colour — background-blend-mode blends the noise into
+   that colour, so the colour can still change on hover while the grain stays. */
+.grain-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  background-blend-mode: overlay;
 }
 
 /* One vertical rhythm — adjacent sections sum to the target gap. */
@@ -98,6 +151,31 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Hero film grain — a tiled monochrome noise that shifts in steps for a soft,
+   cinematic flicker. Kept extremely faint (see the element's low opacity +
+   soft-light blend) so it only textures the empty cream areas of the hero. */
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  will-change: transform;
+  animation: heroGrain 1.1s steps(5) infinite;
+}
+
+@keyframes heroGrain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(5%, -5%); }
+  60% { transform: translate(-4%, 6%); }
+  80% { transform: translate(6%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grain {
     animation: none;
   }
 }

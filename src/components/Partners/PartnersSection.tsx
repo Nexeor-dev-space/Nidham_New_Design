@@ -5,9 +5,7 @@ import Marquee from "./Marquee";
 import { PARTNERS } from "./constants";
 import type { Partner } from "./types";
 import { SECTION_HEADING, SECTION_HEADING_GAP } from "@/src/lib/typography";
-
-/** Shared premium easing. */
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { EASE, VIEWPORT } from "@/src/lib/motion";
 
 interface PartnersSectionProps {
   /** Partner logos — accepts any number of entries. */
@@ -27,9 +25,6 @@ export default function PartnersSection({
   durationSeconds = 30,
 }: PartnersSectionProps) {
   const reduce = useReducedMotion();
-
-  // Once-only entrance orchestration for the whole block.
-  const viewport = { once: true, margin: "-12% 0px -12% 0px" } as const;
 
   const dividerV: Variants = {
     hidden: { scaleX: reduce ? 1 : 0, opacity: 0 },
@@ -67,14 +62,19 @@ export default function PartnersSection({
   };
 
   const cardV: Variants = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { duration: 0.5, ease: EASE } },
+    hidden: { opacity: 0, y: reduce ? 0 : 26, scale: reduce ? 1 : 0.97 },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.6, ease: EASE },
+    },
   };
 
   return (
     <section
       aria-labelledby="partners-heading"
-      className="w-full bg-[#f1efec] section-y font-[family-name:var(--font-dm-sans)]"
+      className="w-full bg-[#f1efec] section-y"
     >
       <div className="container-page">
         {/* Thin divider that expands horizontally on enter. */}
@@ -83,7 +83,7 @@ export default function PartnersSection({
           variants={dividerV}
           initial="hidden"
           whileInView="show"
-          viewport={viewport}
+          viewport={VIEWPORT}
           className="h-px w-full origin-center bg-neutral-300"
         />
 
@@ -91,7 +91,7 @@ export default function PartnersSection({
           variants={labelV}
           initial="hidden"
           whileInView="show"
-          viewport={viewport}
+          viewport={VIEWPORT}
           className="mt-8 text-center text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-500"
         >
           ({" "}
@@ -104,7 +104,7 @@ export default function PartnersSection({
           variants={headingV}
           initial="hidden"
           whileInView="show"
-          viewport={viewport}
+          viewport={VIEWPORT}
           className={`${SECTION_HEADING_GAP} ${SECTION_HEADING}`}
         >
           {title}
@@ -116,7 +116,7 @@ export default function PartnersSection({
         variants={carouselV}
         initial="hidden"
         whileInView="show"
-        viewport={viewport}
+        viewport={VIEWPORT}
         className="mt-14 sm:mt-16 lg:mt-20"
       >
         <Marquee

@@ -15,11 +15,9 @@ import {
   FOOTER_VISION_TEXT,
 } from "./constants";
 import type { FooterLink, FooterProps } from "./types";
+import { GSAP_EASE, ST_START } from "@/src/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
-
-/** Shared premium easing — matches the rest of the site. */
-const EASE = "power3.out";
 
 /* ---- shared class tokens (the Figma palette) ---------------------------- */
 const HEADING_CLS =
@@ -165,8 +163,8 @@ export default function Footer({
           const factor = isMobile ? 0.6 : isTablet ? 0.8 : 1;
 
           const tl = gsap.timeline({
-            defaults: { ease: EASE, force3D: true },
-            scrollTrigger: { trigger: root, start: "top 88%", once: true },
+            defaults: { ease: GSAP_EASE, force3D: true },
+            scrollTrigger: { trigger: root, start: ST_START, once: true },
           });
 
           // Columns cascade left → center → right, then the bottom row.
@@ -210,7 +208,9 @@ export default function Footer({
   return (
     <footer
       ref={rootRef}
-      className="w-full bg-[#3B2A3A] font-[family-name:var(--font-geist-sans)] text-[#A99AA1]"
+      id="contact"
+      data-particles="footer"
+      className="w-full bg-[#3B2A3A] text-[#A99AA1]"
     >
       <div className="container-page py-16 sm:py-20 lg:py-24">
         {/* Top — three columns */}

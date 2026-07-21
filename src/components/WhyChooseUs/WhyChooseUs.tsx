@@ -7,12 +7,7 @@ import { useIsDesktop } from "./useIsDesktop";
 import { WHY_CHOOSE_US_FEATURES, WHY_CHOOSE_US_TITLE } from "./constants";
 import type { WhyChooseUsProps } from "./types";
 import { SECTION_HEADING } from "@/src/lib/typography";
-
-/** Shared premium easing — matches the rest of the site. */
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-/** Entrance runs once, slightly before the block is fully on screen. */
-const VIEWPORT = { once: true, margin: "-12% 0px -12% 0px" } as const;
+import { EASE, VIEWPORT } from "@/src/lib/motion";
 
 export default function WhyChooseUs({
   title = WHY_CHOOSE_US_TITLE,
@@ -36,8 +31,10 @@ export default function WhyChooseUs({
 
   return (
     <section
+      id="service"
       aria-labelledby="why-choose-us-heading"
-      className="w-full bg-[#F1F0EE] section-y font-[family-name:var(--font-geist-sans)]"
+      data-particles="services"
+      className="w-full bg-[#F1F0EE] section-y"
     >
       <div className="container-page">
         {/* Heading — unified section-heading system. */}

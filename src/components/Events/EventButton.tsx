@@ -23,9 +23,8 @@ export default function EventButton({ href, children, variant }: EventButtonProp
     const rect = btn.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
     const ripple = document.createElement("span");
-    ripple.className = `pointer-events-none absolute z-0 rounded-full [animation:ripple_600ms_ease-out] ${
-      isPrimary ? "bg-white/35" : "bg-neutral-900/15"
-    }`;
+    ripple.className =
+      "pointer-events-none absolute z-0 rounded-full bg-white/35 [animation:ripple_600ms_ease-out]";
     ripple.style.width = `${size}px`;
     ripple.style.height = `${size}px`;
     ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
@@ -35,11 +34,11 @@ export default function EventButton({ href, children, variant }: EventButtonProp
   };
 
   const base =
-    "group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg px-7 py-3.5 text-sm font-medium transition-[transform,box-shadow,background-color,color] duration-300 ease-out active:translate-y-0 active:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:w-auto";
+    "group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full px-7 py-3.5 text-sm font-medium transition-[transform,box-shadow,background-color,color] duration-300 ease-out active:translate-y-0 active:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:w-auto";
 
   const variantCls = isPrimary
-    ? "bg-gradient-to-br from-[#7a7189] to-[#5f586f] text-white shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] hover:-translate-y-[3px] hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.55)] focus-visible:ring-[#6b6479]"
-    : "border border-neutral-900 text-neutral-900 hover:-translate-y-[3px] hover:bg-neutral-900 hover:text-white focus-visible:ring-neutral-900";
+    ? "bg-[#5D0139] text-white shadow-[0_10px_30px_-12px_rgba(93,1,57,0.55)] hover:-translate-y-[3px] hover:bg-[#6E1B45] hover:shadow-[0_18px_40px_-14px_rgba(93,1,57,0.6)] focus-visible:ring-[#5D0139]"
+    : "bg-[#5D0139] text-white shadow-[0_10px_30px_-12px_rgba(93,1,57,0.5)] hover:-translate-y-[3px] hover:bg-[#6E1B45] focus-visible:ring-[#5D0139]";
 
   return (
     <Link

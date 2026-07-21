@@ -11,11 +11,9 @@ import {
   CREATIVE_VISION_TITLE,
 } from "./constants";
 import type { CreativeVisionSectionProps } from "./types";
+import { GSAP_EASE, ST_START } from "@/src/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
-
-/** Shared premium easing — matches the rest of the site. */
-const EASE = "power3.out";
 
 /**
  * Full-bleed "Creative Vision" banner: a background image with a centred
@@ -83,8 +81,8 @@ export default function CreativeVisionSection({
 
           // ----- Entrance (once) --------------------------------------------
           const tl = gsap.timeline({
-            defaults: { ease: EASE, force3D: true },
-            scrollTrigger: { trigger: section, start: "top 78%", once: true },
+            defaults: { ease: GSAP_EASE, force3D: true },
+            scrollTrigger: { trigger: section, start: ST_START, once: true },
           });
 
           if (labelRef.current) {
@@ -211,7 +209,7 @@ export default function CreativeVisionSection({
         )}
 
         <h2
-          className="font-[family-name:var(--font-dm-sans)] text-[clamp(1.6rem,3.4vw,3.25rem)] font-light leading-[1.28] tracking-[-0.005em] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.28)]"
+          className="font-[family-name:var(--font-helvetica-now)] text-[clamp(1.6rem,3.4vw,3.25rem)] font-light leading-[1.28] tracking-[-0.005em] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.28)]"
         >
           {lines.map((line, i) => (
             <span

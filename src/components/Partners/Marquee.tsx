@@ -28,7 +28,7 @@ export default function Marquee({
   return (
     <div className="group relative w-full overflow-hidden">
       <div
-        className="animate-marquee flex w-max flex-nowrap group-hover:[animation-play-state:paused]"
+        className="animate-marquee flex w-max flex-nowrap items-center py-8 group-hover:[animation-play-state:paused]"
         style={{ "--marquee-duration": `${durationSeconds}s` } as React.CSSProperties}
       >
         {loop.map((partner, i) => (

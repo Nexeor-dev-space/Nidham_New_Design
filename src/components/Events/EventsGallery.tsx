@@ -7,6 +7,7 @@ import EventCard from "./EventCard";
 import VideoModal from "./VideoModal";
 import { EVENTS_GALLERY } from "./constants";
 import type { EventCardItem } from "./types";
+import { DUR, GSAP_EASE, ST_START, STAGGER } from "@/src/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,16 +39,16 @@ export default function EventsGallery({
         const cards = gsap.utils.toArray<HTMLElement>(".event-card");
         gsap.fromTo(
           cards,
-          { autoAlpha: 0, y: 48, scale: 0.97 },
+          { autoAlpha: 0, y: 40, scale: 0.96 },
           {
             autoAlpha: 1,
             y: 0,
             scale: 1,
-            duration: 0.9,
-            ease: "power3.out",
-            stagger: 0.18,
+            duration: DUR.base,
+            ease: GSAP_EASE,
+            stagger: STAGGER,
             force3D: true,
-            scrollTrigger: { trigger: section, start: "top 78%", once: true },
+            scrollTrigger: { trigger: section, start: ST_START, once: true },
           },
         );
       });
@@ -63,7 +64,8 @@ export default function EventsGallery({
       ref={sectionRef}
       id={id}
       aria-label="Event highlights"
-      className="w-full bg-[#F1F0EE] section-y font-[family-name:var(--font-geist-sans)]"
+      data-particles="gallery"
+      className="w-full bg-[#F1F0EE] section-y"
     >
       <div className="container-page">
         <ul className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-10 lg:gap-16">

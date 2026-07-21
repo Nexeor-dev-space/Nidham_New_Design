@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, DM_Sans } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/src/components/CustomCursor/CustomCursor";
 import Footer from "@/src/components/Footer/Footer";
+import FloatingNav from "@/src/components/FloatingNav/FloatingNav";
+import ParticleField from "@/src/components/ParticleField/ParticleField";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,9 +37,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <CustomCursor />
+        <ParticleField />
         <main className="flex-1">{children}</main>
         <Footer />
+        <FloatingNav />
       </body>
     </html>
   );

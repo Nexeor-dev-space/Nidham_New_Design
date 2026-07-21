@@ -31,10 +31,9 @@ import {
   SECTION_HEADING,
   SECTION_HEADING_GAP,
 } from "@/src/lib/typography";
+import { GSAP_EASE, ST_START } from "@/src/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const EASE = "power3.out";
 
 /** Small decorative avatar stack for the social-proof row. */
 const AVATARS = [
@@ -104,8 +103,8 @@ export default function CorporateEvents({
 
           // ----- Entrance (once) -----------------------------------------
           const tl = gsap.timeline({
-            defaults: { ease: EASE, force3D: true },
-            scrollTrigger: { trigger: section, start: "top 72%", once: true },
+            defaults: { ease: GSAP_EASE, force3D: true },
+            scrollTrigger: { trigger: section, start: ST_START, once: true },
           });
 
           tl.fromTo(
@@ -230,7 +229,7 @@ export default function CorporateEvents({
       ref={sectionRef}
       id={id}
       aria-labelledby="corporate-events-title"
-      className="w-full bg-[#F1F0EE] section-y font-[family-name:var(--font-geist-sans)]"
+      className="w-full bg-[#F1F0EE] section-y"
     >
       <div className="container-page">
         {/* Header: divider with centred label. */}
@@ -270,7 +269,7 @@ export default function CorporateEvents({
               </span>
             </div>
 
-            <h3 className="mt-7 text-[clamp(2rem,3.6vw,3.5rem)] font-medium leading-[1.04] tracking-[-0.02em] text-neutral-900">
+            <h3 className="mt-7 font-[family-name:var(--font-helvetica-now)] text-[clamp(2rem,3.6vw,3.5rem)] font-medium leading-[1.04] tracking-[-0.02em] text-neutral-900">
               {headingLines.map((line, i) => (
                 <span key={i} className="block overflow-hidden pb-[0.06em]">
                   <span className="ev-head-line block [will-change:transform]">
@@ -344,16 +343,20 @@ export default function CorporateEvents({
               </div>
             </div>
 
-            <div
-              ref={countdownRef}
-              className="absolute inset-x-4 bottom-4 [will-change:transform] sm:inset-x-6 sm:bottom-6 lg:left-auto lg:right-8 lg:bottom-8 lg:w-[76%]"
-            >
-              <CountdownCard
-                eventDate={eventDate}
-                title={countdownTitle}
-                linkText={countdownLinkText}
-                linkHref={countdownLink}
-              />
+            {/* Centered in the frame — centering lives on this (untransformed)
+                wrapper so it can't collide with the GSAP entrance `y` below. */}
+            <div className="pointer-events-none absolute inset-0 flex items-end justify-center p-4 sm:p-6 lg:p-8">
+              <div
+                ref={countdownRef}
+                className="pointer-events-auto w-full [will-change:transform] lg:w-[86%]"
+              >
+                <CountdownCard
+                  eventDate={eventDate}
+                  title={countdownTitle}
+                  linkText={countdownLinkText}
+                  linkHref={countdownLink}
+                />
+              </div>
             </div>
           </figure>
         </div>

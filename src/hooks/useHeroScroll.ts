@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 export interface HeroScrollRefs {
   /** The hero section — drives the scroll timeline. */
   section: RefObject<HTMLElement | null>;
-  /** Background media (Layer 1) — slowest: scales down + lags downward. */
+  /** Background media (Layer 1) — the video itself: scales up + lags downward. */
   video: RefObject<HTMLElement | null>;
   /** Text/CTA wrapper (Layer 3) — holds, then eases up with a slight fade. */
   content: RefObject<HTMLElement | null>;
@@ -19,17 +19,25 @@ export interface HeroScrollRefs {
 
 /**
  * Cinematic, scroll-driven parallax for the hero — GSAP ScrollTrigger scrubbed
- * to the section leaving the viewport. Three layers move at different rates to
- * build depth (media slowest, decor faster, text natural), the media gently
- * settles from 1.08 → 1.00 as if you're moving into the scene, and the copy
- * stays readable — it lifts away late and fades only slightly, never vanishing.
+ * to the section leaving the viewport. It reads as the opening of a visual
+ * story: the video slowly *scales up* (~7%) as if pushing into the scene, and
+ * the media lags downward a touch so it drifts slower than the page (parallax
+ * depth). The copy holds briefly, then lifts away and fades only slightly so
+ * the hierarchy stays intact and the video becomes visually dominant.
  *
- * Everything runs on transforms (translate/scale/opacity) with force3D +
- * will-change for GPU compositing, so no layout thrash and a steady 60fps.
- * Distances shrink on tablet/mobile; motion is skipped entirely when the user
- * prefers reduced motion. Mirrors the repo's GSAP conventions (see useMagnetic).
+ * Motion runs on compositor-friendly properties — transforms (translate/scale/
+ * opacity) with force3D + will-change for GPU compositing — so there's no
+ * layout thrash and a steady 60fps. The numeric `scrub` adds spring-like
+ * catch-up smoothing (no 1:1 rigidity, no jumps). Distances shrink on tablet/
+ * mobile; motion is skipped entirely when the user prefers reduced motion.
+ * Mirrors the repo's GSAP conventions.
  */
-export function useHeroScroll({ section, video, content, decor }: HeroScrollRefs) {
+export function useHeroScroll({
+  section,
+  video,
+  content,
+  decor,
+}: HeroScrollRefs) {
   useEffect(() => {
     const sectionEl = section.current;
     const videoEl = video.current;
@@ -61,10 +69,11 @@ export function useHeroScroll({ section, video, content, decor }: HeroScrollRefs
           // stays subtle (and cheap) on tablets and phones.
           const factor = isMobile ? 0.4 : isTablet ? 0.6 : 1;
 
-          // Media (Layer 1): the slowest layer. A small downward drift makes it
-          // appear to rise slower than the page (classic parallax lag), while a
-          // gentle scale-down reads as moving deeper into the scene.
-          const videoStartScale = isMobile ? 1.04 : 1.08;
+          // Media (Layer 1): the slowest layer. It scales *up* gently as you
+          // scroll (pushing into the scene), and lags downward so it drifts
+          // slower than the page (classic parallax depth). The video sits with
+          // ~14% vertical headroom (see markup) so this drift never gaps.
+          const videoEndScale = isMobile ? 1.045 : 1.07; // +4.5–7%
           const videoDrift = 8 * factor; // % of media height, downward
 
           // Decor (Layer 2): travels up a touch faster than the media.
@@ -72,7 +81,7 @@ export function useHeroScroll({ section, video, content, decor }: HeroScrollRefs
 
           // Content (Layer 3): holds early, then lifts away and fades only
           // slightly so the copy never leaves too soon / never disappears.
-          const contentLift = -18 * factor;
+          const contentLift = -20 * factor;
           const contentFade = isMobile ? 0.8 : 0.55;
 
           const tl = gsap.timeline({
@@ -92,8 +101,8 @@ export function useHeroScroll({ section, video, content, decor }: HeroScrollRefs
 
           tl.fromTo(
             videoEl,
-            { yPercent: 0, scale: videoStartScale },
-            { yPercent: videoDrift, scale: 1, ease: "none", duration: 1 },
+            { yPercent: 0, scale: 1 },
+            { yPercent: videoDrift, scale: videoEndScale, ease: "none", duration: 1 },
             0,
           );
 
