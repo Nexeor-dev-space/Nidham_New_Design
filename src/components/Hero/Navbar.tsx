@@ -1,12 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 import Magnetic from "@/src/components/CustomCursor/Magnetic";
 import NavLink from "@/src/components/Nav/NavLink";
 import { EASE } from "@/src/lib/motion";
+import { navigateTo } from "@/src/lib/nav";
 import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
 
 /**
@@ -46,6 +49,8 @@ const MOBILE_LINKS = [
 
 export default function Navbar() {
   const reduce = useReducedMotion() ?? false;
+  const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   // Lock background scroll + close on Escape while the drawer is open.
@@ -61,21 +66,13 @@ export default function Navbar() {
     };
   }, [open]);
 
-  // Drawer link → smooth-scroll to the section, then close (mirrors FloatingNav).
+  // Drawer link → route-aware navigation (section scroll, route push, or a
+  // hop back to a homepage section), then close (mirrors FloatingNav).
   const handleNav = (
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
-    event.preventDefault();
-    setOpen(false);
-    const id = href.replace(/^#/, "");
-    if (id === "top") {
-      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-      return;
-    }
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    navigateTo(event, href, router, pathname, reduce, () => setOpen(false));
   };
 
   return (
@@ -87,9 +84,10 @@ export default function Navbar() {
       transition={{ duration: 0.7, ease: EASE, delay: 0.08 }}
     >
       <div className="container-page flex items-center justify-between gap-4 py-5 sm:gap-6 sm:py-6">
-        {/* Left: logo — anchored to the far edge */}
-        <a
-          href="#top"
+        {/* Left: logo — anchored to the far edge. Always routes to the homepage
+            (client-side), from any page. */}
+        <Link
+          href="/"
           aria-label="Nidham Consultancy home"
           className="inline-flex shrink-0"
         >
@@ -101,7 +99,7 @@ export default function Navbar() {
             priority
             className="h-auto w-[132px] sm:w-[168px]"
           />
-        </a>
+        </Link>
 
         {/* Right: editorial links (md+) + primary CTA + mobile hamburger.
             The links carry no chrome, so the generous gap is what separates
@@ -110,7 +108,12 @@ export default function Navbar() {
           <ul className="hidden items-center md:flex md:gap-12 lg:gap-16">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <NavLink href={link.href} label={link.label} tone="dark" />
+                <NavLink
+                  href={link.href}
+                  label={link.label}
+                  tone="dark"
+                  onClick={(e) => handleNav(e, link.href)}
+                />
               </li>
             ))}
           </ul>
@@ -118,6 +121,7 @@ export default function Navbar() {
           <Magnetic className="inline-block">
             <a
               href={REGISTER_CTA.href}
+              onClick={(e) => handleNav(e, REGISTER_CTA.href)}
               data-cursor="button"
               className={`${CTA_BASE} ${CTA_SKIN} gap-2 px-5 py-2.5 text-[12px] sm:gap-2.5 sm:px-7 sm:py-3 sm:text-[14px]`}
             >
@@ -191,13 +195,20 @@ export default function Navbar() {
                 >
                   {/* Sheet header: brand + close. */}
                   <div className="flex items-center justify-between">
-                    <Image
-                      src={LOGO.src}
-                      alt={LOGO.alt}
-                      width={LOGO.width}
-                      height={LOGO.height}
-                      className="h-auto w-[124px]"
-                    />
+                    <Link
+                      href="/"
+                      aria-label="Nidham Consultancy home"
+                      onClick={() => setOpen(false)}
+                      className="inline-flex shrink-0"
+                    >
+                      <Image
+                        src={LOGO.src}
+                        alt={LOGO.alt}
+                        width={LOGO.width}
+                        height={LOGO.height}
+                        className="h-auto w-[124px]"
+                      />
+                    </Link>
                     <button
                       type="button"
                       onClick={() => setOpen(false)}

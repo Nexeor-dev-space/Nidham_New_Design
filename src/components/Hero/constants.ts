@@ -16,27 +16,31 @@ export const LOGO = {
 } as const;
 
 /**
- * Primary navigation links. `href` must match a real element id on the page:
- * #service → WhyChooseUs, #events → CorporateEvents (passed in page.tsx),
- * #contact → Footer. The mobile drawer and FloatingNav derive from this list,
- * so adding a link here surfaces it everywhere — add the target first.
+ * Primary navigation links. Two kinds of `href`:
+ *   • a route (`/services`) → navigates to that page (its own premium page).
+ *   • a hash (`#events` → CorporateEvents, `#contact` → Footer) → smooth-scrolls
+ *     to that section on the homepage (or routes back to it from another page).
+ * All nav surfaces (hero Navbar, mobile drawer, FloatingNav) derive from this
+ * list and route through src/lib/nav.ts, so adding a link here surfaces it
+ * everywhere with correct behaviour — add the target (route or id) first.
  */
 export const NAV_LINKS: readonly NavLink[] = [
-  { label: "Service", href: "#service" },
-  { label: "Events", href: "#events" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", href: "/services" },
+  { label: "Events", href: "/events" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
-/** Register call-to-action shown on the right of the navbar. */
+/** Register call-to-action shown on the right of the navbar — the dedicated
+ *  registration page (its own premium onboarding experience). */
 export const REGISTER_CTA = {
   label: "Register",
-  href: "#register",
+  href: "/register",
 } as const;
 
-/** Announcement bar copy + registration CTA. */
+/** Announcement bar copy + registration CTA (routes to the register page). */
 export const ANNOUNCEMENT = {
   emoji: "\u{1F4C5}",
-  cta: { label: "Reserve Your Seat", href: "#register" },
+  cta: { label: "Reserve Your Seat", href: "/register" },
   message: "Now Registering: Dance Competition Forum 2026",
 } as const;
 
