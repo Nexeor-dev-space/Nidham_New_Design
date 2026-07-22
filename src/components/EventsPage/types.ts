@@ -46,6 +46,26 @@ export interface GalleryImage {
   span: "wide" | "tall" | "regular";
 }
 
+/**
+ * A single event in the editorial filtering portfolio (the redesigned page).
+ * `category` matches exactly one {@link EVENT_FILTERS} entry (excluding "All").
+ */
+export interface PortfolioEvent {
+  id: string;
+  /** One of EVENT_FILTERS (not "All"). Drives filtering + the meta label. */
+  category: string;
+  title: string;
+  location: string;
+  year: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  /** Masonry emphasis — varies the item's aspect ratio. */
+  span: "wide" | "tall" | "regular";
+  /** Optional looping video; when present it plays over the image poster. */
+  video?: string;
+}
+
 /** An animated statistic. */
 export interface StatItem {
   id: string;
