@@ -176,7 +176,8 @@ export const GALLERY_TITLE = "Moments";
 export const GALLERY_IMAGES: readonly GalleryImage[] = [
   { id: "g1", src: "/images/hero/banner-1.jpg", alt: "Live performance under stage lighting", span: "tall" },
   { id: "g2", src: "/images/why-choose-us/execution.jpg", alt: "Event production in progress", span: "regular" },
-  { id: "g3", src: "/images/hero/banner-2.jpg", alt: "Speakers on stage at a media event", span: "wide" },
+  { id: "g3", src: "/images/hero/banner-3.webp", alt: "Stage crowd bathed in coloured light", span: "tall" },
+  { id: "g3b", src: "/images/hero/banner-2.jpg", alt: "Speakers on stage at a media event", span: "wide" },
   { id: "g4", src: "/images/about/team.jpg", alt: "The Nidham team at work", span: "regular" },
   { id: "g5", src: "/images/why-choose-us/talent.jpg", alt: "Artist performing to a crowd", span: "tall" },
   { id: "g6", src: "/images/hero/banner-4.jpg", alt: "Audience filming a concert", span: "regular" },
