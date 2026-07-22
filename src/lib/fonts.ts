@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Urbanist } from "next/font/google";
 
 /**
  * Font system — single source of truth.
@@ -34,5 +35,19 @@ export const switzer = localFont({
   weight: "100 900",
   style: "normal",
   variable: "--font-switzer",
+  display: "swap",
+});
+
+/**
+ * Editorial body family — used for the /services chapters' supporting copy so
+ * that page reads with its own distinct, high-end voice (Urbanist), separate
+ * from the Switzer used site-wide. Loaded through `next/font/google`, which
+ * self-hosts + preloads the files and derives a no-shift fallback metric, so
+ * reference the generated `--font-urbanist` variable rather than the family name.
+ */
+export const urbanist = Urbanist({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-urbanist",
   display: "swap",
 });

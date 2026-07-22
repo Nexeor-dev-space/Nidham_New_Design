@@ -53,12 +53,6 @@ export const CONTACT_DETAILS: readonly ContactDetail[] = [
     href: `mailto:${CONTACT_EMAIL}`,
   },
   {
-    id: "office",
-    title: "Office",
-    lines: [CONTACT_LOCATION],
-    description: "Proudly delivering experiences across the region.",
-  },
-  {
     id: "hours",
     title: "Working Hours",
     lines: CONTACT_HOURS,
