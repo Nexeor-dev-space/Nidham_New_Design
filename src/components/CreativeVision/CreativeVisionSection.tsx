@@ -224,7 +224,7 @@ export default function CreativeVisionSection({
         {description && (
           <p
             ref={descRef}
-            className="mt-6 max-w-2xl text-base text-white/85 [will-change:transform] sm:text-lg"
+            className="mt-6 max-w-2xl text-[20px] font-light text-white/85 [will-change:transform]"
           >
             {description}
           </p>
@@ -235,7 +235,7 @@ export default function CreativeVisionSection({
             <Link
               href={buttonLink}
               data-cursor="button"
-              className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-neutral-900 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] transition-[transform,box-shadow,background-color] duration-300 ease-out hover:-translate-y-[3px] hover:bg-neutral-100 hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.6)] active:translate-y-0 active:duration-100"
+              className="group inline-flex items-center gap-2 rounded-[16px] bg-white px-7 py-3.5 text-sm font-medium text-neutral-900 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] transition-[transform,box-shadow,background-color] duration-300 ease-out hover:-translate-y-[3px] hover:bg-neutral-100 hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.6)] active:translate-y-0 active:duration-100"
             >
               {buttonText}
               <svg

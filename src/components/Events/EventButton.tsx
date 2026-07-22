@@ -34,7 +34,7 @@ export default function EventButton({ href, children, variant }: EventButtonProp
   };
 
   const base =
-    "group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full px-7 py-3.5 text-sm font-medium transition-[transform,box-shadow,background-color,color] duration-300 ease-out active:translate-y-0 active:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#2A2A2A] sm:w-auto";
+    "group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-[16px] px-7 py-3.5 text-sm font-medium transition-[transform,box-shadow,background-color,color] duration-300 ease-out active:translate-y-0 active:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#2A2A2A] sm:w-auto";
 
   const variantCls = isPrimary
     ? "bg-[#5D0139] text-white shadow-[0_10px_30px_-12px_rgba(93,1,57,0.55)] hover:-translate-y-[3px] hover:bg-[#6E1B45] hover:shadow-[0_18px_40px_-14px_rgba(93,1,57,0.6)] focus-visible:ring-[#5D0139]"

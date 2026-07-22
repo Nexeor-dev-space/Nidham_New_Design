@@ -44,7 +44,7 @@ export default function RegisterProcess() {
               <h3 className="mt-5 font-[family-name:var(--font-cabinet)] text-[clamp(1.3rem,2.4vw,1.75rem)] font-normal leading-tight tracking-[-0.015em] text-neutral-100">
                 {step.title}
               </h3>
-              <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-neutral-400">
+              <p className="mt-3 max-w-xs text-[20px] font-light leading-relaxed text-neutral-400">
                 {step.description}
               </p>
 

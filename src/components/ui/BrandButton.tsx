@@ -16,7 +16,7 @@ import Magnetic from "@/src/components/CustomCursor/Magnetic";
  */
 
 const CTA_BASE =
-  "group relative inline-flex items-center overflow-hidden rounded-full font-semibold uppercase tracking-[0.14em] outline-none transition-[translate,scale,box-shadow,background-color] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45]";
+  "group relative inline-flex items-center overflow-hidden rounded-[16px] font-semibold uppercase tracking-[0.14em] outline-none transition-[translate,scale,box-shadow,background-color] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45]";
 
 const CTA_SKIN =
   "grain-overlay border border-[#5D0139] bg-[#5D0139] text-white shadow-[0_8px_20px_-10px_rgba(93,1,57,0.5)] hover:bg-[#6E1B45] hover:shadow-[0_20px_44px_-12px_rgba(110,27,69,0.7)] motion-safe:hover:-translate-y-[2px] motion-safe:hover:scale-[1.02]";

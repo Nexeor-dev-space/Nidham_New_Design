@@ -118,7 +118,7 @@ export default function GalleryItem({ event, onOpen }: GalleryItemProps) {
             {location}
           </p>
 
-          <p className="mt-3 max-w-md font-[family-name:var(--font-urbanist)] text-[15px] font-light leading-[1.65] text-neutral-400">
+          <p className="mt-3 max-w-md font-[family-name:var(--font-urbanist)] text-[20px] font-light leading-[1.65] text-neutral-400">
             {description}
           </p>
 

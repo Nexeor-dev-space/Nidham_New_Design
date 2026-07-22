@@ -162,12 +162,13 @@ export default function Hero() {
           <div className="relative mt-6 flex flex-col gap-8 lg:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
             {/* Decorative rotating gradient blob — on the right: above the
                 supporting paragraph (desktop) / beside the last headline line
-                (mobile). CSS owns its spin; GSAP only scrubs its opacity, so the
+                (mobile). The <svg> owns its own spin (see HeroShape); this
+                wrapper only positions it and lets GSAP scrub its opacity, so the
                 two never collide on `transform`. */}
             <div
               ref={shapeRef}
               aria-hidden="true"
-              className="pointer-events-none absolute right-6 top-[5.5rem] z-[5] h-14 w-14 animate-[spin_18s_linear_infinite] motion-reduce:animate-none sm:right-10 sm:top-[8rem] sm:h-20 sm:w-20 lg:right-4 lg:top-4 lg:h-[6.5rem] lg:w-[6.5rem]"
+              className="pointer-events-none absolute right-6 top-[5.5rem] z-[5] h-14 w-14 sm:right-10 sm:top-[8rem] sm:h-20 sm:w-20 lg:right-4 lg:top-4 lg:h-[6.5rem] lg:w-[6.5rem]"
             >
               <HeroShape />
             </div>

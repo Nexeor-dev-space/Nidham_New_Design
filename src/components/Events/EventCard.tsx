@@ -69,7 +69,7 @@ export default function EventCard({ item, onPlay }: EventCardProps) {
           </svg>
         </h3>
 
-        <p className="mt-4 max-w-xl text-[clamp(1.05rem,1.4vw,1.4rem)] leading-relaxed text-neutral-300 line-clamp-3">
+        <p className="mt-4 max-w-xl text-[20px] font-light leading-relaxed text-neutral-300 line-clamp-3">
           {item.description}
         </p>
       </article>

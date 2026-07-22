@@ -235,7 +235,7 @@ export default function Footer({
             className="flex flex-col items-center lg:items-start"
           >
             <h2 className={HEADING_CLS}>{visionHeading}</h2>
-            <p className="mt-6 max-w-sm text-[19px] leading-[1.5] text-[#C0B2BA] lg:mt-8">
+            <p className="mt-6 max-w-sm text-[20px] font-light leading-[1.5] text-[#C0B2BA] lg:mt-8">
               {visionText}
             </p>
             <div className="mt-8 w-full sm:w-auto lg:mt-10">

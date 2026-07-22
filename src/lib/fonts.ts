@@ -39,15 +39,19 @@ export const switzer = localFont({
 });
 
 /**
- * Editorial body family — used for the /services chapters' supporting copy so
- * that page reads with its own distinct, high-end voice (Urbanist), separate
- * from the Switzer used site-wide. Loaded through `next/font/google`, which
- * self-hosts + preloads the files and derives a no-shift fallback metric, so
- * reference the generated `--font-urbanist` variable rather than the family name.
+ * Text/UI family — the site-wide default for all body + UI text (body, nav,
+ * buttons, cards, footer, forms, labels) and the /services + /events chapters'
+ * supporting copy. Loaded through `next/font/google`, which self-hosts +
+ * preloads the files and derives a no-shift fallback metric, so reference the
+ * generated `--font-urbanist` variable (resolves to `"Urbanist", "Urbanist
+ * Fallback"`) rather than the family name. The full 300–700 weight range is
+ * declared because, as the body default, the UI uses everything from light
+ * copy to semibold buttons and bold labels. Display headings stay on Cabinet
+ * (see src/lib/typography.ts).
  */
 export const urbanist = Urbanist({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-urbanist",
   display: "swap",
 });

@@ -111,8 +111,8 @@ export default function ParticleField() {
 
     const makeParticle = (): Particle => {
       const ci = Math.floor(Math.random() * COLORS.length);
-      // 2–5px flecks (radius ~1–2.5), a few slightly larger; opacity 10–25%.
-      const size = Math.random() < 0.18 ? rand(2.2, 2.9) : rand(1.0, 2.0);
+      // Flecks (radius ~1.4–3.6), a few slightly larger; opacity 22–50%.
+      const size = Math.random() < 0.2 ? rand(2.6, 3.6) : rand(1.4, 2.6);
       return {
         x: Math.random() * width,
         y: Math.random() * height,
@@ -120,7 +120,7 @@ export default function ParticleField() {
         vy: rand(-0.15, 0.15),
         size,
         ci,
-        base: rand(0.1, 0.25),
+        base: rand(0.22, 0.5),
         bright: 1,
         phase: Math.random() * Math.PI * 2,
         phaseSpeed: rand(0.5, 1.4),
@@ -261,10 +261,10 @@ export default function ParticleField() {
       const t = now * 0.001;
       ctx.clearRect(0, 0, width, height);
 
-      const R = 200;
+      const R = 260;
       const R2 = R * R;
-      const push = 0.32 * (1 + speed * 0.02);
-      const swirl = 0.26 * (1 + speed * 0.03);
+      const push = 0.5 * (1 + speed * 0.025);
+      const swirl = 0.42 * (1 + speed * 0.035);
 
       for (const p of particles) {
         // Organic idle drift — a smooth, slowly rotating flow field.
@@ -289,7 +289,7 @@ export default function ParticleField() {
             p.vy += ny * f * push;
             p.vx += -ny * f * swirl;
             p.vy += nx * f * swirl;
-            p.bright += (1 + f * 1.4 - p.bright) * 0.14;
+            p.bright += (1 + f * 2.4 - p.bright) * 0.16;
           } else {
             p.bright += (1 - p.bright) * 0.06;
           }
@@ -333,8 +333,8 @@ export default function ParticleField() {
         p.mask += ((covered ? 0 : 1) - p.mask) * 0.12;
 
         const tw = 0.82 + 0.18 * Math.sin(t * p.phaseSpeed + p.phase);
-        let alpha = p.base * p.bright * tw * p.mask * (0.5 + 0.6 * intensity);
-        if (alpha > 0.4) alpha = 0.4;
+        let alpha = p.base * p.bright * tw * p.mask * (0.78 + 0.5 * intensity);
+        if (alpha > 0.72) alpha = 0.72;
         if (alpha < 0.003) continue;
         const dsz = p.size * (1 + (p.bright - 1) * 0.25);
         ctx.globalAlpha = alpha;

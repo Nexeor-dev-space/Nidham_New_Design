@@ -76,7 +76,7 @@ export default function ContactInfo() {
                   value
                 )}
 
-                <p className="mt-4 max-w-[26ch] text-sm leading-relaxed text-neutral-500">
+                <p className="mt-4 max-w-[26ch] text-[20px] font-light leading-relaxed text-neutral-500">
                   {detail.description}
                 </p>
               </div>

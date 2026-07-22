@@ -106,7 +106,7 @@ export default function ContactHero() {
           variants={item}
           className="mt-10 flex flex-col gap-8 lg:mt-12 lg:flex-row lg:items-end lg:justify-between lg:gap-12"
         >
-          <p className="max-w-2xl text-[18px] leading-[1.65] text-neutral-300 sm:text-[20px] lg:text-[22px]">
+          <p className="max-w-2xl text-[20px] font-light leading-[1.65] text-neutral-300">
             {CONTACT_INTRO}
           </p>
           <div className="shrink-0">

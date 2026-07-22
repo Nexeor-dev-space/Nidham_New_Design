@@ -122,7 +122,7 @@ export default function PartnersSection({
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-[1.7] text-neutral-400 sm:text-[16px]"
+          className="mx-auto mt-6 max-w-2xl text-center text-[20px] leading-[1.7] text-neutral-400"
         >
           {description}
         </motion.p>

@@ -222,7 +222,7 @@ export default function AboutSection({
               initial="hidden"
               whileInView="show"
               viewport={VIEWPORT}
-              className="max-w-xl text-[clamp(1.15rem,1.7vw,1.75rem)] font-normal leading-[1.5] text-neutral-200"
+              className="max-w-xl text-[20px] font-normal leading-[1.5] text-neutral-200"
             >
               {description}
             </motion.p>
@@ -238,7 +238,7 @@ export default function AboutSection({
               <Link
                 href={buttonLink}
                 data-cursor="button"
-                className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#5D0139] px-8 py-4 text-[13px] font-medium uppercase tracking-[0.14em] text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#6E1B45] hover:shadow-lg hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5D0139] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1F1F1F] active:translate-y-0 active:scale-[0.99] sm:w-auto sm:px-10 sm:py-5"
+                className="group inline-flex w-full items-center justify-center gap-3 rounded-[16px] bg-[#5D0139] px-8 py-4 text-[13px] font-medium uppercase tracking-[0.14em] text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#6E1B45] hover:shadow-lg hover:shadow-black/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5D0139] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1F1F1F] active:translate-y-0 active:scale-[0.99] sm:w-auto sm:px-10 sm:py-5"
               >
                 {buttonText}
                 <svg

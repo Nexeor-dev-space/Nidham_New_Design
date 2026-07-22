@@ -137,7 +137,7 @@ export default function CountdownCard({
         <Link
           href={linkHref}
           data-cursor="button"
-          className="group inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-[#6E1B45] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_-12px_rgba(110,27,69,0.65)] transition-[transform,box-shadow,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#5a1639] hover:shadow-[0_20px_44px_-14px_rgba(110,27,69,0.75)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6E1B45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#2A2A2A] active:translate-y-0 sm:w-auto"
+          className="group inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-[16px] bg-[#6E1B45] px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_14px_34px_-12px_rgba(110,27,69,0.65)] transition-[transform,box-shadow,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#5a1639] hover:shadow-[0_20px_44px_-14px_rgba(110,27,69,0.75)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6E1B45] focus-visible:ring-offset-2 focus-visible:ring-offset-[#2A2A2A] active:translate-y-0 sm:w-auto"
         >
           {linkText}
           <svg
