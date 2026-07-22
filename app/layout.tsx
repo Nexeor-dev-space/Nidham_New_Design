@@ -1,23 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, DM_Sans } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/src/components/CustomCursor/CustomCursor";
+import { cabinet, switzer } from "@/src/lib/fonts";
 import Footer from "@/src/components/Footer/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-});
+import FloatingNav from "@/src/components/FloatingNav/FloatingNav";
+import ParticleField from "@/src/components/ParticleField/ParticleField";
 
 export const metadata: Metadata = {
   title: "Nidham Consultancy | Creative Vision",
@@ -30,15 +16,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Both font variables are declared once here, at the root, so every
+  // descendant can reference var(--font-cabinet) / var(--font-switzer).
+  // Switzer is the default via `body`; Cabinet is opted into by the
+  // display-type tokens in src/lib/typography.ts.
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${cabinet.variable} ${switzer.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <CustomCursor />
+        <ParticleField />
         <main className="flex-1">{children}</main>
         <Footer />
+        <FloatingNav />
       </body>
     </html>
   );

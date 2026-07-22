@@ -3,12 +3,7 @@
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import type { FeatureCardProps } from "./types";
-
-/** Shared premium easing — matches the rest of the site (Power3-out feel). */
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-/** Entrance runs once, a touch before the row is fully on screen. */
-const VIEWPORT = { once: true, margin: "-10% 0px -10% 0px" } as const;
+import { EASE, VIEWPORT } from "@/src/lib/motion";
 
 /**
  * Resting flex weight → grow target for the horizontal expand interaction.

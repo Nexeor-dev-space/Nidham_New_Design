@@ -4,30 +4,49 @@ import { useRef } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import AnnouncementBar from "./AnnouncementBar";
 import Navbar from "./Navbar";
+import HeroAmbient from "./HeroAmbient";
+import HeroShape from "./HeroShape";
 import { useHeroScroll } from "@/src/hooks/useHeroScroll";
+import { HERO_HEADING } from "@/src/lib/typography";
 
 /** Shared premium easing — a soft, expensive-feeling ease-out. */
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const HEADING_WORDS = ["Creative", "Vision"] as const;
+/** Authored as balanced lines so the headline cascades like the reference.
+    "entertainment" is the widest line and governs the fluid size ceiling. */
+const HEADING_LINES = [
+  "Creative",
+  "experiences for",
+  "every audience",
+
+] as const;
 
 export default function Hero() {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
-  // GSAP ScrollTrigger owns the scroll-driven parallax (see useHeroScroll).
-  // These wrappers are deliberately *not* Framer-controlled so the two motion
-  // systems never fight over the same node's transform — Framer runs the
-  // entrance reveal on the inner elements, GSAP scrubs these layers on scroll.
-  const contentRef = useRef<HTMLDivElement>(null);
+  // Two motion systems, strictly separated by element. Framer owns the entrance
+  // and never touches a node GSAP scrubs; GSAP owns the scroll transition and
+  // never touches a node Framer animates. Hence the plain wrapper divs around
+  // the headline/description below — they are GSAP's handles, so the two can
+  // never fight over the same transform. See useHeroScroll.
+  const stageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const shapeRef = useRef<HTMLDivElement>(null);
   const decorRef = useRef<HTMLDivElement>(null);
+  const scrimRef = useRef<HTMLDivElement>(null);
 
   useHeroScroll({
     section: sectionRef,
+    stage: stageRef,
     video: videoRef,
-    content: contentRef,
+    headline: headlineRef,
+    description: descriptionRef,
+    shape: shapeRef,
     decor: decorRef,
+    scrim: scrimRef,
   });
 
   // Entrance orchestration.
@@ -67,19 +86,32 @@ export default function Hero() {
   };
 
   return (
+    // From md up the hero is exactly one viewport tall and lays itself out as a
+    // column: ribbon + nav + copy take their natural height and the video card
+    // absorbs whatever is left (`flex-1` below). That's what lets the whole
+    // composition fit the screen before the pin engages, at any viewport height,
+    // without a single magic number. `overflow-hidden` is load-bearing: it clips
+    // the video card once it scales past the viewport on the overshooting axis.
     <header
       ref={sectionRef}
       id="top"
-      className="relative w-full overflow-hidden bg-[#f1efec] font-[family-name:var(--font-dm-sans)] text-neutral-900"
+      data-particles="hero"
+      className="relative flex w-full flex-col overflow-hidden bg-[#1F1F1F] text-neutral-100 md:h-[100svh]"
     >
-      {/* Ambient floating glow (Layer 2) — decorative, purely atmospheric.
-          The wrapper gets the scroll parallax; the inner glows keep their own
-          idle float, so parent-translate and child-float compose cleanly. */}
+      {/* Ambient lighting (Layer 0) — three small, masked + blurred Aurora
+          glows that fill only the empty cream areas (top-left / top-right /
+          behind the headline) plus faint film grain. Backmost, pointer-none;
+          never over the video, never touching the text. See HeroAmbient. */}
+      <HeroAmbient />
+
+      {/* Ambient floating glow (Layer 1) — decorative, purely atmospheric.
+          The wrapper's opacity is scrubbed away on scroll; the inner glows keep
+          their own idle float, so parent-fade and child-float compose cleanly. */}
       {!reduce && (
         <div
           ref={decorRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 will-change-transform"
+          className="pointer-events-none absolute inset-0 z-0 will-change-[opacity]"
         >
           <motion.div
             className="absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[#6E1B45]/[0.07] blur-3xl"
@@ -94,65 +126,108 @@ export default function Hero() {
         </div>
       )}
 
-      <AnnouncementBar />
-      <Navbar />
+      {/* Nav scrim (Layer 3.5) — above the video, below the nav. Invisible at
+          rest (the nav sits on the dark hero background) and scrubbed in only as
+          the video climbs behind the nav, which is otherwise white-on-bright and
+          unreadable. Never shown on mobile or under reduced motion, where the
+          video stays in its card and never reaches the nav. */}
+      <div
+        ref={scrimRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 h-44 bg-gradient-to-b from-black/65 via-black/30 to-transparent opacity-0"
+      />
+
+      {/* Navigation (Layer 4) — the topmost layer, so it keeps floating over the
+          video once that has taken the full screen. */}
+      <div className="relative z-30">
+        <AnnouncementBar />
+        <Navbar />
+        {/* Handoff marker: once this scrolls above the viewport top (i.e. the top
+            nav has left), the global FloatingNav takes over. While the hero is
+            pinned the marker stays on screen, so the pill appears exactly as the
+            hero finally scrolls away. */}
+        <div id="hero-nav-sentinel" aria-hidden="true" className="h-0 w-full" />
+      </div>
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative container-page section-y-b pt-12 sm:pt-14"
+        className="relative flex flex-1 flex-col pb-[var(--section-py)] pt-10 sm:pt-24 md:min-h-0 md:pb-[var(--container-px)] md:pt-4 lg:pt-6"
       >
-        {/* Content layer (Layer 3) — GSAP scrubs this wrapper's transform on
-            scroll; Framer drives the entrance reveal on the children inside. */}
-        <div ref={contentRef} className="origin-left will-change-transform">
-          <motion.p
-            variants={item}
-            className="text-xl font-normal tracking-tight text-neutral-900 will-change-transform sm:text-2xl lg:text-3xl"
-          >
-            Vision. Impact. Excellence.
-          </motion.p>
+        {/* Copy (Layer 3) — above the video, so it fades *over* the rising card
+            rather than being covered by it. */}
+        <div className="container-page relative z-20">
+          {/* Editorial headline left, supporting column bottom-aligned right. */}
+          <div className="relative mt-6 flex flex-col gap-8 lg:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
+            {/* Decorative rotating gradient blob — on the right: above the
+                supporting paragraph (desktop) / beside the last headline line
+                (mobile). CSS owns its spin; GSAP only scrubs its opacity, so the
+                two never collide on `transform`. */}
+            <div
+              ref={shapeRef}
+              aria-hidden="true"
+              className="pointer-events-none absolute right-6 top-[5.5rem] z-[5] h-14 w-14 animate-[spin_18s_linear_infinite] motion-reduce:animate-none sm:right-10 sm:top-[8rem] sm:h-20 sm:w-20 lg:right-4 lg:top-4 lg:h-[6.5rem] lg:w-[6.5rem]"
+            >
+              <HeroShape />
+            </div>
 
-          {/* Masked per-word reveal. Each word rises out of a clipped row. */}
-          <motion.h1
-            variants={container}
-            className="mt-2 flex flex-wrap font-[family-name:Arial,Helvetica,sans-serif] text-[clamp(3rem,12vw,4rem)] font-normal uppercase leading-[0.95] tracking-[-0.03em] text-neutral-900 will-change-transform sm:flex-nowrap sm:text-[clamp(2rem,11.5vw,11.6rem)] sm:leading-[0.92] lg:mt-3"
-          >
-            {HEADING_WORDS.map((w, i) => (
-              <span
-                key={w}
-                className={`inline-block overflow-hidden pb-[0.08em] ${
-                  i < HEADING_WORDS.length - 1 ? "mr-[0.28em]" : ""
-                }`}
+            {/* Masked per-line reveal — each line rises out of a clipped row,
+                giving a four-line editorial cascade in a clean, normal weight. */}
+            <div
+              ref={headlineRef}
+              className="will-change-[transform,opacity] lg:min-w-0 lg:flex-1"
+            >
+              <motion.h1 variants={container} className={HERO_HEADING}>
+                {HEADING_LINES.map((line) => (
+                  <span key={line} className="block overflow-hidden pb-[0.2em]">
+                    <motion.span
+                      variants={word}
+                      className="block will-change-transform"
+                    >
+                      {line}
+                    </motion.span>
+                  </span>
+                ))}
+              </motion.h1>
+            </div>
+
+            <div
+              ref={descriptionRef}
+              className="will-change-[transform,opacity] lg:w-[17rem] lg:shrink-0 lg:pb-2 xl:w-[22rem] 2xl:w-[25rem]"
+            >
+              <motion.p
+                variants={item}
+                className="max-w-2xl text-[18px] leading-[1.65] text-neutral-300 sm:text-[20px] lg:text-[23px]"
               >
-                <motion.span variants={word} className="inline-block will-change-transform">
-                  {w}
-                </motion.span>
-              </span>
-            ))}
-          </motion.h1>
-
-          <motion.p
-            variants={item}
-            className="mt-4 max-w-2xl text-lg text-neutral-500 will-change-transform sm:text-xl lg:text-2xl"
-          >
-            A Strategic Studio for Technology, Entertainment &amp; Media.
-          </motion.p>
+                Nidham Consultancy is a multidisciplinary entertainment and media
+                company delivering exceptional live events, artist collaborations,
+                strategic consulting, and immersive experiences that connect
+                audiences, brands, and communities across every stage.
+              </motion.p>
+            </div>
+          </div>
         </div>
 
-        {/* Cinematic background video (Layer 1). Framer runs the entrance;
-            GSAP scrubs the inner <video> transform (slow drift + 1.08→1.00
-            scale) for the parallax. The card sits still so the media parallaxes
-            within its fixed frame. */}
-        <motion.div variants={media} className="mt-12 lg:mt-14">
+        {/* Cinematic hero video (Layer 2) — at rest a rounded card inset by the
+            page gutter on all four sides, sitting directly beneath the headline.
+            Framer runs the entrance on this wrapper; GSAP scrubs the card inside
+            it from this box out to a full-screen cover. The card is uniformly
+            scaled (never per-axis), so the footage cannot stretch — the
+            overshooting axis is clipped by the header's overflow-hidden. */}
+        <motion.div
+          variants={media}
+          className="container-page relative z-10 mt-8 flex sm:mt-10 md:mt-5 md:min-h-0 md:flex-1 lg:mt-6"
+        >
           <div
+            ref={stageRef}
             data-cursor="video"
-            className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-[0_40px_80px_-32px_rgba(0,0,0,0.45)] ring-1 ring-black/5 sm:aspect-[16/9] lg:aspect-[1280/672]"
+            className="relative h-[58vh] w-full origin-center overflow-hidden rounded-[24px] bg-neutral-900 will-change-transform md:h-full"
           >
             <video
               ref={videoRef}
-              className="absolute inset-0 h-[124%] w-full object-cover will-change-transform"
-              src="/video/hero-banner-video.mp4"
+              className="absolute inset-0 h-full w-full object-cover will-change-[filter]"
+              src="/video/hero-video-2.mp4"
               autoPlay
               loop
               muted

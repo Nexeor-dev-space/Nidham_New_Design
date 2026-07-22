@@ -1,13 +1,15 @@
-/** Image shown in the left column of the About section. */
-export interface AboutImage {
-  /** Path (or import) to the image. */
+/**
+ * Media shown in the left column of the About section.
+ *
+ * No width/height: the column's aspect ratio is fixed by the `aspect-[986/842]`
+ * container in AboutSection and the media is object-cover'd into it, so
+ * intrinsic dimensions were never read.
+ */
+export interface AboutMedia {
+  /** Path to the video file. */
   src: string;
-  /** Accessible description — used for the image's alt text. */
+  /** Accessible description of what the footage shows. */
   alt: string;
-  /** Intrinsic width in px (aspect-ratio hint). */
-  width: number;
-  /** Intrinsic height in px (aspect-ratio hint). */
-  height: number;
 }
 
 /** Content-driven props for {@link AboutSection}. Nothing is hardcoded. */
@@ -22,6 +24,6 @@ export interface AboutSectionProps {
   buttonText?: string;
   /** CTA destination. */
   buttonLink?: string;
-  /** Left-column image. */
-  image?: AboutImage;
+  /** Left-column media. */
+  media?: AboutMedia;
 }
