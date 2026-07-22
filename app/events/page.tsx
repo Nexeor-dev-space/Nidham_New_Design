@@ -1,36 +1,26 @@
 import type { Metadata } from "next";
 import EventsHero from "@/src/components/EventsPage/EventsHero";
-import FeaturedEvents from "@/src/components/EventsPage/FeaturedEvents";
-import EventCategories from "@/src/components/EventsPage/EventCategories";
-import EventsTimeline from "@/src/components/EventsPage/EventsTimeline";
-import EventsGallery from "@/src/components/EventsPage/EventsGallery";
-import EventStats from "@/src/components/EventsPage/EventStats";
-import Testimonials from "@/src/components/EventsPage/Testimonials";
-import EventsCTA from "@/src/components/EventsPage/EventsCTA";
+import EventsPortfolio from "@/src/components/EventsPage/EventsPortfolio";
 
 export const metadata: Metadata = {
   title: "Events | Nidham Consultancy",
   description:
-    "Corporate summits, festivals, brand activations, launches and private experiences — Nidham Consultancy conceives, produces and delivers events across the UAE and beyond.",
+    "An editorial portfolio of Nidham Consultancy's event work — corporate summits, entertainment, celebrity, government, luxury, sports, exhibitions and festivals across the UAE and beyond.",
 };
 
 /**
- * /events — an immersive, editorial events experience. The root layout supplies
- * the shared chrome (ParticleField, Footer, FloatingNav); this page composes the
- * cinematic hero (which carries the Navbar + nav sentinel) and the eight
- * scroll-choreographed sections, all on the homepage design system.
+ * /events — a premium, agency-portfolio experience: a cinematic hero followed by
+ * a sticky, text-only category filter and an editorial masonry gallery that
+ * filters live with GSAP-choreographed transitions (no cards, no reload). The
+ * root layout supplies the shared chrome (ParticleField, Footer, FloatingNav);
+ * this page only composes the hero (which carries the Navbar + nav sentinel) and
+ * the filtering portfolio.
  */
 export default function EventsPage() {
   return (
     <>
       <EventsHero />
-      <FeaturedEvents />
-      <EventCategories />
-      <EventsTimeline />
-      <EventsGallery />
-      <EventStats />
-      <Testimonials />
-      <EventsCTA />
+      <EventsPortfolio />
     </>
   );
 }

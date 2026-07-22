@@ -2,6 +2,7 @@ import type {
   CategoryItem,
   FeaturedEvent,
   GalleryImage,
+  PortfolioEvent,
   StatItem,
   Testimonial,
   TimelineItem,
@@ -33,6 +34,104 @@ export const EVENTS_INTRO =
 /** Cinematic looping background for the hero (with an image poster). */
 export const EVENTS_HERO_VIDEO = "/video/event-card-bg.mp4";
 export const EVENTS_HERO_POSTER = "/images/event-card-bg.jpg";
+
+/* --------------------------------------------- Portfolio (redesigned page) --- */
+
+/**
+ * Filter categories for the editorial portfolio. "All" leads; the rest each map
+ * to one or more {@link PORTFOLIO_EVENTS}. Text-only labels — no pills/buttons.
+ */
+export const EVENT_FILTERS = [
+  "All",
+  "Corporate",
+  "Entertainment",
+  "Celebrity",
+  "Luxury",
+  "Sports",
+  "Exhibitions",
+] as const;
+
+/**
+ * The filterable portfolio grid — a curated set of realistic *sample* events,
+ * one per category for breadth. Rendered as a uniform equal-height grid (every
+ * card shares the same aspect ratio). Imagery reuses the site's existing local
+ * assets (optimised via next/image); one item carries a looping video.
+ */
+export const PORTFOLIO_EVENTS: readonly PortfolioEvent[] = [
+  {
+    id: "corporate-leadership-summit",
+    category: "Corporate",
+    title: "Corporate Leadership Summit",
+    location: "Madinat Jumeirah, Dubai",
+    year: "2025",
+    description:
+      "A two-day executive summit staged as an immersive theatre of ideas — keynotes, live panels and a networking lounge engineered for serendipity.",
+    image: "/images/why-choose-us/execution.jpg",
+    imageAlt: "Executives on stage during a corporate leadership summit",
+    span: "regular",
+  },
+  {
+    id: "music-concert",
+    category: "Entertainment",
+    title: "Music Concert",
+    location: "Etihad Arena, Abu Dhabi",
+    year: "2025",
+    description:
+      "Headline artists, full production design and arena-scale logistics — a night of sound and light delivered end to end.",
+    image: "/images/hero/banner-1.jpg",
+    imageAlt: "Vocalist performing with a live band at a concert",
+    span: "regular",
+    video: "/video/hero-video-2.mp4",
+  },
+  {
+    id: "celebrity-meet-greet",
+    category: "Celebrity",
+    title: "Celebrity Meet & Greet",
+    location: "Mall of the Emirates, Dubai",
+    year: "2024",
+    description:
+      "A managed fan experience with talent booking, security choreography and press access run to the minute.",
+    image: "/images/why-choose-us/talent.jpg",
+    imageAlt: "Artist greeting fans at a celebrity meet and greet",
+    span: "regular",
+  },
+  {
+    id: "luxury-brand-launch",
+    category: "Luxury",
+    title: "Luxury Brand Launch",
+    location: "Museum of the Future, Dubai",
+    year: "2025",
+    description:
+      "An invitation-only unveiling for a global maison — sculptural sets, choreographed reveals and a sensory journey.",
+    image: "/images/why-choose-us/expertise.jpg",
+    imageAlt: "Guests at an exclusive luxury brand launch",
+    span: "regular",
+  },
+  {
+    id: "sports-awards",
+    category: "Sports",
+    title: "Sports Awards",
+    location: "Coca-Cola Arena, Dubai",
+    year: "2024",
+    description:
+      "A black-tie night honouring regional athletes — broadcast production, trophy moments and red-carpet arrivals.",
+    image: "/images/event-card-bg.jpg",
+    imageAlt: "Athletes and guests at a sports awards ceremony",
+    span: "regular",
+  },
+  {
+    id: "technology-expo",
+    category: "Exhibitions",
+    title: "Technology Expo",
+    location: "Dubai World Trade Centre",
+    year: "2025",
+    description:
+      "A multi-hall exhibition of emerging technology — stand design, keynote stages and delegate experience at scale.",
+    image: "/images/banner-bg.jpg",
+    imageAlt: "Visitors exploring a large technology exhibition",
+    span: "regular",
+  },
+];
 
 /* ------------------------------------------------------- Featured events --- */
 
