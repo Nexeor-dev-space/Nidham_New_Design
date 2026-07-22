@@ -20,7 +20,7 @@ export default function EventCard({ item, onPlay }: EventCardProps) {
   return (
     <li className="event-card list-none [will-change:transform]">
       <article className="group transition-transform duration-500 ease-out will-change-transform hover:-translate-y-1.5">
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-neutral-900 shadow-[0_0_0_rgba(0,0,0,0)] transition-shadow duration-500 ease-out group-hover:shadow-[0_34px_70px_-30px_rgba(0,0,0,0.45)]">
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-neutral-900 shadow-[0_0_0_rgba(0,0,0,0)] transition-shadow duration-500 ease-out group-hover:shadow-[0_34px_70px_-30px_rgba(0,0,0,0.45)]">
           <Image
             src={item.image}
             alt={item.imageAlt}
@@ -40,7 +40,7 @@ export default function EventCard({ item, onPlay }: EventCardProps) {
             onClick={onPlay}
             data-cursor="button"
             aria-label={`Play video: ${item.category} — ${item.tag}`}
-            className="absolute inset-0 z-10 grid place-items-center rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
+            className="absolute inset-0 z-10 grid place-items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
           >
             <Image
               src="/images/youtube.png"
@@ -53,7 +53,7 @@ export default function EventCard({ item, onPlay }: EventCardProps) {
           </button>
         </div>
 
-        <h3 className="mt-6 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-900 transition-colors duration-300 group-hover:text-[#6E1B45]">
+        <h3 className="mt-6 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-100 transition-colors duration-300 group-hover:text-[#6E1B45]">
           <span>
             {item.category} <span className="text-neutral-400">|</span> {item.tag}
           </span>
@@ -69,7 +69,7 @@ export default function EventCard({ item, onPlay }: EventCardProps) {
           </svg>
         </h3>
 
-        <p className="mt-4 max-w-xl text-[clamp(1.05rem,1.4vw,1.4rem)] leading-relaxed text-neutral-600 line-clamp-3">
+        <p className="mt-4 max-w-xl text-[clamp(1.05rem,1.4vw,1.4rem)] leading-relaxed text-neutral-300 line-clamp-3">
           {item.description}
         </p>
       </article>

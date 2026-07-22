@@ -1,4 +1,5 @@
 import type { EventCardItem, EventInfo } from "./types";
+import { EVENT_DATE } from "@/src/components/Hero/constants";
 
 export const EVENTS_SECTION_LABEL = "Events";
 export const EVENTS_SECTION_TITLE = "Corporate Events";
@@ -13,7 +14,7 @@ export const EVENTS_HEADING: string[] = [
 ];
 
 export const EVENTS_DESCRIPTION =
-  "The next chapter of Melody Dreamz comes to Dubai Opera. Following an acclaimed inaugural season featuring playback artist Naresh Iyer, the evening brings live orchestration and the region's most celebrated voices together on one stage.";
+  "Melody Dreamz returns to Dubai Opera for its next edition. After an acclaimed inaugural season with playback maestro Naresh Iyer — since telecast nationally — the evening gathers live orchestration and the region's most celebrated voices on one stage.";
 
 export const EVENTS_INFO: EventInfo[] = [
   { id: "date", label: "Date", value: "15 October 2026", icon: "date" },
@@ -32,9 +33,10 @@ export const EVENTS_IMAGE_ALT =
   "Vocalist performing live on stage with musicians at a signature event.";
 
 /** Matches the Date / Time card; Dubai is UTC+4. Drives the live countdown. */
-export const EVENTS_DATE = "2026-10-15T19:00:00+04:00";
-export const EVENTS_COUNTDOWN_TITLE = "Final Countdown";
-export const EVENTS_COUNTDOWN_LINK_TEXT = "Learn more about VIP access";
+/** Single source of truth — always matches the announcement-bar countdown. */
+export const EVENTS_DATE = EVENT_DATE;
+export const EVENTS_COUNTDOWN_TITLE = "Final Registration Countdown";
+export const EVENTS_COUNTDOWN_LINK_TEXT = "Register Now";
 
 /**
  * Event-highlight cards below the Corporate Events block. Data-driven — add or

@@ -30,21 +30,21 @@ const ICONS: Record<InfoIcon, React.ReactNode> = {
 export default function InfoCard({ info }: { info: EventInfo }) {
   return (
     <li className="ev-card list-none [will-change:transform]">
-      <div className="group h-full rounded-xl border border-neutral-200/80 bg-neutral-50/80 p-4 transition-[transform,box-shadow] duration-300 ease-out will-change-transform hover:-translate-y-1 hover:shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)] sm:p-5">
+      <div className="group h-full rounded-xl border border-white/10 bg-white/[0.04] p-4 transition-[transform,box-shadow] duration-300 ease-out will-change-transform hover:-translate-y-1 hover:shadow-[0_14px_30px_-16px_rgba(0,0,0,0.35)] sm:p-5">
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="h-5 w-5 text-neutral-500 transition-transform duration-300 ease-out will-change-transform group-hover:scale-110"
+          className="h-5 w-5 text-neutral-400 transition-transform duration-300 ease-out will-change-transform group-hover:scale-110"
         >
           {ICONS[info.icon]}
         </svg>
         <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-400">
           {info.label}
         </p>
-        <p className="mt-1 text-sm font-medium text-neutral-900">{info.value}</p>
+        <p className="mt-1 text-sm font-medium text-neutral-100">{info.value}</p>
       </div>
     </li>
   );
