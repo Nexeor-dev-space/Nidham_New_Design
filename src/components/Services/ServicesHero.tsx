@@ -12,98 +12,96 @@ import {
 } from "./constants";
 
 /**
- * Services hero — mirrors the homepage hero's chrome and motion language exactly
- * so the page reads as the same site: the same AnnouncementBar + Navbar block
- * (with the `#hero-nav-sentinel` that hands off to the global FloatingNav), the
- * same dark surface, the same ambient magenta/amber glows and faint film grain,
- * the same signature `EASE`, and the same masked per-line headline cascade used
- * on the home hero.
+ * Services hero — deliberately its own thing, not the Events hero. Where the
+ * Events hero uses a looping video and discrete floating blobs, this one is a
+ * quiet, luxury, editorial title page: a subtle animated gradient "aurora"
+ * (transform-driven, 60fps — see `.svc-aurora*` in globals.css), a huge masked
+ * headline that dominates the screen, and only a small, restrained line of
+ * supporting copy set off to the side. Ambient dust comes from the global
+ * ParticleField via `data-particles="hero"`.
  *
- * Content is presentation-only: the eyebrow, the site tagline as the headline,
- * and the verbatim intro paragraph — all from src/components/Services/constants.
+ * The nav chrome (AnnouncementBar + Navbar + `#hero-nav-sentinel`) is shared
+ * site furniture and stays, so the global FloatingNav handoff keeps working.
+ * All copy is verbatim from src/components/Services/constants.
  */
 export default function ServicesHero() {
   const reduce = useReducedMotion() ?? false;
 
-  // Entrance orchestration — same grammar as the home hero.
+  // Entrance orchestration — headline dominates; supporting copy lands quietly.
   const container: Variants = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.11, delayChildren: 0.15 } },
+    show: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
   };
 
   const item: Variants = {
-    hidden: { opacity: 0, y: reduce ? 0 : 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
+    hidden: { opacity: 0, y: reduce ? 0 : 22 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } },
   };
 
   const word: Variants = {
-    hidden: { y: reduce ? "0%" : "110%" },
-    show: { y: "0%", transition: { duration: 0.9, ease: EASE } },
+    hidden: { y: reduce ? "0%" : "115%" },
+    show: { y: "0%", transition: { duration: 1, ease: EASE } },
   };
 
   return (
     <header
       id="services-top"
       data-particles="hero"
-      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#1F1F1F] text-neutral-100"
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#141414] text-neutral-100"
     >
-      {/* Ambient floating glow — the same decorative magenta + amber blobs as the
-          home hero (purely atmospheric, pointer-none, backmost). */}
-      {!reduce && (
+      {/* Layer 0 — animated gradient aurora. Large, soft, overlapping washes on
+          a near-black base so the surface is always alive, never flat. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(130%_100%_at_50%_-10%,#241019_0%,#141414_55%,#0E0E0E_100%)]" />
         <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-0"
-        >
-          <motion.div
-            className="absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[#6E1B45]/[0.07] blur-3xl"
-            animate={{ y: [0, -28, 0], x: [0, 12, 0], opacity: [0.5, 0.85, 0.5] }}
-            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute -right-32 top-64 h-[30rem] w-[30rem] rounded-full bg-amber-300/[0.10] blur-3xl"
-            animate={{ y: [0, 26, 0], x: [0, -16, 0], opacity: [0.4, 0.7, 0.4] }}
-            transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          />
-          <motion.div
-            className="absolute bottom-[-6rem] left-1/3 h-[24rem] w-[24rem] rounded-full bg-[#6E1B45]/[0.06] blur-3xl"
-            animate={{ y: [0, -20, 0], opacity: [0.35, 0.6, 0.35] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-          />
-        </div>
-      )}
+          className={`svc-aurora svc-aurora-a left-[-14%] top-[-12%] h-[46rem] w-[46rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        <div
+          className={`svc-aurora svc-aurora-b right-[-16%] top-[6%] h-[42rem] w-[42rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        <div
+          className={`svc-aurora svc-aurora-c bottom-[-18%] left-[28%] h-[40rem] w-[40rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        {/* Gentle vignette to seat the copy. */}
+        <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_40%,transparent_50%,rgba(0,0,0,0.55)_100%)]" />
+      </div>
 
-      {/* Faint film grain — same texture the home hero uses over empty areas. */}
+      {/* Very subtle film grain over the empty areas. */}
       <div
         aria-hidden="true"
         className="hero-grain pointer-events-none absolute inset-0 z-0 opacity-[0.04] mix-blend-soft-light"
       />
 
-      {/* Navigation block — identical structure to the home hero, including the
-          handoff sentinel the global FloatingNav watches. */}
+      {/* Navigation block — shared site chrome, incl. the FloatingNav handoff. */}
       <div className="relative z-30">
         <AnnouncementBar />
         <Navbar />
         <div id="hero-nav-sentinel" aria-hidden="true" className="h-0 w-full" />
       </div>
 
-      {/* Copy — left-aligned editorial composition. */}
+      {/* Copy — a centred editorial title page. The headline dominates; the
+          intro is a small, restrained supporting line offset to the right. */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="container-page relative z-20 flex flex-1 flex-col justify-center pb-28 pt-16 sm:pt-20 lg:pb-32"
+        className="container-page relative z-20 flex flex-1 flex-col justify-center pb-32 pt-16 sm:pt-20 lg:pb-40"
       >
         <motion.p
           variants={item}
-          className="text-xs font-medium uppercase tracking-[0.28em] text-neutral-400 sm:text-sm"
+          className="flex items-center gap-4 font-[family-name:var(--font-urbanist)] text-xs font-medium uppercase tracking-[0.32em] text-neutral-400 sm:text-sm"
         >
+          <span aria-hidden="true" className="h-px w-10 bg-[#A6386B]/70" />
           {SERVICES_EYEBROW}
         </motion.p>
 
-        <motion.h1
-          variants={container}
-          className={`mt-6 ${HERO_HEADING}`}
-        >
+        <motion.h1 variants={container} className={`mt-8 ${HERO_HEADING}`}>
           {SERVICES_HEADLINE_LINES.map((line) => (
             <span key={line} className="block overflow-hidden pb-[0.12em]">
               <motion.span variants={word} className="block will-change-transform">
@@ -113,30 +111,36 @@ export default function ServicesHero() {
           ))}
         </motion.h1>
 
+        {/* Small supporting copy — restrained, muted, set to the right on
+            desktop so the title keeps the stage. Wording is verbatim. */}
         <motion.p
           variants={item}
-          className="mt-10 max-w-2xl text-[18px] leading-[1.65] text-neutral-300 sm:text-[20px] lg:mt-12 lg:text-[22px]"
+          className="mt-12 max-w-md self-start font-[family-name:var(--font-urbanist)] text-[15px] font-light leading-[1.7] text-neutral-400 sm:text-base lg:mt-14 lg:ml-auto lg:self-end lg:text-right"
         >
           {SERVICES_INTRO}
         </motion.p>
       </motion.div>
 
-      {/* Smooth scroll indicator — anchored to the bottom of the hero. */}
+      {/* Minimal editorial scroll cue — a thin line that fills downward, with a
+          quiet label. Distinct from the Events hero's centred pill dot. */}
       <motion.div
         aria-hidden="true"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, ease: EASE, delay: 1.1 }}
-        className="pointer-events-none absolute inset-x-0 bottom-7 z-20 flex flex-col items-center gap-3"
+        transition={{ duration: 0.9, ease: EASE, delay: 1.2 }}
+        className="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-4"
       >
-        <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-500">
+        <span className="font-[family-name:var(--font-urbanist)] text-[10px] font-medium uppercase tracking-[0.4em] text-neutral-500">
           Scroll
         </span>
-        <span className="relative flex h-11 w-[26px] justify-center overflow-hidden rounded-full border border-white/15">
-          <motion.span
-            className="mt-2 h-2 w-[3px] rounded-full bg-[#A6386B]"
-            animate={reduce ? {} : { y: [0, 14, 0], opacity: [0, 1, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        <span className="relative block h-14 w-px overflow-hidden bg-white/12">
+          <span
+            className="svc-scroll-line absolute inset-x-0 top-0 block h-full bg-[linear-gradient(180deg,transparent,#A6386B)]"
+            style={
+              reduce
+                ? undefined
+                : { animation: "svcScrollLine 2.4s cubic-bezier(0.65,0,0.35,1) infinite" }
+            }
           />
         </span>
       </motion.div>

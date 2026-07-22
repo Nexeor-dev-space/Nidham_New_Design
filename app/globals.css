@@ -146,6 +146,117 @@ body {
   }
 }
 
+/* ============================================================
+   Services chapters — cinematic media atmosphere.
+   `chapter-float`   : an almost-imperceptible vertical drift, so each
+                       service's visual never feels bolted to the grid.
+   `chapter-kenburns`: a very slow zoom + pan (Ken Burns) on the <img> inside
+                       the parallax wrapper. Both pause under reduced motion and
+                       are offset per-chapter via an inline `animation-delay` so
+                       neighbouring media never move in lockstep.
+   ============================================================ */
+@keyframes chapterFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -14px, 0); }
+}
+
+@keyframes chapterKenburns {
+  0% { transform: scale(1.06) translate3d(0, 0, 0); }
+  100% { transform: scale(1.16) translate3d(-1.5%, -2%, 0); }
+}
+
+.chapter-float {
+  animation: chapterFloat 9s ease-in-out infinite;
+  will-change: transform;
+}
+
+.chapter-kenburns {
+  animation: chapterKenburns 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-float,
+  .chapter-kenburns {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   Services hero — a subtle animated gradient "aurora". Two big, soft,
+   overlapping gradient washes slowly rotate + drift (transform-only, so the
+   compositor handles it at 60fps) to give a living, never-flat backdrop that is
+   distinct from the Events hero's discrete floating blobs. Paused under reduced
+   motion, where the washes simply sit still.
+   ============================================================ */
+.svc-aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.svc-aurora-a {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(166, 56, 107, 0.5) 0%,
+    rgba(110, 27, 69, 0.28) 38%,
+    transparent 68%
+  );
+  animation: svcAuroraA 26s ease-in-out infinite alternate;
+}
+
+.svc-aurora-b {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(245, 200, 130, 0.22) 0%,
+    rgba(217, 160, 90, 0.12) 40%,
+    transparent 70%
+  );
+  animation: svcAuroraB 32s ease-in-out infinite alternate;
+}
+
+.svc-aurora-c {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(110, 27, 69, 0.4) 0%,
+    transparent 66%
+  );
+  animation: svcAuroraC 22s ease-in-out infinite alternate;
+}
+
+@keyframes svcAuroraA {
+  0% { transform: translate3d(-8%, -4%, 0) rotate(0deg) scale(1.05); }
+  100% { transform: translate3d(6%, 8%, 0) rotate(38deg) scale(1.28); }
+}
+
+@keyframes svcAuroraB {
+  0% { transform: translate3d(6%, 2%, 0) rotate(0deg) scale(1.1); }
+  100% { transform: translate3d(-8%, -6%, 0) rotate(-32deg) scale(1.32); }
+}
+
+@keyframes svcAuroraC {
+  0% { transform: translate3d(0, 6%, 0) rotate(0deg) scale(1); }
+  100% { transform: translate3d(-4%, -8%, 0) rotate(24deg) scale(1.22); }
+}
+
+/* Minimal editorial scroll cue — a thin line whose fill runs downward. */
+@keyframes svcScrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  40% { transform: scaleY(1); transform-origin: top; }
+  60% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-aurora-a,
+  .svc-aurora-b,
+  .svc-aurora-c,
+  .svc-scroll-line {
+    animation: none;
+  }
+}
+
 /* Button ripple — an expanding, fading circle spawned at the press point. */
 @keyframes ripple {
   from {

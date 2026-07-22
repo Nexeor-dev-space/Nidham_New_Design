@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { cabinet, switzer } from "@/src/lib/fonts";
+import { cabinet, switzer, urbanist } from "@/src/lib/fonts";
 import Footer from "@/src/components/Footer/Footer";
 import FloatingNav from "@/src/components/FloatingNav/FloatingNav";
 import ParticleField from "@/src/components/ParticleField/ParticleField";
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cabinet.variable} ${switzer.variable} h-full antialiased`}
+      className={`${cabinet.variable} ${switzer.variable} ${urbanist.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ParticleField />

@@ -6,7 +6,7 @@ import { CONTACT_DETAILS } from "./constants";
 
 /**
  * Contact details as an editorial index — not one big card. Each detail (Phone,
- * Email, Office, Working Hours) is its own block: a hairline top rule with an
+ * Email, Working Hours) is its own block: a hairline top rule with an
  * animated magenta accent on hover, a large Cabinet title, the actual value
  * (a tel:/mailto: link where relevant, with an underline sweep), and a quiet
  * supporting line. Blocks fade/rise in on scroll via the shared GSAP hook.
@@ -23,7 +23,7 @@ export default function ContactInfo() {
       className="relative w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
-        <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {CONTACT_DETAILS.map((detail) => {
             const value = (
               <div className="mt-4 flex flex-col gap-0.5">

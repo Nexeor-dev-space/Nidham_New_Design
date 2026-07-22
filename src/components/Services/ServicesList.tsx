@@ -1,58 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { type MouseEvent } from "react";
 import { useReducedMotion } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ServiceRow from "./ServiceRow";
-import FloatingPreview from "./FloatingPreview";
+import ServiceChapter from "./ServiceChapter";
 import { SERVICES, SERVICE_TARGET_ID } from "./constants";
 import { scrollToId } from "@/src/lib/nav";
-import { DUR, GSAP_EASE, ST_START, STAGGER } from "@/src/lib/motion";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The editorial services list — the page's core. Owns the hovered-row state that
- * drives the desktop {@link FloatingPreview}, and the GSAP ScrollTrigger reveal
- * that lifts each row in (opacity 0→1, y 60→0, staggered, signature ease). Under
- * `prefers-reduced-motion` the rows are simply left visible.
+ * The editorial services experience — a full-width vertical story where each
+ * service is a ~full-height "chapter" that alternates text/media left-to-right
+ * for rhythm. Deliberately unlike the Events page's bordered-row lists: here
+ * typography, imagery, whitespace and scroll motion carry the experience, with
+ * no cards, grids, boxes or accordions.
+ *
+ * This wrapper owns the shared dark cinematic atmosphere (large blurred ambient
+ * glows, a soft overhead spotlight and faint film grain) that sits behind every
+ * chapter so nothing ever reads as flat black; each {@link ServiceChapter}
+ * carries its own scroll choreography.
+ *
+ * `data-particles="services"` keeps the global ambient dust field at its
+ * services intensity across this whole section.
  */
 export default function ServicesList() {
   const reduce = useReducedMotion() ?? false;
-  const rootRef = useRef<HTMLElement>(null);
-  const [active, setActive] = useState(-1);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-
-    const ctx = gsap.context(() => {
-      const rows = gsap.utils.toArray<HTMLElement>(".service-row");
-      const mm = gsap.matchMedia();
-
-      // Only animate when motion is welcome; otherwise rows stay fully visible.
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set(rows, { autoAlpha: 0, y: 60 });
-        ScrollTrigger.batch(rows, {
-          start: ST_START,
-          once: true,
-          onEnter: (batch) =>
-            gsap.to(batch, {
-              autoAlpha: 1,
-              y: 0,
-              duration: DUR.base,
-              ease: GSAP_EASE,
-              stagger: STAGGER,
-              overwrite: true,
-              force3D: true,
-            }),
-        });
-      });
-    }, root);
-
-    return () => ctx.revert();
-  }, []);
 
   const handleOpen = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -61,29 +31,32 @@ export default function ServicesList() {
 
   return (
     <section
-      ref={rootRef}
       aria-label="Services"
       data-particles="services"
-      className="relative w-full bg-[#1F1F1F] section-y"
+      className="relative w-full overflow-hidden bg-[#1F1F1F]"
     >
-      <div className="container-page">
-        <ul className="flex flex-col border-b border-white/10">
-          {SERVICES.map((service, index) => (
-            <li key={service.id}>
-              <ServiceRow
-                service={service}
-                index={index}
-                onEnter={setActive}
-                onLeave={(i) => setActive((cur) => (cur === i ? -1 : cur))}
-                onOpen={handleOpen}
-              />
-            </li>
-          ))}
-        </ul>
+      {/* Ambient cinematic backdrop — large, slow, blurred magenta/amber glows,
+          a soft overhead spotlight and faint grain. Purely decorative, backmost;
+          keeps the surface from ever reading as flat black. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute inset-x-0 top-0 h-[60vh] bg-[radial-gradient(60%_100%_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_70%)]" />
+        <div className="absolute -left-40 top-[6%] h-[38rem] w-[38rem] rounded-full bg-[#6E1B45]/[0.10] blur-[120px]" />
+        <div className="absolute -right-48 top-[34%] h-[42rem] w-[42rem] rounded-full bg-amber-300/[0.06] blur-[130px]" />
+        <div className="absolute -left-32 top-[62%] h-[40rem] w-[40rem] rounded-full bg-[#6E1B45]/[0.09] blur-[125px]" />
+        <div className="absolute -right-40 top-[88%] h-[36rem] w-[36rem] rounded-full bg-amber-300/[0.05] blur-[120px]" />
+        <div className="hero-grain absolute inset-0 opacity-[0.035] mix-blend-soft-light" />
       </div>
 
-      {/* Desktop-only floating media beside the hovered service. */}
-      <FloatingPreview services={SERVICES} activeIndex={active} />
+      <div className="relative z-10">
+        {SERVICES.map((service, index) => (
+          <ServiceChapter
+            key={service.id}
+            service={service}
+            index={index}
+            onOpen={handleOpen}
+          />
+        ))}
+      </div>
     </section>
   );
 }
