@@ -23,31 +23,27 @@ interface PartnersSectionProps {
  * no card, border or panel of their own; the grid gap is the only thing
  * separating them, which is what makes it read as a gallery rather than UI.
  *
- * Sizing normalises *optical height*, not width: every logo renders at the same
- * height and takes whatever width its aspect ratio implies (a wide wordmark is
- * wide). That only works because each asset's viewBox is cropped tight to its
- * artwork — see constants.ts.
+ * Sizing fits every mark inside one shared *box* (`object-contain`) rather than
+ * normalising height. Height normalisation is the nicer trick, but it only
+ * holds for a set of similarly-proportioned wordmarks: this set spans 3.9:1
+ * (Lensman) to 0.47:1 (Media Factory, a stacked lockup), and at equal heights
+ * the stacked marks carry roughly eight times the optical mass and swamp the
+ * row. A shared box makes wide marks width-limited and tall marks
+ * height-limited, which lands them all at a comparable visual weight.
  *
- * The height is fluid rather than stepped, and that is load-bearing. A logo can
- * only be as tall as `column width ÷ its aspect ratio`; past that it hits
- * `max-w-full`, letterboxes inside its box, and silently renders shorter than
- * its neighbours — the wall goes uneven with no error anywhere. Column width
- * changes continuously with the viewport but the column *count* jumps, so
- * stepped heights cannot track that ceiling (they would have to run 24→46→30→40
- * as 2 columns become 4). `clamp()` tracks it continuously and keeps every logo
- * the same height at every width.
+ * The box keeps a ~2.7:1 ratio across the whole viewport range so that balance
+ * does not drift: both dimensions are `clamp()`ed with slopes that hit their
+ * floors and ceilings together (52–84px tall against 140–226px wide). Change
+ * one bound and change its partner, or the ratio skews and one axis starts
+ * doing all the limiting.
  *
- * Each slope is bounded by the widest asset (~4.63:1) at the *narrowest* width
- * in its range, since that is where cells are tightest: 3.85vw is set by 768px
- * (ceiling ~30px) and 4.15vw by 1280px (ceiling ~54px). One slope across both
- * would be dragged down to the 768px limit and cost ~5px at 1440px, hence the
- * split at xl. Raise either and the widest logo silently letterboxes — it goes
- * short while its neighbours do not, and nothing errors.
+ * Five columns: it divides the 10 logos evenly (5+5 desktop, 5×2 mobile) with
+ * no partial row to place. The old 4-column limit came from the height-
+ * normalising ceiling and no longer applies.
  *
- * The same ceiling is why the wall tops out at 4 columns: a 5th tightens every
- * cell and forces the slope back to ~3.1vw (46px at 1440 instead of 60px).
- * Four also divides the 8 logos evenly (4+4 desktop, 2×4 mobile), so there is
- * no partial row to place.
+ * The assets are already white-on-transparent (see constants.ts), so the wall
+ * applies no colour treatment of its own — only the resting opacity that makes
+ * hover read as a lift in brightness.
  */
 export default function PartnersSection({
   partners = PARTNERS,
@@ -122,7 +118,7 @@ export default function PartnersSection({
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-[1.7] text-neutral-400 sm:text-[16px]"
+          className="mx-auto mt-6 max-w-2xl text-center text-[20px] leading-[1.7] text-neutral-400"
         >
           {description}
         </motion.p>
@@ -133,7 +129,7 @@ export default function PartnersSection({
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="mt-16 grid grid-cols-2 gap-x-10 gap-y-14 sm:gap-x-12 sm:gap-y-16 md:grid-cols-4 lg:gap-x-16 lg:gap-y-20"
+          className="mt-16 grid grid-cols-2 gap-x-10 gap-y-14 sm:gap-x-12 sm:gap-y-16 md:grid-cols-5 lg:gap-x-14 lg:gap-y-20"
         >
           {partners.map((partner) => (
             <motion.li
@@ -141,11 +137,9 @@ export default function PartnersSection({
               variants={logo}
               className="flex items-center justify-center"
             >
-              {/* Placeholder artwork is near-black: `brightness-0 invert` flattens
-                  any colour to pure white, so mixed-colour brand SVGs normalise
-                  to the same monochrome treatment. Resting at 70% opacity is
-                  what makes the hover read as a lift in brightness — a
-                  brightness filter would be a no-op on already-white pixels. */}
+              {/* The shared fit box. `object-contain` is what lets a 3.9:1
+                  wordmark and a 0.47:1 stacked lockup share it without either
+                  being cropped or stretched — see the note above the component. */}
               <Image
                 src={partner.logo}
                 alt={partner.name}
@@ -153,7 +147,7 @@ export default function PartnersSection({
                 height={partner.height}
                 unoptimized
                 loading="lazy"
-                className="h-[clamp(24px,3.85vw,68px)] w-auto max-w-full object-contain opacity-70 brightness-0 invert transition-[opacity,scale,translate] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:opacity-100 motion-safe:hover:-translate-y-[3px] motion-safe:hover:scale-105 xl:h-[clamp(24px,4.15vw,68px)]"
+                className="h-[clamp(52px,4.6vw,84px)] w-full max-w-[clamp(140px,12.4vw,226px)] object-contain opacity-70 transition-[opacity,scale,translate] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:opacity-100 motion-safe:hover:-translate-y-[3px] motion-safe:hover:scale-105"
               />
             </motion.li>
           ))}

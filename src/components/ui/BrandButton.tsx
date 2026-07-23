@@ -2,12 +2,12 @@
 
 import { useRef, type MouseEvent } from "react";
 import Magnetic from "@/src/components/CustomCursor/Magnetic";
+import { BUTTON_SKIN } from "@/src/lib/button";
 
 /**
- * The site's primary button, reused verbatim from the hero Navbar CTA so the
- * Events page's calls-to-action are visually identical to the homepage:
- * brand-magenta grain-filled pill, 2px magnetic lift + 1.02 scale, glow, and a
- * slow light sweep on hover, plus the arrow that slides right.
+ * The site's primary button: the shared amber→magenta skin (see lib/button)
+ * with a 2px magnetic lift + 1.02 scale, and a slow light sweep on hover, plus
+ * the arrow that slides right.
  *
  * On top of that it adds the requested press **ripple** — an expanding, fading
  * circle spawned at the pointer, clipped to the pill by `overflow-hidden`
@@ -16,10 +16,9 @@ import Magnetic from "@/src/components/CustomCursor/Magnetic";
  */
 
 const CTA_BASE =
-  "group relative inline-flex items-center overflow-hidden rounded-full font-semibold uppercase tracking-[0.14em] outline-none transition-[translate,scale,box-shadow,background-color] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45]";
+  "group relative inline-flex items-center overflow-hidden rounded-[16px] font-semibold uppercase tracking-[0.14em] outline-none";
 
-const CTA_SKIN =
-  "grain-overlay border border-[#5D0139] bg-[#5D0139] text-white shadow-[0_8px_20px_-10px_rgba(93,1,57,0.5)] hover:bg-[#6E1B45] hover:shadow-[0_20px_44px_-12px_rgba(110,27,69,0.7)] motion-safe:hover:-translate-y-[2px] motion-safe:hover:scale-[1.02]";
+const CTA_SKIN = `grain-overlay ${BUTTON_SKIN} motion-safe:hover:-translate-y-[2px] motion-safe:hover:scale-[1.02]`;
 
 interface BrandButtonProps {
   label: string;
@@ -45,7 +44,9 @@ export default function BrandButton({
     const rect = el.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
     const ripple = document.createElement("span");
-    ripple.className = "pointer-events-none absolute rounded-full bg-white/30";
+    // `currentColor` so the ripple reads against whichever way the face has
+    // swapped — amber on the magenta hover fill, magenta on the amber rest fill.
+    ripple.className = "pointer-events-none absolute rounded-full bg-current/25";
     ripple.style.width = ripple.style.height = `${size}px`;
     ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
     ripple.style.top = `${event.clientY - rect.top - size / 2}px`;

@@ -279,7 +279,7 @@ export default function CorporateEvents({
               ))}
             </h3>
 
-            <p className="ev-desc mt-6 max-w-[32rem] text-base leading-relaxed text-neutral-400 [will-change:transform]">
+            <p className="ev-desc mt-6 max-w-[32rem] text-[20px] font-light leading-relaxed text-neutral-400 [will-change:transform]">
               {description}
             </p>
 

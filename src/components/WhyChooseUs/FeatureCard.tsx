@@ -125,7 +125,7 @@ export default function FeatureCard({
               aria-hidden={isDesktop && !accent}
               className={[
                 "mx-auto max-w-md overflow-hidden",
-                "text-[clamp(0.95rem,1.05vw,1.15rem)] font-normal leading-[1.5] text-white/90",
+                "text-[20px] font-light leading-[1.5] text-white/90",
                 "transition-all duration-500 ease-out",
                 // Mobile: always visible beneath the title.
                 "max-h-40 pt-3 opacity-100 translate-y-0",

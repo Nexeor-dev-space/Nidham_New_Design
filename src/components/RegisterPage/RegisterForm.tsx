@@ -9,6 +9,7 @@ import {
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Magnetic from "@/src/components/CustomCursor/Magnetic";
+import { BUTTON_SKIN } from "@/src/lib/button";
 import { EASE } from "@/src/lib/motion";
 import {
   DEFAULT_REGISTER_TYPE,
@@ -220,7 +221,7 @@ export default function RegisterForm() {
     const rect = el.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
     const ripple = document.createElement("span");
-    ripple.className = "pointer-events-none absolute rounded-full bg-white/30";
+    ripple.className = "pointer-events-none absolute rounded-full bg-current/25";
     ripple.style.width = ripple.style.height = `${size}px`;
     ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
     ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
@@ -274,7 +275,7 @@ export default function RegisterForm() {
             <h3 className="mt-8 font-[family-name:var(--font-cabinet)] text-2xl font-normal text-neutral-100">
               Registration received.
             </h3>
-            <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-neutral-400">
+            <p className="mt-3 max-w-sm text-[20px] font-light leading-relaxed text-neutral-400">
               Thank you for registering with Nidham. Our team will review your
               details and be in touch soon with your confirmation and next steps.
             </p>
@@ -396,7 +397,7 @@ export default function RegisterForm() {
                   onClick={spawnRipple}
                   disabled={status === "loading"}
                   data-cursor="button"
-                  className="group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-full border border-[#5D0139] bg-[#5D0139] px-9 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_8px_20px_-10px_rgba(93,1,57,0.5)] outline-none transition-[translate,scale,box-shadow,background-color] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#6E1B45] hover:shadow-[0_20px_44px_-12px_rgba(110,27,69,0.7)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45] disabled:cursor-not-allowed disabled:opacity-90 motion-safe:enabled:hover:-translate-y-[2px] motion-safe:enabled:hover:scale-[1.02] grain-overlay sm:w-auto"
+                  className={`group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-[16px] px-9 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] outline-none disabled:cursor-not-allowed disabled:opacity-90 motion-safe:enabled:hover:-translate-y-[2px] motion-safe:enabled:hover:scale-[1.02] grain-overlay sm:w-auto ${BUTTON_SKIN}`}
                 >
                   <span
                     aria-hidden="true"
@@ -408,7 +409,7 @@ export default function RegisterForm() {
                   {status === "loading" ? (
                     <span
                       aria-hidden="true"
-                      className="relative h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                      className="relative h-4 w-4 animate-spin rounded-full border-2 border-current/40 border-t-current"
                     />
                   ) : (
                     <span

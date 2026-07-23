@@ -284,7 +284,7 @@ export default function ServiceChapter({
             </h2>
 
             {/* Description — Urbanist, ~20px, generous. */}
-            <p className="chapter-desc mt-7 max-w-xl font-[family-name:var(--font-urbanist)] text-[17px] font-light leading-[1.7] text-neutral-300 will-change-[transform,opacity] sm:mt-8 sm:text-[19px] lg:text-[20px]">
+            <p className="chapter-desc mt-7 max-w-xl font-[family-name:var(--font-urbanist)] text-[20px] font-light leading-[1.7] text-neutral-300 will-change-[transform,opacity] sm:mt-8">
               {description}
             </p>
 

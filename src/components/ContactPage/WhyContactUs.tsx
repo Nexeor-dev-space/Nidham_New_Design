@@ -41,7 +41,7 @@ export default function WhyContactUs() {
               <h3 className="mt-5 font-[family-name:var(--font-cabinet)] text-[clamp(1.6rem,3vw,2.4rem)] font-normal leading-[1.05] tracking-[-0.02em] text-neutral-100 transition-colors duration-500">
                 {reason.title}
               </h3>
-              <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-neutral-400 sm:text-base">
+              <p className="mt-4 max-w-sm text-[20px] font-light leading-relaxed text-neutral-400">
                 {reason.description}
               </p>
             </div>

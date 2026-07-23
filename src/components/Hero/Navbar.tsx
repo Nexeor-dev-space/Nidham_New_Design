@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import Magnetic from "@/src/components/CustomCursor/Magnetic";
 import NavLink from "@/src/components/Nav/NavLink";
+import { BUTTON_SKIN } from "@/src/lib/button";
 import { EASE } from "@/src/lib/motion";
 import { navigateTo } from "@/src/lib/nav";
 import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
@@ -18,10 +19,10 @@ import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
  * components/Nav/NavLink), which is what keeps this from reading as a row of
  * SaaS buttons.
  *
- * Hover composes four things on one 350ms curve: a 2px lift, a 1.02 scale, a
- * brand-magenta glow, and a light sweep across the fill (see the shimmer span).
- * `overflow-hidden` clips that sweep to the pill; it does not clip the focus
- * ring, which is drawn outside the border box.
+ * Hover composes four things on one 350ms curve: a 3px lift, a 1.03 scale, a
+ * warm amber glow, and a light sweep across the fill (see the shimmer span).
+ * `overflow-hidden` clips that sweep to the rounded box; it does not clip the
+ * focus ring, which is drawn outside the border box.
  *
  * The transition names `translate` and `scale` — not `transform` — because
  * Tailwind v4 compiles the lift/scale utilities to those standalone CSS
@@ -33,10 +34,9 @@ import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
  * hovers stay ungated — they are not motion.
  */
 const CTA_BASE =
-  "group relative inline-flex items-center overflow-hidden rounded-full font-semibold uppercase tracking-[0.14em] outline-none transition-[translate,scale,box-shadow,background-color] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45]";
+  "group relative inline-flex items-center overflow-hidden rounded-[16px] font-semibold uppercase tracking-[0.14em] outline-none";
 
-const CTA_SKIN =
-  "grain-overlay border border-[#5D0139] bg-[#5D0139] text-white shadow-[0_8px_20px_-10px_rgba(93,1,57,0.5)] hover:bg-[#6E1B45] hover:shadow-[0_20px_44px_-12px_rgba(110,27,69,0.7)] motion-safe:hover:-translate-y-[2px] motion-safe:hover:scale-[1.02]";
+const CTA_SKIN = `grain-overlay ${BUTTON_SKIN} motion-safe:hover:-translate-y-[3px] motion-safe:hover:scale-[1.03]`;
 
 /**
  * Links shown in the mobile drawer. Home is added on top of the shared
@@ -257,13 +257,12 @@ export default function Navbar() {
                     </ul>
                   </nav>
 
-                  {/* Primary CTA anchored at the bottom of the sheet. */}
-                  {/* Same brand skin as the desktop CTA — it was neutral-900 on
-                      the #1F1F1F sheet, i.e. near-invisible. */}
+                  {/* Primary CTA anchored at the bottom of the sheet. Same amber
+                      skin as the desktop CTA for a single, consistent button. */}
                   <a
                     href={REGISTER_CTA.href}
                     onClick={(e) => handleNav(e, REGISTER_CTA.href)}
-                    className="group mt-auto inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-[#5D0139] bg-[#5D0139] px-6 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] text-white transition-colors duration-300 hover:bg-[#6E1B45] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45]"
+                    className={`group mt-auto inline-flex w-full items-center justify-center gap-2.5 rounded-[16px] px-6 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] outline-none ${BUTTON_SKIN}`}
                   >
                     {REGISTER_CTA.label}
                     <span

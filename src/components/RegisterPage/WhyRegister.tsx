@@ -48,7 +48,7 @@ export default function WhyRegister() {
                   {benefit.title}
                 </h3>
               </div>
-              <p className="max-w-xl text-[15px] leading-relaxed text-neutral-400 sm:text-base">
+              <p className="max-w-xl text-[20px] font-light leading-relaxed text-neutral-400">
                 {benefit.description}
               </p>
             </div>

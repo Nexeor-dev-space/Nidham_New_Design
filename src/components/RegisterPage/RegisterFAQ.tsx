@@ -77,7 +77,7 @@ export default function RegisterFAQ() {
                       transition={{ duration: reduce ? 0 : 0.4, ease: EASE }}
                       className="overflow-hidden"
                     >
-                      <p className="max-w-2xl pb-7 pr-12 text-[15px] leading-relaxed text-neutral-400 sm:text-base">
+                      <p className="max-w-2xl pb-7 pr-12 text-[20px] font-light leading-relaxed text-neutral-400">
                         {item.answer}
                       </p>
                     </motion.div>

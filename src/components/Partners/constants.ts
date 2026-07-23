@@ -1,27 +1,31 @@
 import type { Partner } from "./types";
 
 /**
- * Default partner list. These are placeholder wordmarks — swap them in
- * `public/images/partners/` for the official brand SVGs; the wall renders any
- * number of entries.
+ * Default partner list.
  *
- * `width`/`height` are each asset's viewBox extent. The wall normalises optical
- * height, which only holds when a viewBox is cropped tight to its artwork: a
- * mark sitting in a padded box renders small and off-centre, because the
- * padding scales along with it. These placeholders carried ~50% asymmetric
- * padding and were re-cropped to their artwork (viewBox only — the artwork
- * itself is untouched, so proportions are unchanged).
+ * These point at `public/images/logos/white/` — white-on-transparent PNGs
+ * generated from the raw brand assets in `public/images/logos/` by
+ * `scripts/normalize-partner-logos.mjs`. The raw assets are a mix of
+ * transparent PNGs, white-background JPEGs, a black-background JPEG and a PDF,
+ * which cannot go straight onto the dark wall; the script strips each
+ * background, flattens the artwork to white, and crops tight to the mark. Edit
+ * the asset table in that script and re-run it rather than hand-editing the
+ * PNGs — then update the sizes below to match its output.
  *
- * Adding a logo: crop its viewBox to the artwork, then record the resulting
- * size here. In a browser: document.querySelector("svg").getBBox()
+ * `width`/`height` are the generated PNG's pixel size. Every file is 200px tall
+ * by construction, so the width alone carries each mark's aspect ratio. The
+ * wall fits each logo inside a shared box (see PartnersSection), so these feed
+ * next/image purely so the browser knows the true ratio and never distorts.
  */
 export const PARTNERS: readonly Partner[] = [
-  { id: "invisible", name: "Invisible", logo: "/images/partners/invisible.svg", width: 131, height: 34 },
-  { id: "cbs", name: "CBS", logo: "/images/partners/cbs.svg", width: 118, height: 40 },
-  { id: "moma", name: "MoMA", logo: "/images/partners/moma.svg", width: 91, height: 39 },
-  { id: "guess", name: "Guess", logo: "/images/partners/guess.svg", width: 132, height: 37 },
-  { id: "seel", name: "Seel", logo: "/images/partners/seel.svg", width: 95, height: 36 },
-  { id: "nbc", name: "NBC", logo: "/images/partners/nbc.svg", width: 121, height: 39 },
-  { id: "verve", name: "Verve", logo: "/images/partners/verve.svg", width: 112, height: 35 },
-  { id: "lumen", name: "Lumen", logo: "/images/partners/lumen.svg", width: 162, height: 35 },
+  { id: "lensman", name: "Lensman", logo: "/images/logos/white/lensman.png", width: 784, height: 200 },
+  { id: "fcfilmwerks", name: "FC Filmwerks", logo: "/images/logos/white/fcfilmwerks.png", width: 232, height: 200 },
+  { id: "arn", name: "ARN", logo: "/images/logos/white/arn.png", width: 585, height: 200 },
+  { id: "hit967", name: "Hit 96.7", logo: "/images/logos/white/hit967.png", width: 239, height: 200 },
+  { id: "ubl", name: "UBL HD", logo: "/images/logos/white/ubl.png", width: 308, height: 200 },
+  { id: "crudelink", name: "Crude Link360", logo: "/images/logos/white/crudelink.png", width: 228, height: 200 },
+  { id: "mediafactory", name: "Media Factory", logo: "/images/logos/white/mediafactory.png", width: 93, height: 200 },
+  { id: "urbanaxis", name: "Urban Axis Ventures", logo: "/images/logos/white/urbanaxis.png", width: 257, height: 200 },
+  { id: "silly", name: "Silly", logo: "/images/logos/white/silly.png", width: 99, height: 200 },
+  { id: "scoops", name: "Scoops", logo: "/images/logos/white/scoops.png", width: 472, height: 200 },
 ] as const;

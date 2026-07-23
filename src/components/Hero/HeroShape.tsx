@@ -1,8 +1,13 @@
 /**
  * Decorative "coolshapes moon-13" gradient blob (from coolshapes.io), recoloured
  * to the Nidham logo palette (plum #6E1B45 / dark maroon #5C1638 / gold #C79A2E).
- * Purely ornamental — rendered aria-hidden and sized to fill its parent; the
- * parent handles positioning + the slow rotation.
+ * Purely ornamental — rendered aria-hidden and sized to fill its parent, which
+ * handles positioning.
+ *
+ * The slow rotation is self-contained here: the whole <svg> spins once every 18s
+ * on a linear loop about its own centre (default transform-origin), so the shape
+ * auto-rotates wherever it is placed — the parent no longer owns the spin. Paused
+ * under prefers-reduced-motion via `motion-reduce:animate-none`.
  */
 export default function HeroShape() {
   return (
@@ -10,7 +15,7 @@ export default function HeroShape() {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 200 200"
-      className="h-full w-full"
+      className="h-full w-full animate-[spin_18s_linear_infinite] motion-reduce:animate-none"
       aria-hidden="true"
     >
       <g clipPath="url(#cs_clip_1_moon-13)">
