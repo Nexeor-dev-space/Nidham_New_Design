@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import Magnetic from "@/src/components/CustomCursor/Magnetic";
 import NavLink from "@/src/components/Nav/NavLink";
+import { BUTTON_SKIN } from "@/src/lib/button";
 import { EASE } from "@/src/lib/motion";
 import { navigateTo } from "@/src/lib/nav";
 import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
@@ -33,10 +34,9 @@ import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
  * hovers stay ungated — they are not motion.
  */
 const CTA_BASE =
-  "group relative inline-flex items-center overflow-hidden rounded-[16px] font-semibold uppercase tracking-[0.14em] outline-none transition-[translate,scale,box-shadow,background-color] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFCE1E]";
+  "group relative inline-flex items-center overflow-hidden rounded-[16px] font-semibold uppercase tracking-[0.14em] outline-none";
 
-const CTA_SKIN =
-  "grain-overlay border border-[#FFCE1E] bg-[#FFCE1E] text-[#1F1F1F] shadow-[0_8px_20px_-10px_rgba(255,206,30,0.55)] hover:bg-[#FFD84D] hover:shadow-[0_22px_48px_-12px_rgba(255,206,30,0.85)] motion-safe:hover:-translate-y-[3px] motion-safe:hover:scale-[1.03]";
+const CTA_SKIN = `grain-overlay ${BUTTON_SKIN} motion-safe:hover:-translate-y-[3px] motion-safe:hover:scale-[1.03]`;
 
 /**
  * Links shown in the mobile drawer. Home is added on top of the shared
@@ -262,7 +262,7 @@ export default function Navbar() {
                   <a
                     href={REGISTER_CTA.href}
                     onClick={(e) => handleNav(e, REGISTER_CTA.href)}
-                    className="group mt-auto inline-flex w-full items-center justify-center gap-2.5 rounded-[16px] border border-[#FFCE1E] bg-[#FFCE1E] px-6 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] text-[#1F1F1F] transition-colors duration-300 hover:bg-[#FFD84D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFCE1E]"
+                    className={`group mt-auto inline-flex w-full items-center justify-center gap-2.5 rounded-[16px] px-6 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] outline-none ${BUTTON_SKIN}`}
                   >
                     {REGISTER_CTA.label}
                     <span

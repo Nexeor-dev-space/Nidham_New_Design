@@ -9,8 +9,7 @@ export const CREATIVE_VISION_TITLE: string[] = [
   "engage, and leave a lasting impression.",
 ];
 
-/** Existing repo asset — swap for the Figma export when available. */
-export const CREATIVE_VISION_IMAGE = "/images/banner-bg.jpg";
+export const CREATIVE_VISION_IMAGE = "/images/middle-banner.jpg";
 
 export const CREATIVE_VISION_IMAGE_ALT =
-  "Abstract macro texture in blues, purples and magenta.";
+  "Sweeping ribbons of amber, magenta and blue light against black.";

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, type RefObject } from "react";
+import { type RefObject } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,9 +35,14 @@ export interface AboutScrollRefs {
  * is transform/opacity + a paint-only border-radius — no layout thrash. The
  * whole effect is desktop-only and skipped under reduced motion; on smaller
  * screens the section simply keeps its clean entrance.
+ *
+ * Runs as a LAYOUT effect for the same load-bearing reason as useHeroScroll:
+ * the pin re-parents this section into a GSAP `pin-spacer`, so `ctx.revert()`
+ * must restore it before React detaches the subtree or the unmount throws
+ * NotFoundError. See useIsomorphicLayoutEffect.
  */
 export function useAboutScroll({ section, frame, image, text }: AboutScrollRefs) {
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const sec = section.current;
     const fr = frame.current;
     const im = image.current;

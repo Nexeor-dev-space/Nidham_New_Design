@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, type RefObject } from "react";
+import { type RefObject } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -85,6 +86,14 @@ export interface HeroScrollRefs {
  * Responsive: desktop runs the full distances, tablet ~65% of them, and mobile
  * opts out of the pin entirely for plain native scrolling — as does anyone with
  * prefers-reduced-motion.
+ *
+ * This runs as a LAYOUT effect, and that is load-bearing rather than a
+ * preference: `pin: true` re-parents this section into a GSAP `pin-spacer` div
+ * behind React's back, so `ctx.revert()` has to put it back before React
+ * detaches the subtree. Passive (`useEffect`) cleanups run after the mutation
+ * phase, which is too late — React removes the node first and throws
+ * NotFoundError on every client-side navigation away from this page. See
+ * useIsomorphicLayoutEffect for the full mechanism.
  */
 export function useHeroScroll({
   section,
@@ -96,7 +105,7 @@ export function useHeroScroll({
   decor,
   scrim,
 }: HeroScrollRefs) {
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const sectionEl = section.current;
     const stageEl = stage.current;
     if (!sectionEl || !stageEl) return;

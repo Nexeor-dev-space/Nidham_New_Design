@@ -16,6 +16,7 @@ import {
 } from "./constants";
 import type { FooterLink, FooterProps } from "./types";
 import { GSAP_EASE, ST_START } from "@/src/lib/motion";
+import { BUTTON_SKIN } from "@/src/lib/button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -243,12 +244,8 @@ export default function Footer({
                 <Link
                   href={cta.href}
                   data-cursor="button"
-                  className="group/cta relative inline-flex w-full items-center justify-center gap-3 overflow-hidden border border-white/20 px-8 py-4 text-[16px] text-[#C9BCC3] transition-[transform,color,border-color,box-shadow] duration-300 ease-out hover:-translate-y-0.5 hover:border-transparent hover:text-white hover:shadow-[0_20px_45px_-18px_rgba(107,100,121,0.95)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#3B2A3A] sm:w-auto"
+                  className={`group/cta relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-[16px] px-8 py-4 text-[16px] outline-none motion-safe:hover:-translate-y-0.5 sm:w-auto ${BUTTON_SKIN}`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-r from-[#6b6479] to-[#4a4457] opacity-0 transition-opacity duration-300 ease-out group-hover/cta:opacity-100"
-                  />
                   <span className="relative z-10">{cta.label}</span>
                   <PhoneIcon className="relative z-10 h-5 w-5 transition-transform duration-300 ease-out group-hover/cta:translate-x-0.5" />
                 </Link>
