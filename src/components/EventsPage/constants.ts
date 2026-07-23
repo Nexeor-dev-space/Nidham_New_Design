@@ -31,10 +31,6 @@ export const EVENTS_HEADLINE_LINES = [
 export const EVENTS_INTRO =
   "From intimate boardroom summits to stadium-scale festivals, Nidham Consultancy conceives, produces and delivers events that move audiences and elevate brands — across the UAE and beyond.";
 
-/** Cinematic looping background for the hero (with an image poster). */
-export const EVENTS_HERO_VIDEO = "/video/event-card-bg.mp4";
-export const EVENTS_HERO_POSTER = "/images/event-card-bg.jpg";
-
 /* --------------------------------------------- Portfolio (redesigned page) --- */
 
 /**

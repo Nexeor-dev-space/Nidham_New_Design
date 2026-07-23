@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { PARTNERS } from "./constants";
 import type { Partner } from "./types";
+import SectionDivider from "@/src/components/ui/SectionDivider";
 import { SECTION_HEADING, SECTION_HEADING_GAP } from "@/src/lib/typography";
 import { EASE, VIEWPORT } from "@/src/lib/motion";
 
@@ -92,15 +93,7 @@ export default function PartnersSection({
       />
 
       <div className="container-page relative">
-        <motion.p
-          variants={fade(0)}
-          initial="hidden"
-          whileInView="show"
-          viewport={VIEWPORT}
-          className="text-center text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-400"
-        >
-          ( {label} )
-        </motion.p>
+        <SectionDivider label={label} />
 
         <motion.h2
           id="partners-heading"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { lockScroll, unlockScroll } from "@/src/lib/smoothScroll";
 
 interface VideoModalProps {
   open: boolean;
@@ -28,13 +29,13 @@ export default function VideoModal({ open, onClose, videoUrl, title }: VideoModa
     };
     document.addEventListener("keydown", onKey);
 
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    // Pauses Lenis too, so the page doesn't glide behind the open modal.
+    lockScroll();
     closeRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
+      unlockScroll();
       prevFocus.current?.focus?.();
     };
   }, [open, onClose]);

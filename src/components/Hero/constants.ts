@@ -48,7 +48,7 @@ export const ANNOUNCEMENT = {
  * Target datetime the announcement-bar countdown ticks down to (ISO 8601).
  * Update this to the real event date/time.
  */
-export const EVENT_DATE = "2026-07-25T00:13:00Z";
+export const EVENT_DATE = "2026-08-03T00:13:00Z";
 
 /**
  * Hero carousel slides. Swap the `src` values for the final artwork; keep

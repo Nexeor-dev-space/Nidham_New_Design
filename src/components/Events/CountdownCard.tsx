@@ -45,7 +45,7 @@ export default function CountdownCard({
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#2A2A2A] p-5 shadow-[0_30px_80px_-28px_rgba(58,42,58,0.6)] ring-1 ring-black/[0.04] sm:p-6 lg:p-7"
+      className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/45 p-5 shadow-[0_30px_80px_-28px_rgba(0,0,0,0.7)] ring-1 ring-black/[0.04] backdrop-blur-md sm:p-6 lg:p-7"
       aria-label={
         done
           ? `${title}: registration closed`
@@ -59,7 +59,7 @@ export default function CountdownCard({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-2/3 bg-gradient-to-b from-white/55 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-2/3 bg-gradient-to-b from-white/10 to-transparent"
       />
       {/* Slow, subtle moving reflection. */}
       {!reduce && (

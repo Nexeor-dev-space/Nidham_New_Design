@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import InfoCard from "./InfoCard";
 import CountdownCard from "./CountdownCard";
 import EventButton from "./EventButton";
+import SectionDivider from "@/src/components/ui/SectionDivider";
 import {
   EVENTS_ATTENDEES_TEXT,
   EVENTS_COUNTDOWN_LINK_TEXT,
@@ -107,18 +108,14 @@ export default function CorporateEvents({
             scrollTrigger: { trigger: section, start: ST_START, once: true },
           });
 
+          // The header divider runs its own self-contained reveal (see
+          // SectionDivider); this timeline opens on the title.
           tl.fromTo(
-            q(".ev-eyebrow"),
-            { autoAlpha: 0, y: 14, filter: "blur(8px)" },
-            { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.7 },
-            0,
+            q(".ev-title-line"),
+            { yPercent: 115 },
+            { yPercent: 0, duration: 0.9 },
+            0.05,
           )
-            .fromTo(
-              q(".ev-title-line"),
-              { yPercent: 115 },
-              { yPercent: 0, duration: 0.9 },
-              0.05,
-            )
             // Image mask reveal + settle — simultaneous with the header.
             .fromTo(
               maskRef.current,
@@ -232,16 +229,7 @@ export default function CorporateEvents({
       className="w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
-        {/* Header: divider with centred label. */}
-        <div className="relative flex items-center justify-center">
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-white/10"
-          />
-          <span className="ev-eyebrow relative bg-[#1F1F1F] px-6 text-xs font-medium uppercase tracking-[0.25em] text-neutral-400 [will-change:transform,filter]">
-            (&nbsp;{sectionLabel}&nbsp;)
-          </span>
-        </div>
+        <SectionDivider label={sectionLabel} />
 
         <h2
           id="corporate-events-title"

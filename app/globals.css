@@ -24,6 +24,30 @@
   --surface: #2A2A2A;
 }
 
+/*
+  Lenis smooth scrolling (see components/SmoothScroll). These classes are added
+  to <html> by Lenis at runtime; the rules are required for correct behaviour
+  and are inert until then, so reduced-motion users (where Lenis never starts)
+  are unaffected.
+
+  `scroll-behavior: auto` is the important one: a CSS `scroll-behavior: smooth`
+  would fight Lenis for the same scroll and double-animate anchor jumps.
+*/
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+/* Opt a scrollable inner region out of Lenis, e.g. a modal's own scroller. */
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

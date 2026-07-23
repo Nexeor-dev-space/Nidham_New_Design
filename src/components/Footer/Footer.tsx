@@ -211,7 +211,7 @@ export default function Footer({
       ref={rootRef}
       id="contact"
       data-particles="footer"
-      className="w-full bg-[#3B2A3A] text-[#A99AA1]"
+      className="w-full bg-[#321a2d] text-[#A99AA1]"
     >
       <div className="container-page py-16 sm:py-20 lg:py-24">
         {/* Top — three columns */}

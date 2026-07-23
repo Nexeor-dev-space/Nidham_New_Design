@@ -20,19 +20,20 @@ interface ServiceChapterProps {
 /**
  * One full-height "chapter" in the editorial services story — no card, no box,
  * no grid. A composition of a large ghosted section number, a massive Cabinet
- * title, verbatim Urbanist body copy, a minimal "Explore →" text link, and a
- * single cinematic visual that bleeds slightly past its container with rounded
- * corners, a soft floating drift and a slow Ken Burns zoom.
+ * title, verbatim Urbanist body copy, and a single cinematic visual that bleeds
+ * slightly past its container with rounded corners, a soft floating drift and a
+ * slow Ken Burns zoom. The visual itself is the affordance — clicking it
+ * smooth-scrolls to the footer contact block (see `onOpen`).
  *
  * Layout alternates by index — even chapters put the text left / media right,
  * odd chapters flip it — so no two blocks repeat. On mobile it collapses to one
- * column with the media first, then title, description and Explore link.
+ * column with the media first, then title and description.
  *
  * Motion is entirely scroll-driven (GSAP + ScrollTrigger, GPU transforms +
  * opacity + clip-path only) — it never relies on hover to reveal content:
  *  - As the chapter enters: the media clip-reveals + settles 1.06 → 1.0, the
  *    number fades in, the title reveals upward (masked), then the description
- *    fades, then the Explore link slides in — all staggered on the signature ease.
+ *    fades — all staggered on the signature ease.
  *  - A scrubbed parallax drifts the media slower than the page (no hard cut).
  *  - A gentle leave-scrub fades + lifts the previous chapter as the next rises.
  * Everything is skipped under prefers-reduced-motion (content stays visible).
@@ -78,7 +79,6 @@ export default function ServiceChapter({
           const numberEl = q(".chapter-number");
           const titleInner = q(".chapter-title-inner");
           const descEl = q(".chapter-desc");
-          const ctaEl = q(".chapter-cta");
           const mediaEl = q(".chapter-media");
           const parallaxEl = q(".chapter-parallax");
           const dividerEl = q(".chapter-divider");
@@ -140,14 +140,6 @@ export default function ServiceChapter({
             { autoAlpha: 0, y: 24 * factor },
             { autoAlpha: 1, y: 0, duration: 0.8 },
             0.42,
-          );
-
-          // Explore link — slides in last.
-          tl.fromTo(
-            ctaEl,
-            { autoAlpha: 0, x: -18 * factor },
-            { autoAlpha: 1, x: 0, duration: 0.7 },
-            0.58,
           );
 
           // ----- Media parallax (scrub) ------------------------------------
@@ -231,7 +223,7 @@ export default function ServiceChapter({
               onClick={onOpen}
               data-cursor="image"
               aria-label={`${title} — explore`}
-              className="chapter-media group/media relative block aspect-[4/5] w-full overflow-hidden rounded-[26px] shadow-[0_40px_90px_-40px_rgba(0,0,0,0.85)] outline-none transition-shadow duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform hover:shadow-[0_55px_120px_-38px_rgba(0,0,0,0.9)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#A6386B] sm:aspect-[3/4] lg:aspect-[4/5]"
+              className="chapter-media group/media relative block aspect-[5/4] w-full overflow-hidden rounded-[26px] shadow-[0_40px_90px_-40px_rgba(0,0,0,0.85)] outline-none transition-shadow duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform hover:shadow-[0_55px_120px_-38px_rgba(0,0,0,0.9)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#A6386B] sm:aspect-[4/3] lg:aspect-[4/3]"
             >
               {/* Floating drift wraps the parallax wrapper wraps the Ken Burns
                   image — three independent, layered motions. */}
@@ -268,7 +260,7 @@ export default function ServiceChapter({
             {/* Large ghosted section number. */}
             <p
               aria-hidden="true"
-              className="chapter-number font-[family-name:var(--font-cabinet)] text-[clamp(3.5rem,8vw,7rem)] font-normal leading-none tracking-[-0.03em] text-transparent [-webkit-text-stroke:1px_rgba(166,56,107,0.55)] will-change-[transform,opacity,filter]"
+              className="chapter-number font-[family-name:var(--font-cabinet)] text-[clamp(3.5rem,8vw,7rem)] font-normal leading-none tracking-[-0.03em] text-transparent [-webkit-text-stroke:1px_rgba(248,216,61,0.55)] will-change-[transform,opacity,filter]"
             >
               {ordinal}
             </p>
@@ -293,34 +285,6 @@ export default function ServiceChapter({
                 {note}
               </p>
             )}
-
-            {/* Explore — a minimal text link (not a button). On hover the arrow
-                slides, the underline grows from the left, the text shifts 6px
-                and the whole link brightens. */}
-            <a
-              href="#contact"
-              onClick={onOpen}
-              data-cursor="link"
-              aria-label={`${title} — explore`}
-              className="chapter-cta group/cta relative mt-9 inline-flex items-center gap-3 font-[family-name:var(--font-urbanist)] text-sm font-medium uppercase tracking-[0.18em] text-neutral-400 outline-none transition-colors duration-500 will-change-[transform,opacity] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-[#A6386B] sm:mt-11"
-            >
-              <span className="relative inline-flex items-center gap-2.5 pb-1.5">
-                <span className="inline-block transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover/cta:translate-x-[6px]">
-                  Explore
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="text-base leading-none text-[#A6386B] transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover/cta:translate-x-[10px]"
-                >
-                  &rarr;
-                </span>
-                {/* Underline that grows in from the left. */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[linear-gradient(90deg,#6E1B45_0%,#A6386B_100%)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/cta:scale-x-100 group-focus-visible/cta:scale-x-100"
-                />
-              </span>
-            </a>
           </div>
         </div>
       </div>

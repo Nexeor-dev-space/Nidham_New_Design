@@ -6,7 +6,8 @@ import FeatureCard from "./FeatureCard";
 import { useIsDesktop } from "./useIsDesktop";
 import { WHY_CHOOSE_US_FEATURES, WHY_CHOOSE_US_TITLE } from "./constants";
 import type { WhyChooseUsProps } from "./types";
-import { SECTION_HEADING } from "@/src/lib/typography";
+import SectionDivider from "@/src/components/ui/SectionDivider";
+import { SECTION_HEADING, SECTION_HEADING_GAP } from "@/src/lib/typography";
 import { EASE, VIEWPORT } from "@/src/lib/motion";
 
 export default function WhyChooseUs({
@@ -37,6 +38,8 @@ export default function WhyChooseUs({
       className="w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
+        <SectionDivider label={title} />
+
         {/* Heading — unified section-heading system. */}
         <motion.h2
           id="why-choose-us-heading"
@@ -44,7 +47,7 @@ export default function WhyChooseUs({
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className={SECTION_HEADING}
+          className={`${SECTION_HEADING_GAP} ${SECTION_HEADING}`}
         >
           {title}
         </motion.h2>
