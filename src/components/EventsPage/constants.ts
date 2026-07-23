@@ -39,9 +39,6 @@ export const EVENTS_INTRO =
  */
 export const EVENT_FILTERS = [
   "All",
-  "Corporate",
-  "Entertainment",
-  "Celebrity",
   "Luxury",
   "Sports",
   "Exhibitions",
@@ -54,43 +51,6 @@ export const EVENT_FILTERS = [
  * assets (optimised via next/image); one item carries a looping video.
  */
 export const PORTFOLIO_EVENTS: readonly PortfolioEvent[] = [
-  {
-    id: "corporate-leadership-summit",
-    category: "Corporate",
-    title: "Corporate Leadership Summit",
-    location: "Madinat Jumeirah, Dubai",
-    year: "2025",
-    description:
-      "A two-day executive summit staged as an immersive theatre of ideas — keynotes, live panels and a networking lounge engineered for serendipity.",
-    image: "/images/why-choose-us/execution.jpg",
-    imageAlt: "Executives on stage during a corporate leadership summit",
-    span: "regular",
-  },
-  {
-    id: "music-concert",
-    category: "Entertainment",
-    title: "Music Concert",
-    location: "Etihad Arena, Abu Dhabi",
-    year: "2025",
-    description:
-      "Headline artists, full production design and arena-scale logistics — a night of sound and light delivered end to end.",
-    image: "/images/hero/banner-1.jpg",
-    imageAlt: "Vocalist performing with a live band at a concert",
-    span: "regular",
-    video: "/video/hero-video-2.mp4",
-  },
-  {
-    id: "celebrity-meet-greet",
-    category: "Celebrity",
-    title: "Celebrity Meet & Greet",
-    location: "Mall of the Emirates, Dubai",
-    year: "2024",
-    description:
-      "A managed fan experience with talent booking, security choreography and press access run to the minute.",
-    image: "/images/why-choose-us/talent.jpg",
-    imageAlt: "Artist greeting fans at a celebrity meet and greet",
-    span: "regular",
-  },
   {
     id: "luxury-brand-launch",
     category: "Luxury",

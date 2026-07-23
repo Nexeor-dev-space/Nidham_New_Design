@@ -51,8 +51,8 @@ export const EVENTS_GALLERY: EventCardItem[] = [
     category: "Entertainment",
     tag: "Hit Melody Dreamz",
     description: MELODY_DESCRIPTION,
-    image: "/images/event-card-bg.jpg",
-    imageAlt: "Abstract macro texture in blues, purples and magenta.",
+    image: "/images/y-1.jpg",
+    imageAlt: "Streaks of rainbow light fanning across a dark stage.",
     videoUrl: "https://www.youtube.com/embed/aqz-KE-bpKQ",
   },
   {
@@ -60,8 +60,8 @@ export const EVENTS_GALLERY: EventCardItem[] = [
     category: "Entertainment",
     tag: "Hit Melody Dreamz",
     description: MELODY_DESCRIPTION,
-    image: "/images/event-card-bg.jpg",
-    imageAlt: "Abstract macro texture in blues, purples and magenta.",
+    image: "/images/y-2.jpg",
+    imageAlt: "Ribbons of amber, magenta and blue light against black.",
     videoUrl: "https://www.youtube.com/embed/aqz-KE-bpKQ",
   },
 ];

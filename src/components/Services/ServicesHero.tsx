@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import AnnouncementBar from "@/src/components/Hero/AnnouncementBar";
 import Navbar from "@/src/components/Hero/Navbar";
+import HeroShape from "@/src/components/Hero/HeroShape";
 import { HERO_HEADING } from "@/src/lib/typography";
 import { EASE } from "@/src/lib/motion";
 import {
@@ -85,13 +86,15 @@ export default function ServicesHero() {
         <div id="hero-nav-sentinel" aria-hidden="true" className="h-0 w-full" />
       </div>
 
-      {/* Copy — a centred editorial title page. The headline dominates; the
-          intro is a small, restrained supporting line offset to the right. */}
+      {/* Copy — a balanced two-column composition: the headline holds the left,
+          the supporting block (decorative shape + intro) sits to its right and
+          bottom-aligns with it, so both read as one unit within the first
+          viewport. Stacks to a single column below lg. */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="container-page relative z-20 flex flex-1 flex-col justify-center pb-32 pt-16 sm:pt-20 lg:pb-40"
+        className="container-page relative z-20 flex flex-1 flex-col justify-center py-24 pt-20 sm:py-28"
       >
         <motion.p
           variants={item}
@@ -101,24 +104,39 @@ export default function ServicesHero() {
           {SERVICES_EYEBROW}
         </motion.p>
 
-        <motion.h1 variants={container} className={`mt-8 ${HERO_HEADING}`}>
-          {SERVICES_HEADLINE_LINES.map((line) => (
-            <span key={line} className="block overflow-hidden pb-[0.12em]">
-              <motion.span variants={word} className="block will-change-transform">
-                {line}
-              </motion.span>
-            </span>
-          ))}
-        </motion.h1>
+        <div className="mt-8 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+          <motion.h1
+            variants={container}
+            className={`lg:min-w-0 lg:flex-1 ${HERO_HEADING}`}
+          >
+            {SERVICES_HEADLINE_LINES.map((line) => (
+              <span key={line} className="block overflow-hidden pb-[0.12em]">
+                <motion.span variants={word} className="block will-change-transform">
+                  {line}
+                </motion.span>
+              </span>
+            ))}
+          </motion.h1>
 
-        {/* Small supporting copy — restrained, muted, set to the right on
-            desktop so the title keeps the stage. Wording is verbatim. */}
-        <motion.p
-          variants={item}
-          className="mt-12 max-w-md self-start font-[family-name:var(--font-urbanist)] text-[15px] font-light leading-[1.7] text-neutral-400 sm:text-base lg:mt-14 lg:ml-auto lg:self-end lg:text-right"
-        >
-          {SERVICES_INTRO}
-        </motion.p>
+          {/* Right column — decorative shape above the intro, both aligned right
+              on desktop / left on mobile, bottom-aligned to the headline. */}
+          <div className="flex flex-col items-start gap-6 lg:w-[19rem] lg:shrink-0 lg:items-end lg:text-right lg:pb-2 xl:w-[23rem]">
+            <motion.div
+              variants={item}
+              aria-hidden="true"
+              className="pointer-events-none h-20 w-20 sm:h-24 sm:w-24 lg:h-24 lg:w-24"
+            >
+              <HeroShape />
+            </motion.div>
+
+            <motion.p
+              variants={item}
+              className="font-[family-name:var(--font-urbanist)] text-[18px] font-light leading-[1.7] text-neutral-400"
+            >
+              {SERVICES_INTRO}
+            </motion.p>
+          </div>
+        </div>
       </motion.div>
 
       {/* Minimal editorial scroll cue — a thin line that fills downward, with a

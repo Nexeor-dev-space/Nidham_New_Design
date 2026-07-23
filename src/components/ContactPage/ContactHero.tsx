@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import AnnouncementBar from "@/src/components/Hero/AnnouncementBar";
 import Navbar from "@/src/components/Hero/Navbar";
+import HeroShape from "@/src/components/Hero/HeroShape";
 import BrandButton from "@/src/components/ui/BrandButton";
 import { HERO_HEADING } from "@/src/lib/typography";
 import { EASE } from "@/src/lib/motion";
@@ -87,7 +88,7 @@ export default function ContactHero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="container-page relative z-20 flex flex-1 flex-col justify-center pb-28 pt-16 sm:pt-20 lg:pb-32"
+        className="container-page relative z-20 flex flex-1 flex-col justify-center py-24 pt-20 sm:py-28"
       >
         <motion.p
           variants={item}
@@ -96,33 +97,50 @@ export default function ContactHero() {
           {CONTACT_EYEBROW}
         </motion.p>
 
-        <motion.h1 variants={container} className={`mt-6 ${HERO_HEADING}`}>
-          {CONTACT_HEADLINE_LINES.map((line) => (
-            <span key={line} className="block overflow-hidden pb-[0.12em]">
-              <motion.span variants={word} className="block will-change-transform">
-                {line}
-              </motion.span>
-            </span>
-          ))}
-        </motion.h1>
+        {/* Balanced two-column composition: the headline holds the left, the
+            supporting block (shape + description + CTA) sits to its right and
+            bottom-aligns with it, so the whole hero reads within the first
+            viewport. Stacks to a single column below lg. */}
+        <div className="mt-6 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+          <motion.h1
+            variants={container}
+            className={`lg:min-w-0 lg:flex-1 ${HERO_HEADING}`}
+          >
+            {CONTACT_HEADLINE_LINES.map((line) => (
+              <span key={line} className="block overflow-hidden pb-[0.12em]">
+                <motion.span variants={word} className="block will-change-transform">
+                  {line}
+                </motion.span>
+              </span>
+            ))}
+          </motion.h1>
 
-        <motion.div
-          variants={item}
-          className="mt-10 flex flex-col gap-8 lg:mt-12 lg:flex-row lg:items-end lg:justify-between lg:gap-12"
-        >
-          <p className="max-w-2xl text-[20px] font-light leading-[1.65] text-neutral-300">
-            {CONTACT_INTRO}
-          </p>
-          <div className="shrink-0">
-            <BrandButton
-              label="Start Your Project"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId(FORM_TARGET_ID, reduce);
-              }}
-            />
-          </div>
-        </motion.div>
+          {/* Right column — shape above the description, with the primary action
+              beneath. Aligned right on desktop / left on mobile. */}
+          <motion.div
+            variants={item}
+            className="flex flex-col items-start gap-8 lg:w-[17rem] lg:shrink-0 lg:items-end lg:pb-2 lg:text-right xl:w-[24rem]"
+          >
+            <div
+              aria-hidden="true"
+              className="pointer-events-none h-20 w-20 sm:h-24 sm:w-24 lg:h-24 lg:w-24"
+            >
+              <HeroShape />
+            </div>
+            <p className="text-[18px] font-light leading-[1.65] text-neutral-300">
+              {CONTACT_INTRO}
+            </p>
+            <div className="shrink-0">
+              <BrandButton
+                label="Start Your Project"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToId(FORM_TARGET_ID, reduce);
+                }}
+              />
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
 
       {/* Smooth scroll indicator. */}

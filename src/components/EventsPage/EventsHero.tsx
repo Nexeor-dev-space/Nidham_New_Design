@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import AnnouncementBar from "@/src/components/Hero/AnnouncementBar";
 import Navbar from "@/src/components/Hero/Navbar";
+import HeroShape from "@/src/components/Hero/HeroShape";
 import { HERO_HEADING } from "@/src/lib/typography";
 import { EASE } from "@/src/lib/motion";
 import {
@@ -16,8 +17,9 @@ import {
  * Its background is the same animated gradient aurora as the Services hero
  * (shared `.svc-aurora*` primitives), so the two title pages read as one system,
  * seated under a vignette so the light nav + copy stay legible.
- * A huge masked headline anchors the bottom-left, with only a small supporting
- * paragraph and a quiet scroll indicator. Ambient dust comes from the global
+ * A huge masked headline holds the left; a small supporting block (decorative
+ * shape + paragraph) sits to its right and bottom-aligns with it, so the whole
+ * hero reads within the first viewport. Ambient dust comes from the global
  * ParticleField via `data-particles="hero"`; the nav chrome + `#hero-nav-sentinel`
  * keep the global FloatingNav handoff working. All copy is verbatim.
  */
@@ -81,12 +83,16 @@ export default function EventsHero() {
         <div id="hero-nav-sentinel" aria-hidden="true" className="h-0 w-full" />
       </div>
 
-      {/* Copy — bottom-anchored editorial composition; headline dominates. */}
+      {/* Copy — a balanced two-column composition: the headline holds the left,
+          the supporting block (decorative shape + description) sits to its right
+          and bottom-aligns with it, so both read as one unit within the first
+          viewport (no bottom-anchoring pushing the copy below the fold). Stacks
+          to a single column below lg. */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="container-page relative z-20 flex flex-1 flex-col justify-end pb-28 pt-16 sm:pb-32 lg:pb-36"
+        className="container-page relative z-20 flex flex-1 flex-col justify-center py-24 pt-20 sm:py-28"
       >
         <motion.p
           variants={item}
@@ -96,22 +102,39 @@ export default function EventsHero() {
           {EVENTS_EYEBROW}
         </motion.p>
 
-        <motion.h1 variants={container} className={`mt-7 ${HERO_HEADING}`}>
-          {EVENTS_HEADLINE_LINES.map((line) => (
-            <span key={line} className="block overflow-hidden pb-[0.12em]">
-              <motion.span variants={word} className="block will-change-transform">
-                {line}
-              </motion.span>
-            </span>
-          ))}
-        </motion.h1>
+        <div className="mt-7 flex flex-col gap-10 lg:mt-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+          <motion.h1
+            variants={container}
+            className={`lg:min-w-0 lg:flex-1 ${HERO_HEADING}`}
+          >
+            {EVENTS_HEADLINE_LINES.map((line) => (
+              <span key={line} className="block overflow-hidden pb-[0.12em]">
+                <motion.span variants={word} className="block will-change-transform">
+                  {line}
+                </motion.span>
+              </span>
+            ))}
+          </motion.h1>
 
-        <motion.p
-          variants={item}
-          className="mt-10 max-w-md font-[family-name:var(--font-urbanist)] text-[15px] font-light leading-[1.7] text-neutral-300 sm:text-base lg:ml-auto lg:text-right"
-        >
-          {EVENTS_INTRO}
-        </motion.p>
+          {/* Right column — decorative shape above the description, both aligned
+              right on desktop / left on mobile, bottom-aligned to the headline. */}
+          <div className="flex flex-col items-start gap-6 lg:w-[17rem] lg:shrink-0 lg:items-end lg:text-right lg:pb-2 xl:w-[22rem]">
+            <motion.div
+              variants={item}
+              aria-hidden="true"
+              className="pointer-events-none h-20 w-20 sm:h-24 sm:w-24 lg:h-24 lg:w-24"
+            >
+              <HeroShape />
+            </motion.div>
+
+            <motion.p
+              variants={item}
+              className="font-[family-name:var(--font-urbanist)] text-[18px] font-light leading-[1.7] text-neutral-300"
+            >
+              {EVENTS_INTRO}
+            </motion.p>
+          </div>
+        </div>
       </motion.div>
 
       {/* Quiet scroll indicator — a pill with a falling dot. */}
