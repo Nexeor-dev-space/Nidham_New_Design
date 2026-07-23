@@ -42,7 +42,7 @@ export const ABOUT_STATS: readonly AboutStat[] = [
   { value: null, display: "Global", label: "USA • UAE • India" },
 ] as const;
 
-export const ABOUT_BUTTON_TEXT = "Discover Our Story";
+export const ABOUT_BUTTON_TEXT = "Explore Our Services";
 
 export const ABOUT_BUTTON_LINK = "/services";
 
@@ -52,6 +52,6 @@ export const ABOUT_BUTTON_LINK = "/services";
  * must not compete with the hero video for bandwidth on first paint.
  */
 export const ABOUT_MEDIA: AboutMedia = {
-  src: "/video/youtub-bg-3.mp4",
-  alt: "Showreel of Nidham Consultancy events",
+  src: "/video/dubai-event-banner-1.mp4",
+  alt: "Fireworks over the Dubai skyline at a Nidham event",
 };

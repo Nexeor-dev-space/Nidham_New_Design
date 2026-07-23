@@ -8,15 +8,14 @@ import { EASE } from "@/src/lib/motion";
 import {
   EVENTS_EYEBROW,
   EVENTS_HEADLINE_LINES,
-  EVENTS_HERO_POSTER,
-  EVENTS_HERO_VIDEO,
   EVENTS_INTRO,
 } from "./constants";
 
 /**
  * Cinematic Events hero — a minimal, editorial title page for the portfolio.
- * Its animated background is a looping event video (its point of difference from
- * the Services hero's animated gradient), darkened so the light nav + copy read.
+ * Its background is the same animated gradient aurora as the Services hero
+ * (shared `.svc-aurora*` primitives), so the two title pages read as one system,
+ * seated under a vignette so the light nav + copy stay legible.
  * A huge masked headline anchors the bottom-left, with only a small supporting
  * paragraph and a quiet scroll indicator. Ambient dust comes from the global
  * ParticleField via `data-particles="hero"`; the nav chrome + `#hero-nav-sentinel`
@@ -44,34 +43,35 @@ export default function EventsHero() {
       data-particles="hero"
       className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#141414] text-neutral-100"
     >
-      {/* Layer 0 — cinematic looping video backdrop + darkening scrims. */}
-      <div aria-hidden="true" className="absolute inset-0 z-0 overflow-hidden">
-        <video
-          className="h-full w-full object-cover"
-          src={EVENTS_HERO_VIDEO}
-          poster={EVENTS_HERO_POSTER}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
+      {/* Layer 0 — animated gradient aurora, shared with the Services hero via
+          the `.svc-aurora*` primitives (see globals.css): large, soft,
+          overlapping washes slowly drifting on a near-black base so the surface
+          is always alive, never flat. Paused under reduced motion. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(130%_100%_at_50%_-10%,#241019_0%,#141414_55%,#0E0E0E_100%)]" />
+        <div
+          className={`svc-aurora svc-aurora-a left-[-14%] top-[-12%] h-[46rem] w-[46rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/90" />
-        <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,transparent_45%,rgba(0,0,0,0.55)_100%)]" />
-        {/* A single soft brand glow so the surface is never flat. */}
-        {!reduce && (
-          <motion.div
-            className="absolute -left-24 top-1/3 h-[30rem] w-[30rem] rounded-full bg-[#6E1B45]/[0.18] blur-3xl"
-            animate={{ y: [0, -26, 0], opacity: [0.4, 0.7, 0.4] }}
-            transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
-          />
-        )}
+        <div
+          className={`svc-aurora svc-aurora-b right-[-16%] top-[6%] h-[42rem] w-[42rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        <div
+          className={`svc-aurora svc-aurora-c bottom-[-18%] left-[28%] h-[40rem] w-[40rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        {/* Gentle vignette to seat the copy. */}
+        <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_40%,transparent_50%,rgba(0,0,0,0.55)_100%)]" />
       </div>
 
-      {/* Very subtle grain. */}
+      {/* Very subtle film grain over the empty areas. */}
       <div
         aria-hidden="true"
-        className="hero-grain pointer-events-none absolute inset-0 z-0 opacity-[0.05] mix-blend-soft-light"
+        className="hero-grain pointer-events-none absolute inset-0 z-0 opacity-[0.04] mix-blend-soft-light"
       />
 
       {/* Navigation block — shared site chrome, incl. FloatingNav handoff. */}

@@ -17,10 +17,10 @@ import {
 /**
  * Contact hero — the same chrome and motion language as the homepage hero
  * (AnnouncementBar + Navbar + `#hero-nav-sentinel` handoff, dark surface, signature
- * `EASE`, masked per-line headline cascade), on a dark cinematic backdrop with
- * soft purple + champagne gradients, faint grain, and the global ParticleField
- * dust (`data-particles="hero"`). Lots of whitespace; a clear primary action
- * that glides to the form; a smooth scroll indicator.
+ * `EASE`, masked per-line headline cascade), on the same animated gradient aurora
+ * as the Services and Events heroes (shared `.svc-aurora*` primitives), faint
+ * grain, and the global ParticleField dust (`data-particles="hero"`). Lots of
+ * whitespace; a clear primary action that glides to the form; a scroll indicator.
  */
 export default function ContactHero() {
   const reduce = useReducedMotion() ?? false;
@@ -42,28 +42,32 @@ export default function ContactHero() {
     <header
       id="contact-top"
       data-particles="hero"
-      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#1F1F1F] text-neutral-100"
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#141414] text-neutral-100"
     >
-      {/* Soft animated gradients — purple + warm champagne, plus a low glow. */}
-      {!reduce && (
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
-          <motion.div
-            className="absolute -left-24 top-24 h-[28rem] w-[28rem] rounded-full bg-[#6E1B45]/[0.10] blur-3xl"
-            animate={{ y: [0, -26, 0], x: [0, 12, 0], opacity: [0.45, 0.8, 0.45] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute -right-28 top-56 h-[30rem] w-[30rem] rounded-full bg-amber-200/[0.09] blur-3xl"
-            animate={{ y: [0, 24, 0], x: [0, -16, 0], opacity: [0.35, 0.6, 0.35] }}
-            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          />
-          <motion.div
-            className="absolute bottom-[-8rem] left-1/2 h-[26rem] w-[26rem] -translate-x-1/2 rounded-full bg-[#6E1B45]/[0.07] blur-3xl"
-            animate={{ opacity: [0.3, 0.55, 0.3], scale: [1, 1.05, 1] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-          />
-        </div>
-      )}
+      {/* Layer 0 — animated gradient aurora, shared with the Services and Events
+          heroes via the `.svc-aurora*` primitives (see globals.css): large, soft,
+          overlapping washes slowly drifting on a near-black base so the surface
+          is always alive, never flat. Paused under reduced motion. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(130%_100%_at_50%_-10%,#241019_0%,#141414_55%,#0E0E0E_100%)]" />
+        <div
+          className={`svc-aurora svc-aurora-a left-[-14%] top-[-12%] h-[46rem] w-[46rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        <div
+          className={`svc-aurora svc-aurora-b right-[-16%] top-[6%] h-[42rem] w-[42rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        <div
+          className={`svc-aurora svc-aurora-c bottom-[-18%] left-[28%] h-[40rem] w-[40rem] ${
+            reduce ? "!animate-none" : ""
+          }`}
+        />
+        {/* Gentle vignette to seat the copy. */}
+        <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_40%,transparent_50%,rgba(0,0,0,0.55)_100%)]" />
+      </div>
 
       {/* Extremely light grain over the empty areas. */}
       <div

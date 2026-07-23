@@ -11,6 +11,7 @@ import NavLink from "@/src/components/Nav/NavLink";
 import { BUTTON_SKIN } from "@/src/lib/button";
 import { EASE } from "@/src/lib/motion";
 import { navigateTo } from "@/src/lib/nav";
+import { lockScroll, unlockScroll } from "@/src/lib/smoothScroll";
 import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
 
 /**
@@ -53,15 +54,15 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Lock background scroll + close on Escape while the drawer is open.
+  // Lock background scroll (Lenis included) + close on Escape while the drawer
+  // is open.
   useEffect(() => {
     if (!open) return;
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
+    lockScroll();
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = overflow;
+      unlockScroll();
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);

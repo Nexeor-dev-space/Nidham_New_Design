@@ -16,6 +16,7 @@ import {
 } from "./constants";
 import type { AboutSectionProps } from "./types";
 import { SECTION_HEADING, SECTION_HEADING_GAP } from "@/src/lib/typography";
+import SectionDivider from "@/src/components/ui/SectionDivider";
 import { ST_START, gsapEntranceDefaults } from "@/src/lib/motion";
 import { BUTTON_SKIN } from "@/src/lib/button";
 
@@ -25,7 +26,7 @@ gsap.registerPlugin(ScrollTrigger);
  * The brand-story section — a single centred column that the reader descends
  * through, rather than a two-column information block.
  *
- * The layout is deliberately one axis: eyebrow → statement headline → rule →
+ * The layout is deliberately one axis: divider → statement headline → rule →
  * showreel → copy → figures → CTA. Everything is centre-aligned except the
  * body copy's measure, which is capped near 672px because centred prose wider
  * than that stops being readable — the eye loses the start of the next line.
@@ -34,8 +35,9 @@ gsap.registerPlugin(ScrollTrigger);
  * two-column card it replaced.
  *
  * Motion (GSAP + ScrollTrigger, one timeline, GPU transforms only):
- *   eyebrow rises → headline reveals line by line → the video fades up from
- *   0.94 → 1 → copy follows → figures rise and count from zero → CTA lands.
+ *   headline reveals line by line → the video fades up from 0.94 → 1 → copy
+ *   follows → figures rise and count from zero → CTA lands. The divider above
+ *   the headline runs its own reveal (see SectionDivider), not this timeline.
  * Timings come from the shared motion tokens so this reads as the same
  * choreography as the hero above and the services below.
  *
@@ -60,7 +62,6 @@ export default function AboutSection({
   media = ABOUT_MEDIA,
 }: AboutSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const ruleRef = useRef<HTMLDivElement>(null);
   const videoRevealRef = useRef<HTMLDivElement>(null);
   const videoFloatRef = useRef<HTMLDivElement>(null);
@@ -155,25 +156,21 @@ export default function AboutSection({
             scrollTrigger: { trigger: section, start: ST_START, once: true },
           });
 
+          // The divider runs its own self-contained reveal (see SectionDivider),
+          // so this timeline opens on the headline. Its own entrance is what
+          // gives the section its first beat.
           tl.fromTo(
-            eyebrowRef.current,
-            { autoAlpha: 0, y: 14 * factor },
-            { autoAlpha: 1, y: 0, duration: 0.7 },
-            0,
+            lineEls,
+            { autoAlpha: 0, y: 34 * factor, filter: "blur(14px)" },
+            {
+              autoAlpha: 1,
+              y: 0,
+              filter: "blur(0px)",
+              duration: 1,
+              stagger: 0.12,
+            },
+            0.1,
           )
-            // Headline — line by line, each rising out of its own blur.
-            .fromTo(
-              lineEls,
-              { autoAlpha: 0, y: 34 * factor, filter: "blur(14px)" },
-              {
-                autoAlpha: 1,
-                y: 0,
-                filter: "blur(0px)",
-                duration: 1,
-                stagger: 0.12,
-              },
-              0.12,
-            )
             .fromTo(
               ruleRef.current,
               { scaleX: 0 },
@@ -265,13 +262,7 @@ export default function AboutSection({
 
       <div className="container-page">
         <div className="mx-auto flex max-w-[1200px] flex-col items-center">
-          {/* Eyebrow */}
-          <p
-            ref={eyebrowRef}
-            className="text-center text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-400"
-          >
-            ( {subtitle} )
-          </p>
+          <SectionDivider label={subtitle} className="w-full" />
 
           {/* Statement headline, on the shared section-heading scale so it sits
               at the same size as every other <h2> on the site.

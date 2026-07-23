@@ -1,4 +1,5 @@
 import type { MouseEvent } from "react";
+import { smoothScrollTo } from "@/src/lib/smoothScroll";
 
 /**
  * One navigation brain shared by every nav surface (hero Navbar, mobile drawer,
@@ -44,14 +45,14 @@ export function navigateTo(
     return;
   }
 
-  // 3. Section link on the homepage — the original smooth-scroll.
+  // 3. Section link on the homepage — smooth-scroll, routed through Lenis when
+  // it is running so the jump shares the wheel's eased momentum (and native
+  // otherwise, including under reduced motion).
   event.preventDefault();
   if (isTop) {
-    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    smoothScrollTo(0, { immediate: reduce });
   } else {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    smoothScrollTo(id, { immediate: reduce });
   }
   onDone?.();
 }
@@ -62,7 +63,5 @@ export function navigateTo(
  * they're rendered on). Falls back to a no-op if the target isn't present.
  */
 export function scrollToId(id: string, reduce = false): void {
-  document
-    .getElementById(id)
-    ?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  smoothScrollTo(id, { immediate: reduce });
 }

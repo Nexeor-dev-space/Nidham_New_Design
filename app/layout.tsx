@@ -4,6 +4,7 @@ import { cabinet, switzer, urbanist } from "@/src/lib/fonts";
 import Footer from "@/src/components/Footer/Footer";
 import FloatingNav from "@/src/components/FloatingNav/FloatingNav";
 import ParticleField from "@/src/components/ParticleField/ParticleField";
+import SmoothScroll from "@/src/components/SmoothScroll/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Nidham Consultancy | Creative Vision",
@@ -26,6 +27,7 @@ export default function RootLayout({
       className={`${cabinet.variable} ${switzer.variable} ${urbanist.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <SmoothScroll />
         <ParticleField />
         <main className="flex-1">{children}</main>
         <Footer />
