@@ -27,3 +27,23 @@ export const BUTTON_SKIN =
   "hover:border-[#6E1B45] hover:bg-[#6E1B45] hover:text-[#FFD83D] " +
   "hover:shadow-[0_20px_44px_-12px_rgba(110,27,69,0.7)] " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFD83D]";
+
+/**
+ * The secondary, outlined counterpart — for the lesser of two side-by-side
+ * actions, where two filled buttons would compete for the same emphasis.
+ *
+ * It resolves *into* the primary rather than away from it: the amber outline
+ * fills in on hover to become exactly `BUTTON_SKIN`'s resting state. That keeps
+ * one hover language across both buttons and means the pair never shows two
+ * different amber treatments at once.
+ *
+ * Deliberately unshadowed at rest — a glow around an unfilled button reads as a
+ * rendering artefact. It picks up the primary's amber glow only once filled.
+ */
+export const BUTTON_SKIN_OUTLINE =
+  "border border-[#FFD83D] bg-transparent text-[#FFD83D] " +
+  "transition-[background-color,border-color,color,box-shadow,translate,scale] " +
+  "duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] " +
+  "hover:bg-[#FFD83D] hover:text-[#6E1B45] " +
+  "hover:shadow-[0_8px_20px_-10px_rgba(255,216,61,0.55)] " +
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFD83D]";

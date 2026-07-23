@@ -228,7 +228,7 @@ export default function Hero() {
             <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover will-change-[filter]"
-              src="/video/hero-video-2.mp4"
+              src="/video/timeline-1.mp4"
               autoPlay
               loop
               muted

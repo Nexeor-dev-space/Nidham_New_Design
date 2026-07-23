@@ -78,7 +78,10 @@ export default function FeatureCard({
           data-cursor="card"
           data-cursor-label={feature.cursorLabel ?? "Explore"}
           className={[
-            "relative w-full overflow-hidden aspect-[4/3]",
+            // `overflow-hidden` is what applies the radius to the contents:
+            // the image, the gradient overlay and the ring all fill this box,
+            // so the corners come from the clip, not from each child.
+            "relative w-full overflow-hidden rounded-[16px] aspect-[4/3]",
             "lg:aspect-auto lg:h-[clamp(340px,42vw,600px)]",
             "transition-shadow duration-500 ease-out",
             "outline-none ring-black/10 ring-inset transition-[box-shadow]",

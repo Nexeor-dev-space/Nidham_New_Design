@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
-  CREATIVE_VISION_IMAGE,
-  CREATIVE_VISION_IMAGE_ALT,
+  CREATIVE_VISION_POSTER,
   CREATIVE_VISION_TITLE,
+  CREATIVE_VISION_VIDEO,
 } from "./constants";
 import type { CreativeVisionSectionProps } from "./types";
 import { GSAP_EASE, ST_START } from "@/src/lib/motion";
@@ -17,15 +16,19 @@ import { BUTTON_SKIN } from "@/src/lib/button";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Full-bleed "Creative Vision" banner: a background image with a centred
- * editorial heading overlaid, exactly as composed in the Figma. Optional label,
+ * Full-bleed "Creative Vision" banner: looping background footage with a centred
+ * editorial heading overlaid, composed as in the Figma. Optional label,
  * description and CTA are supported for reuse but omitted by default.
+ *
+ * The video is decorative — muted, looping, `aria-hidden`, and carrying no
+ * caption track. The section's own `aria-label` is the heading, so the footage
+ * needs no text alternative; that is also why it has no `alt`-equivalent prop.
  *
  * Motion (GSAP + ScrollTrigger, GPU transforms only):
  *  - Entrance runs once — a cinematic line-by-line heading reveal (fade + rise
- *    + blur-out, staggered), with the image fading and settling from 1.05 → 1.0
- *    simultaneously; label / paragraph / CTA join in sequence when present.
- *  - A subtle scrubbed parallax keeps the image drifting slower than the page
+ *    + blur-out, staggered), with the footage fading and settling from
+ *    1.05 → 1.0 simultaneously; label / paragraph / CTA join when present.
+ *  - A subtle scrubbed parallax keeps the footage drifting slower than the page
  *    (~40px) through and past the section — no abrupt exit.
  *  - Distances shrink on tablet/mobile and everything is skipped under
  *    prefers-reduced-motion (content stays visible by default).
@@ -34,8 +37,8 @@ export default function CreativeVisionSection({
   label,
   title = CREATIVE_VISION_TITLE,
   description,
-  image = CREATIVE_VISION_IMAGE,
-  imageAlt = CREATIVE_VISION_IMAGE_ALT,
+  video = CREATIVE_VISION_VIDEO,
+  poster = CREATIVE_VISION_POSTER,
   buttonText,
   buttonLink = "#",
   id,
@@ -46,9 +49,26 @@ export default function CreativeVisionSection({
   const ctaRef = useRef<HTMLDivElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
   const imageRevealRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const lines = Array.isArray(title) ? title : [title];
   const fullTitle = lines.join(" ");
+
+  // Reduced motion: hold the first frame rather than loop. `autoPlay` is a
+  // markup attribute, so it has already fired by the time this runs — pausing
+  // is the only way to honour the preference without giving up the poster.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => {
+      if (mq.matches) el.pause();
+      else void el.play().catch(() => {});
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -171,7 +191,7 @@ export default function CreativeVisionSection({
       aria-label={fullTitle}
       className="relative isolate flex w-full items-center justify-center overflow-hidden min-h-[60svh] py-24 sm:min-h-[68svh] lg:min-h-[82svh]"
     >
-      {/* Background image (Layer 1) — parallax wrapper is oversized so the
+      {/* Background video (Layer 1) — parallax wrapper is oversized so the
           drift never reveals an edge; the inner layer carries the entrance. */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div
@@ -182,20 +202,39 @@ export default function CreativeVisionSection({
             ref={imageRevealRef}
             className="relative h-full w-full will-change-transform"
           >
-            <Image
-              src={image}
-              alt={imageAlt}
-              fill
-              sizes="100vw"
-              quality={90}
-              className="object-cover"
+            {/* `poster` is the still this section used to carry: it paints the
+                exact same composition on the first frame, so the banner is
+                never a black box while the video buffers, and it stays put as
+                the visible background wherever autoplay is refused (low-power
+                mode, data saver) or reduced motion pauses playback below. */}
+            <video
+              ref={videoRef}
+              src={video}
+              poster={poster}
+              aria-hidden="true"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </div>
-        {/* Subtle overlay for text contrast — keeps the Figma look intact. */}
+        {/* Text-contrast scrim, in two parts, because this footage is bright and
+            moving: a flat 15% left white heading text at 1.87:1 over the frame's
+            hottest areas — under the 3:1 WCAG minimum for large text — and the
+            hot spot drifts, so it cannot be dodged by composition.
+
+            A flat scrim heavy enough to fix that (~55%) would mute the footage
+            everywhere. Instead a light 25% base keeps the edges vivid and a
+            centred radial adds ~40% only where the copy sits; the two compose to
+            45% transmittance there, putting the worst case at 3.27:1 while the
+            periphery keeps its colour. Re-measure both layers if the footage
+            changes — a darker clip wants less of this, not the same. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-black/15"
+          className="absolute inset-0 bg-black/25 bg-[radial-gradient(60%_60%_at_50%_50%,rgba(0,0,0,0.40),transparent_75%)]"
         />
       </div>
 

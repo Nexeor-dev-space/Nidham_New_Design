@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { PointerEvent, ReactNode } from "react";
-import { BUTTON_SKIN } from "@/src/lib/button";
+import { BUTTON_SKIN, BUTTON_SKIN_OUTLINE } from "@/src/lib/button";
 
 interface EventButtonProps {
   href: string;
@@ -11,13 +11,15 @@ interface EventButtonProps {
 }
 
 /**
- * CTA with a premium ripple on press, on the shared amber→magenta skin (see
- * lib/button). The primary variant adds a shine sweep on hover and a forward
- * arrow. Hover/press transforms live on the anchor — the GSAP entrance animates
- * the wrapping container, so the two never collide.
+ * CTA with a premium ripple on press, on the shared button skins (see
+ * lib/button). `primary` is the filled amber→magenta button and adds a shine
+ * sweep and a forward arrow; `secondary` is the outlined counterpart, which
+ * fills in on hover to land on the primary's resting state.
  *
- * `variant` now only decides the arrow and the sweep: both variants carry the
- * same fill, because the site has one button colour.
+ * The sweep and arrow stay exclusive to the primary on purpose — they are
+ * emphasis cues, and giving them to the secondary would undo the point of
+ * having a quieter second action. Hover/press transforms live on the anchor;
+ * the GSAP entrance animates the wrapping container, so the two never collide.
  */
 export default function EventButton({ href, children, variant }: EventButtonProps) {
   const isPrimary = variant === "primary";
@@ -45,7 +47,7 @@ export default function EventButton({ href, children, variant }: EventButtonProp
       href={href}
       data-cursor="button"
       onPointerDown={spawnRipple}
-      className={`${base} ${BUTTON_SKIN}`}
+      className={`${base} ${isPrimary ? BUTTON_SKIN : BUTTON_SKIN_OUTLINE}`}
     >
       <span className="relative z-10 inline-flex items-center gap-2">
         {children}

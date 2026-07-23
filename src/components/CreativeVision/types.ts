@@ -9,10 +9,10 @@ export interface CreativeVisionSectionProps {
   title?: string | string[];
   /** Supporting paragraph under the heading. Omitted in the Figma. */
   description?: string;
-  /** Background image source (full-bleed, object-cover). */
-  image?: string;
-  /** Accessible description of the background image. */
-  imageAlt?: string;
+  /** Background video source (full-bleed, object-cover, muted + looping). */
+  video?: string;
+  /** Poster still shown before playback and whenever autoplay is refused. */
+  poster?: string;
   /** CTA label. When omitted, no button renders. */
   buttonText?: string;
   /** CTA destination. */

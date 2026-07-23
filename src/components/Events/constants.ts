@@ -9,7 +9,7 @@ export const EVENTS_STATUS_LABEL = "Registration Open";
 /** Authored as lines so the composition drives the line-by-line reveal. */
 export const EVENTS_HEADING: string[] = [
   "Register for Our",
-  "Next Signature",
+  "Next Dance Competition",
   "Event",
 ];
 
@@ -27,10 +27,9 @@ export const EVENTS_SECONDARY_TEXT = "View Details";
 export const EVENTS_SEATS_TEXT = "Limited Seats Available";
 export const EVENTS_ATTENDEES_TEXT = "Join 1,200+ visionaries";
 
-/** Existing repo asset — swap for the event photo when available. */
-export const EVENTS_IMAGE = "/images/register-card-img.jpg";
+export const EVENTS_IMAGE = "/images/dance-bg.jpg";
 export const EVENTS_IMAGE_ALT =
-  "Vocalist performing live on stage with musicians at a signature event.";
+  "Dancer mid-turn, trailing red and gold fabric under stage light.";
 
 /** Matches the Date / Time card; Dubai is UTC+4. Drives the live countdown. */
 /** Single source of truth — always matches the announcement-bar countdown. */

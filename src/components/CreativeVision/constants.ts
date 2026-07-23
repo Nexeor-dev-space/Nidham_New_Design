@@ -9,7 +9,13 @@ export const CREATIVE_VISION_TITLE: string[] = [
   "engage, and leave a lasting impression.",
 ];
 
-export const CREATIVE_VISION_IMAGE = "/images/middle-banner.jpg";
+/** Full-bleed background footage for the banner. */
+export const CREATIVE_VISION_VIDEO = "/video/youtube-bg.mp4";
 
-export const CREATIVE_VISION_IMAGE_ALT =
-  "Sweeping ribbons of amber, magenta and blue light against black.";
+/**
+ * First-frame still. Carries the banner until the footage is decodable, and
+ * remains the background outright wherever autoplay is refused or reduced
+ * motion pauses playback — so it should stay visually close to the video's
+ * opening frame rather than being any pleasant image.
+ */
+export const CREATIVE_VISION_POSTER = "/images/creative-vision-poster.jpg";
