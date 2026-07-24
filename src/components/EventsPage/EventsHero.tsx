@@ -102,7 +102,7 @@ export default function EventsHero() {
           {EVENTS_EYEBROW}
         </motion.p>
 
-        <div className="mt-7 flex flex-col gap-10 lg:mt-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+        <div className="relative mt-7 flex flex-col gap-10 lg:mt-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <motion.h1
             variants={container}
             className={`lg:min-w-0 lg:flex-1 ${HERO_HEADING}`}
@@ -122,7 +122,7 @@ export default function EventsHero() {
             <motion.div
               variants={item}
               aria-hidden="true"
-              className="pointer-events-none h-20 w-20 sm:h-24 sm:w-24 lg:h-24 lg:w-24"
+              className="pointer-events-none absolute right-6 top-[5.5rem] z-[5] h-14 w-14 sm:right-10 sm:top-[8rem] sm:h-20 sm:w-20 lg:static lg:h-24 lg:w-24"
             >
               <HeroShape />
             </motion.div>
