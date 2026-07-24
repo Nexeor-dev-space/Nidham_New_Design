@@ -79,12 +79,12 @@ export default function CountdownCard({
       <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
         {/* Left — label, title, countdown. */}
         <div className="min-w-0">
-          <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6E1B45]">
+          <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#FFD83D]">
             <span className="relative flex h-1.5 w-1.5">
               {!reduce && (
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#6E1B45]/60" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#FFD83D]/60" />
               )}
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#6E1B45]" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#FFD83D]" />
             </span>
             Live Event
           </p>
