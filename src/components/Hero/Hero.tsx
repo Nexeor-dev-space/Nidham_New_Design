@@ -153,7 +153,7 @@ export default function Hero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative flex flex-1 flex-col pb-[var(--section-py)] pt-10 sm:pt-24 md:min-h-0 md:pb-[var(--container-px)] md:pt-4 lg:pt-6"
+        className="relative flex flex-1 flex-col pb-[var(--section-py)] pt-16 sm:pt-28 md:min-h-0 md:pb-[var(--container-px)] md:pt-12 lg:pt-16"
       >
         {/* Copy (Layer 3) — above the video, so it fades *over* the rising card
             rather than being covered by it. */}
@@ -228,7 +228,7 @@ export default function Hero() {
             <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover will-change-[filter]"
-              src="/video/timeline-1.mp4"
+              src="/video/dubai-event-banner-1.mp4"
               autoPlay
               loop
               muted

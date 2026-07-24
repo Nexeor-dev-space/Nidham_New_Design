@@ -52,6 +52,6 @@ export const ABOUT_BUTTON_LINK = "/services";
  * must not compete with the hero video for bandwidth on first paint.
  */
 export const ABOUT_MEDIA: AboutMedia = {
-  src: "/video/dubai-event-banner-1.mp4",
+  src: "/video/youtube-bg-1.mp4",
   alt: "Fireworks over the Dubai skyline at a Nidham event",
 };
