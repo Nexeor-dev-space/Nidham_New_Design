@@ -1,86 +1,65 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import EventCard from "./EventCard";
-import VideoModal from "./VideoModal";
-import { EVENTS_GALLERY } from "./constants";
-import type { EventCardItem } from "./types";
-import { DUR, GSAP_EASE, ST_START, STAGGER } from "@/src/lib/motion";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion, useReducedMotion } from "framer-motion";
+import EventGrid from "./EventGrid";
+import EventButton from "./EventButton";
+import SectionDivider from "@/src/components/ui/SectionDivider";
+import { FEATURED_EVENTS } from "./events.data";
+import { SECTION_CONTENT_GAP, SECTION_HEADING, SECTION_HEADING_GAP } from "@/src/lib/typography";
+import { fadeUp, VIEWPORT } from "@/src/lib/motion";
 
 interface EventsGalleryProps {
-  items?: EventCardItem[];
   id?: string;
 }
 
 /**
- * Grid of event-highlight cards with a shared video modal. Cards reveal once on
- * scroll (fade + rise + slight scale, staggered left → right) via GSAP; the
- * reveal is skipped under prefers-reduced-motion so content stays visible.
+ * Home page — the Featured Events *preview*. It renders only the `featured`
+ * subset of the shared {@link EVENTS} portfolio through the same {@link EventGrid}
+ * the /events page uses, then a single prominent "Explore All Events" CTA that
+ * carries the visitor into the full collection. The Home page is deliberately a
+ * teaser; the dedicated page is the complete portfolio.
  */
-export default function EventsGallery({
-  items = EVENTS_GALLERY,
-  id,
-}: EventsGalleryProps) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      // Only runs when motion is allowed; under reduce the cards stay visible.
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const cards = gsap.utils.toArray<HTMLElement>(".event-card");
-        gsap.fromTo(
-          cards,
-          { autoAlpha: 0, y: 40, scale: 0.96 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            duration: DUR.base,
-            ease: GSAP_EASE,
-            stagger: STAGGER,
-            force3D: true,
-            scrollTrigger: { trigger: section, start: ST_START, once: true },
-          },
-        );
-      });
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
-  const active = activeIndex !== null ? items[activeIndex] : null;
+export default function EventsGallery({ id }: EventsGalleryProps) {
+  const reduce = useReducedMotion() ?? false;
 
   return (
     <section
-      ref={sectionRef}
       id={id}
-      aria-label="Event highlights"
+      aria-labelledby="featured-events-title"
       data-particles="gallery"
       className="w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
-        <ul className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-10 lg:gap-16">
-          {items.map((item, i) => (
-            <EventCard key={item.id} item={item} onPlay={() => setActiveIndex(i)} />
-          ))}
-        </ul>
-      </div>
+        <SectionDivider label="Featured Events" />
 
-      <VideoModal
-        open={active !== null}
-        title={active ? `${active.category} — ${active.tag}` : ""}
-        videoUrl={active?.videoUrl ?? ""}
-        onClose={() => setActiveIndex(null)}
-      />
+        <motion.h2
+          id="featured-events-title"
+          variants={fadeUp(reduce, 0, 26)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className={`${SECTION_HEADING_GAP} ${SECTION_HEADING}`}
+        >
+          Highlights from the floor
+        </motion.h2>
+
+        <div className={SECTION_CONTENT_GAP}>
+          <EventGrid items={FEATURED_EVENTS} compact />
+        </div>
+
+        {/* Preview → full collection. */}
+        <motion.div
+          variants={fadeUp(reduce, 0.1, 22)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="mt-14 flex justify-center sm:mt-16"
+        >
+          <EventButton href="/events" variant="primary">
+            Explore All Events
+          </EventButton>
+        </motion.div>
+      </div>
     </section>
   );
 }

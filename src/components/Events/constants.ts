@@ -1,4 +1,4 @@
-import type { EventCardItem, EventInfo } from "./types";
+import type { EventInfo } from "./types";
 import { EVENT_DATE } from "@/src/components/Hero/constants";
 
 export const EVENTS_SECTION_LABEL = "Events";
@@ -27,7 +27,7 @@ export const EVENTS_SECONDARY_TEXT = "View Details";
 export const EVENTS_SEATS_TEXT = "Limited Seats Available";
 export const EVENTS_ATTENDEES_TEXT = "Join 1,200+ visionaries";
 
-export const EVENTS_IMAGE = "/images/dance-bg.jpg";
+export const EVENTS_IMAGE = "/images/ance-bg-new.jpg";
 export const EVENTS_IMAGE_ALT =
   "Dancer mid-turn, trailing red and gold fabric under stage light.";
 
@@ -37,31 +37,9 @@ export const EVENTS_DATE = EVENT_DATE;
 export const EVENTS_COUNTDOWN_TITLE = "Final Registration Countdown";
 export const EVENTS_COUNTDOWN_LINK_TEXT = "Register Now";
 
-/**
- * Event-highlight cards below the Corporate Events block. Data-driven — add or
- * remove entries here to change the gallery. Thumbnails reuse the existing
- * abstract asset and a placeholder video; swap `image` / `videoUrl` per event.
+/*
+ * The event-highlight cards that used to live here now come from the unified
+ * source of truth in `events.data.ts` (shared by the Home preview and the
+ * /events portfolio via EventGrid / EventCard). This file keeps only the
+ * Corporate Events (registration/countdown) block's content.
  */
-const MELODY_DESCRIPTION =
-  "Melody Dreamz: After the first successful inaugural show, we had an outstanding event featuring The Music Maestro, Naresh Iyer, which is set to be telecast on a major network.";
-
-export const EVENTS_GALLERY: EventCardItem[] = [
-  {
-    id: "melody-dreamz-1",
-    category: "Entertainment",
-    tag: "Hit Melody Dreamz",
-    description: MELODY_DESCRIPTION,
-    image: "/images/y-1.jpg",
-    imageAlt: "Streaks of rainbow light fanning across a dark stage.",
-    videoUrl: "https://www.youtube.com/embed/aqz-KE-bpKQ",
-  },
-  {
-    id: "melody-dreamz-2",
-    category: "Entertainment",
-    tag: "Hit Melody Dreamz",
-    description: MELODY_DESCRIPTION,
-    image: "/images/y-2.jpg",
-    imageAlt: "Ribbons of amber, magenta and blue light against black.",
-    videoUrl: "https://www.youtube.com/embed/aqz-KE-bpKQ",
-  },
-];

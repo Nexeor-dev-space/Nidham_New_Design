@@ -44,16 +44,34 @@ export interface CorporateEventsProps {
   id?: string;
 }
 
-export interface EventCardItem {
+/**
+ * The single, unified event model — one source of truth for BOTH the Home
+ * "featured preview" and the full /events portfolio. Cards adapt to whatever
+ * fields are present (e.g. "Watch Highlights" appears only when `videoUrl` is
+ * set, "View Gallery" only when `galleryHref` is), so new events scale in
+ * without any redesign. See {@link EventItem} consumers: EventCard / EventGrid.
+ */
+export interface EventItem {
   id: string;
-  /** Primary uppercase category, e.g. "Entertainment". */
+  /** Uppercase category shown in the meta row, e.g. "Entertainment". */
   category: string;
-  /** Secondary uppercase tag, e.g. "Hit Melody Dreamz". */
-  tag: string;
-  /** Body copy (line-clamped to 3 lines). */
+  /** Card title, e.g. "Hit Melody Dreamz". */
+  title: string;
+  /** Optional date/year shown beside the category, e.g. "2025". */
+  date?: string;
+  /** Optional editorial location line, e.g. "Dubai Opera, UAE". */
+  location?: string;
+  /** Body copy. Home clamps it (compact); the structure stays identical. */
   description: string;
   image: string;
   imageAlt: string;
-  /** YouTube/Vimeo embed URL, WITHOUT an autoplay param (added on open). */
-  videoUrl: string;
+  /** YouTube/Vimeo embed URL, WITHOUT an autoplay param (added on open).
+   *  When present the card shows a play badge + "Watch Highlights" button. */
+  videoUrl?: string;
+  /** Optional "View Gallery" destination. */
+  galleryHref?: string;
+  /** Optional "Learn More" destination. */
+  learnMoreHref?: string;
+  /** Marks an event for the Home page's featured preview subset. */
+  featured?: boolean;
 }
