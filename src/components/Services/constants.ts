@@ -59,8 +59,8 @@ export const SERVICES: readonly Service[] = [
     index: "04",
     title: "Exhibitions & Trade Shows",
     description: "Business Expos, Fashion Shows, Tech Summits",
-    image: "/images/services/s-4.jpg",
-    imageAlt: "Person wearing a VR headset amid motion-blurred event lighting",
+    image: "/images/services/sss-4.png",
+    imageAlt: "Crowd gathered at night among illuminated skyscrapers and giant screens",
   },
   {
     id: "branding-marketing",
