@@ -1,0 +1,25 @@
+
+> nidham-new-design@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.6:3000
+✓ Ready in 371ms
+
+ GET /services 200 in 2.3s (next.js: 1939ms, application-code: 325ms)
+ GET /events 200 in 409ms (next.js: 393ms, application-code: 16ms)
+ GET / 200 in 563ms (next.js: 536ms, application-code: 26ms)
+[browser] Invalid property force3D set to true Missing plugin? gsap.registerPlugin() (src/hooks/useHeroScroll.ts:258:20)
+[browser] Invalid property force3D set to true Missing plugin? gsap.registerPlugin() (src/hooks/useHeroScroll.ts:258:20)
+[browser] Image with src "/images/dance-bg.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative.
+[browser] Invalid property force3D set to true Missing plugin? gsap.registerPlugin()
+[browser] Invalid property force3D set to true Missing plugin? gsap.registerPlugin()
+ GET /events 200 in 32ms (next.js: 9ms, application-code: 23ms)
+ GET /services 200 in 171ms (next.js: 29ms, application-code: 142ms)
+ GET /services 200 in 65ms (next.js: 1788µs, application-code: 63ms)
+ GET /events 200 in 48ms (next.js: 34ms, application-code: 13ms)
+ GET /events 200 in 19ms (next.js: 2ms, application-code: 16ms)
+ GET /services 200 in 18ms (next.js: 5ms, application-code: 13ms)
+ GET /events 200 in 17ms (next.js: 4ms, application-code: 13ms)
+ GET /services 200 in 32ms (next.js: 9ms, application-code: 24ms)
