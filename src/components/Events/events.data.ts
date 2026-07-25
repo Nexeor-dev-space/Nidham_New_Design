@@ -47,7 +47,6 @@ export const EVENTS: readonly EventItem[] = [
     imageAlt: "Crowd and stage lights at a music and entertainment festival.",
     videoUrl: HIGHLIGHTS_VIDEO,
     learnMoreHref: CONTACT,
-    featured: true,
   },
   {
     id: "luxury-brand-launch",

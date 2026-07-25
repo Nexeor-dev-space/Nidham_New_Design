@@ -5,6 +5,7 @@ import WhyChooseUs from "@/src/components/WhyChooseUs/WhyChooseUs";
 import CorporateEvents from "@/src/components/Events/CorporateEvents";
 import EventsGallery from "@/src/components/Events/EventsGallery";
 import CreativeVisionSection from "@/src/components/CreativeVision/CreativeVisionSection";
+import SocialProofSection from "@/src/components/SocialProof/SocialProofSection";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       {/* `id` is the #events scroll target for the nav links (NAV_LINKS). */}
       <CorporateEvents id="events" />
       <EventsGallery />
+      <SocialProofSection />
       <CreativeVisionSection />
     </>
   );

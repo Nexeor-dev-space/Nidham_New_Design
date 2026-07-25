@@ -51,8 +51,8 @@ export const SERVICES: readonly Service[] = [
     index: "03",
     title: "Corporate Events",
     description: "Conferences, Product & Property Launches, Award Ceremonies",
-    image: "/images/services/ss-3.jpg",
-    imageAlt: "Empty red-seated auditorium in an ornate historic theatre",
+    image: "/images/services/sss-3.jpg",
+    imageAlt: "Cheering crowd under stage lights and confetti at a large live event",
   },
   {
     id: "exhibitions-trade-shows",

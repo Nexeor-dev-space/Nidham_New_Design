@@ -5,8 +5,9 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import NavLink from "@/src/components/Nav/NavLink";
 import { useActiveSection } from "@/src/hooks/useActiveSection";
-import { NAV_LINKS } from "@/src/components/Hero/constants";
+import { NAV_LINKS, REGISTER_CTA } from "@/src/components/Hero/constants";
 import { EASE } from "@/src/lib/motion";
+import { BUTTON_SKIN } from "@/src/lib/button";
 import { navigateTo } from "@/src/lib/nav";
 
 /**
@@ -41,11 +42,13 @@ const SECTION_IDS = NAV_ITEMS.map((item) => item.section).filter(
 
 /**
  * A floating, premium pill navigation pinned to the bottom-center of the
- * viewport. It hands off from the hero's top nav the instant that nav scrolls
- * out of view (tracked via the `#hero-nav-sentinel` marker), so navigation is
- * always visible. The active section is tracked on scroll and marked with a
- * sliding indicator (framer-motion `layoutId`). Responsive; keyboard
- * accessible; respects reduced motion.
+ * viewport, closing on the Register CTA — the pill's primary action, sharing the
+ * hero navbar's signature amber button skin so the two stay identical. It hands
+ * off from the hero's top nav the instant that nav scrolls out of view (tracked
+ * via the `#hero-nav-sentinel` marker), so navigation is always visible. The
+ * active section is tracked on scroll and marked with a sliding indicator
+ * (framer-motion `layoutId`). Responsive; keyboard accessible; respects reduced
+ * motion.
  */
 export default function FloatingNav() {
   const reduce = useReducedMotion() ?? false;
@@ -101,10 +104,13 @@ export default function FloatingNav() {
           transition={{ duration: 0.55, ease: EASE }}
           className="fixed bottom-6 left-1/2 z-[70] max-w-[calc(100vw-2rem)] -translate-x-1/2 sm:bottom-8"
         >
-          {/* Same editorial links as the hero navbar, on a light surface. The
-              gap is tighter than the navbar's 48–64px: this pill floats over
-              content, so it stays compact rather than spanning the viewport. */}
-          <ul className="flex items-center gap-7 rounded-full border border-neutral-200/80 bg-white px-7 py-4 shadow-[0_22px_55px_-18px_rgba(0,0,0,0.30)] sm:gap-9 sm:px-9 sm:py-[18px]">
+          {/* Same editorial links as the hero navbar, on a light surface, then
+              the Register CTA as the final action. Asymmetric padding
+              (`pl` > `pr`) insets the filled button neatly inside the pill's
+              right edge; the vertical padding is sized so the button — the
+              tallest item — defines the pill height with an even margin all
+              round. Gaps tighten on small screens so four items never crowd. */}
+          <ul className="flex items-center gap-4 rounded-full border border-neutral-200/80 bg-white py-2 pl-6 pr-2 shadow-[0_22px_55px_-18px_rgba(0,0,0,0.30)] sm:gap-8 sm:py-2.5 sm:pl-9 sm:pr-2.5">
             {NAV_ITEMS.map((item) => (
               <li key={item.key}>
                 <NavLink
@@ -116,6 +122,33 @@ export default function FloatingNav() {
                 />
               </li>
             ))}
+
+            {/* Register — the pill's primary action. Same signature amber skin
+                and shimmer as the hero navbar CTA (so the two never drift), sized
+                a touch smaller and pill-shaped to sit inside the nav. Hover adds
+                a 1.04 scale and slides the arrow; BUTTON_SKIN carries the colour
+                swap, glow and shadow expansion on the shared 350ms curve. */}
+            <li>
+              <a
+                href={REGISTER_CTA.href}
+                onClick={(e) => handleClick(e, REGISTER_CTA.href)}
+                data-cursor="button"
+                className={`group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] outline-none grain-overlay ${BUTTON_SKIN} motion-safe:hover:scale-[1.04] sm:px-5 sm:py-2.5 sm:text-[13px] sm:tracking-[0.12em]`}
+              >
+                {/* Soft diagonal light sweep on hover — a sheen, not a flash. */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.28)_50%,transparent_70%)] transition-transform duration-[900ms] ease-out group-hover:translate-x-full motion-reduce:hidden"
+                />
+                <span className="relative">{REGISTER_CTA.label}</span>
+                <span
+                  aria-hidden="true"
+                  className="relative transition-transform duration-[300ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-[4px]"
+                >
+                  &rarr;
+                </span>
+              </a>
+            </li>
           </ul>
         </motion.nav>
       )}

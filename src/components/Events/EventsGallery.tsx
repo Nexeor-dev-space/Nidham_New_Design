@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import EventGrid from "./EventGrid";
-import EventButton from "./EventButton";
 import SectionDivider from "@/src/components/ui/SectionDivider";
 import { FEATURED_EVENTS } from "./events.data";
 import { SECTION_CONTENT_GAP, SECTION_HEADING, SECTION_HEADING_GAP } from "@/src/lib/typography";
@@ -13,14 +12,22 @@ interface EventsGalleryProps {
 }
 
 /**
- * Home page — the Featured Events *preview*. It renders only the `featured`
- * subset of the shared {@link EVENTS} portfolio through the same {@link EventGrid}
- * the /events page uses, then a single prominent "Explore All Events" CTA that
- * carries the visitor into the full collection. The Home page is deliberately a
- * teaser; the dedicated page is the complete portfolio.
+ * Home page — the Featured Event highlight.
+ *
+ * With a single featured event (the current business reality) it renders one
+ * centred, capped-width hero card — a curated highlight, not a row with a gap
+ * where a second card used to be. If more events are ever marked `featured`, it
+ * falls back automatically to the shared two-up {@link EventGrid}, so the layout
+ * scales without a code change. Either way it uses the very same
+ * {@link EventCard} the /events page uses.
+ *
+ * There is intentionally no "Explore All Events" CTA and no link on to the
+ * /events listing: with one event there is nothing to browse. The dedicated
+ * /events page and its route stay in the project for future expansion.
  */
 export default function EventsGallery({ id }: EventsGalleryProps) {
   const reduce = useReducedMotion() ?? false;
+  const isSingle = FEATURED_EVENTS.length === 1;
 
   return (
     <section
@@ -30,7 +37,7 @@ export default function EventsGallery({ id }: EventsGalleryProps) {
       className="w-full bg-[#1F1F1F] section-y"
     >
       <div className="container-page">
-        <SectionDivider label="Featured Events" />
+        <SectionDivider label={isSingle ? "Featured Event" : "Featured Events"} />
 
         <motion.h2
           id="featured-events-title"
@@ -40,25 +47,18 @@ export default function EventsGallery({ id }: EventsGalleryProps) {
           viewport={VIEWPORT}
           className={`${SECTION_HEADING_GAP} ${SECTION_HEADING}`}
         >
-          Highlights from the floor
+          {isSingle ? "Our latest highlight" : "Highlights from the floor"}
         </motion.h2>
 
         <div className={SECTION_CONTENT_GAP}>
-          <EventGrid items={FEATURED_EVENTS} compact />
+          {/* Single featured event → one centred hero card (full description,
+              capped width). More than one → the default two-up grid. */}
+          <EventGrid
+            items={FEATURED_EVENTS}
+            compact={!isSingle}
+            className={isSingle ? "mx-auto w-full max-w-3xl" : undefined}
+          />
         </div>
-
-        {/* Preview → full collection. */}
-        <motion.div
-          variants={fadeUp(reduce, 0.1, 22)}
-          initial="hidden"
-          whileInView="show"
-          viewport={VIEWPORT}
-          className="mt-14 flex justify-center sm:mt-16"
-        >
-          <EventButton href="/events" variant="primary">
-            Explore All Events
-          </EventButton>
-        </motion.div>
       </div>
     </section>
   );
