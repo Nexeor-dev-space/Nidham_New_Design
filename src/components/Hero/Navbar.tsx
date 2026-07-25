@@ -98,7 +98,7 @@ export default function Navbar() {
             width={LOGO.width}
             height={LOGO.height}
             priority
-            className="h-auto w-[160px] sm:w-[210px]"
+            className="h-auto w-[130px] sm:w-[170px] md:w-[210px]"
           />
         </Link>
 
@@ -124,7 +124,7 @@ export default function Navbar() {
               href={REGISTER_CTA.href}
               onClick={(e) => handleNav(e, REGISTER_CTA.href)}
               data-cursor="button"
-              className={`${CTA_BASE} ${CTA_SKIN} gap-2 px-5 py-2.5 text-[12px] sm:gap-2.5 sm:px-7 sm:py-3 sm:text-[14px]`}
+              className={`${CTA_BASE} ${CTA_SKIN} gap-1.5 px-4 py-2 text-[11px] sm:gap-2.5 sm:px-7 sm:py-3 sm:text-[14px]`}
             >
               {/* Shimmer — a soft diagonal light sweep on hover. Slower than the
                   350ms hover so it reads as a sheen, not a flash. */}
