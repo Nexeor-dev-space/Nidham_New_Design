@@ -26,8 +26,10 @@ export const LOGO = {
  */
 export const NAV_LINKS: readonly NavLink[] = [
   { label: "Services", href: "/services" },
-  { label: "Events", href: "/events" },
   { label: "Contact", href: "/contact" },
+  // "Events" is intentionally omitted while there is a single featured event on
+  // the home page (no listing to browse). The /events route and page remain in
+  // the project — restore this link when more events are added.
 ] as const;
 
 /** Register call-to-action shown on the right of the navbar — the dedicated
