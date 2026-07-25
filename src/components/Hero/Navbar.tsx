@@ -98,7 +98,7 @@ export default function Navbar() {
             width={LOGO.width}
             height={LOGO.height}
             priority
-            className="h-auto w-[132px] sm:w-[168px]"
+            className="h-auto w-[160px] sm:w-[210px]"
           />
         </Link>
 
@@ -207,7 +207,7 @@ export default function Navbar() {
                         alt={LOGO.alt}
                         width={LOGO.width}
                         height={LOGO.height}
-                        className="h-auto w-[124px]"
+                        className="h-auto w-[150px]"
                       />
                     </Link>
                     <button

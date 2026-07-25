@@ -7,12 +7,19 @@ import type { NavLink, HeroSlide } from "./types";
  * fixed CSS width with `h-auto`, so the browser derives the height from *these*
  * numbers, not from the file — if they disagree with the asset, the logo is
  * silently stretched to fit.
+ *
+ * This points at the *trimmed* asset, not the raw `new-nidham-logo.png`. The raw
+ * export is 1536×1024 with the mark filling only 32% of the height, so any width
+ * the nav sets is mostly transparent padding — the logo reads far smaller than
+ * its box and inflates the nav's height for nothing. The trimmed file is that
+ * export cropped to the alpha bounding box plus an even 16px margin, which is
+ * why the aspect is ~3.57:1 and the CSS width now maps to visible logo.
  */
 export const LOGO = {
-  src: "/images/logo.png",
+  src: "/images/new-nidham-logo-trimmed.png",
   alt: "Nidham Consultancy LLC",
-  width: 1993,
-  height: 789,
+  width: 1290,
+  height: 361,
 } as const;
 
 /**
