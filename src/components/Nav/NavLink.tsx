@@ -15,6 +15,10 @@ import type { MouseEvent } from "react";
  * The label lift and the rule are separate elements on purpose: if the anchor
  * itself moved, the rule would ride up with it and the type would not appear to
  * lift *off* anything.
+ *
+ * Type steps 15px → 17px at `md`. Below that only the FloatingNav pill renders
+ * these links (the hero navbar's row is `hidden md:flex`), and 15px is what keeps
+ * four labels plus the Register button inside the pill on a narrow viewport.
  */
 
 /**
@@ -71,7 +75,7 @@ export default function NavLink({
       onClick={onClick}
       data-cursor="button"
       aria-current={active ? "page" : undefined}
-      className={`group relative inline-flex items-center text-[17px] font-medium leading-none tracking-[0.005em] outline-none transition-colors duration-300 ${EASE_CLASS} ${TONE[tone]} focus-visible:outline-2 focus-visible:outline-offset-[6px] focus-visible:outline-[#6E1B45]`}
+      className={`group relative inline-flex items-center text-[15px] font-medium leading-none tracking-[0.005em] outline-none transition-colors duration-300 md:text-[17px] ${EASE_CLASS} ${TONE[tone]} focus-visible:outline-2 focus-visible:outline-offset-[6px] focus-visible:outline-[#6E1B45]`}
     >
       <span
         className={`block transition-transform duration-300 ${EASE_CLASS} motion-safe:group-hover:-translate-y-[2px] motion-safe:group-focus-visible:-translate-y-[2px]`}
