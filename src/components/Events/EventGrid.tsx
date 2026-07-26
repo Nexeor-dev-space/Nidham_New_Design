@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import EventCard from "./EventCard";
 import VideoModal from "./VideoModal";
+import CinematicVideoModal from "./CinematicVideoModal";
 import type { EventItem } from "./types";
 import { DUR, GSAP_EASE, STAGGER } from "@/src/lib/motion";
 
@@ -97,6 +98,23 @@ export default function EventGrid({
   }, [items]);
 
   const active = activeIndex !== null ? items[activeIndex] : null;
+  const close = () => setActiveIndex(null);
+
+  /**
+   * Two players, picked by what the event actually has. A self-hosted file gets
+   * the cinematic lightbox (custom controls, which need a real `<video>`); an
+   * embed URL gets the iframe one. `videoSrc` wins if an event somehow carries
+   * both, so this is never ambiguous.
+   */
+  const embedUrl = active && !active.videoSrc ? active.videoUrl ?? "" : "";
+
+  /**
+   * VideoModal keeps itself mounted and fades on `open`, and it does not portal
+   * — so rendering it unconditionally would leave a permanent second
+   * `role="dialog"` in the page markup. Mount it only for grids that actually
+   * contain an embed-backed event (today: the /events portfolio, not Home).
+   */
+  const hasEmbed = items.some((item) => !item.videoSrc && item.videoUrl);
 
   return (
     <>
@@ -106,17 +124,33 @@ export default function EventGrid({
             key={item.id}
             item={item}
             compact={compact}
-            onWatch={item.videoUrl ? () => setActiveIndex(i) : undefined}
+            onWatch={
+              item.videoSrc ?? item.videoUrl ? () => setActiveIndex(i) : undefined
+            }
           />
         ))}
       </ul>
 
-      <VideoModal
-        open={active !== null}
-        title={active?.title ?? ""}
-        videoUrl={active?.videoUrl ?? ""}
-        onClose={() => setActiveIndex(null)}
-      />
+      {/* Mounted only while playing — that is this lightbox's whole open/closed
+          contract, and it is what keeps the file un-fetched until asked. */}
+      {active?.videoSrc && (
+        <CinematicVideoModal
+          onClose={close}
+          src={active.videoSrc}
+          title={active.videoTitle ?? active.title}
+          poster={active.image}
+          posterAlt={active.imageAlt}
+        />
+      )}
+
+      {hasEmbed && (
+        <VideoModal
+          open={Boolean(embedUrl)}
+          title={active?.title ?? ""}
+          videoUrl={embedUrl}
+          onClose={close}
+        />
+      )}
     </>
   );
 }

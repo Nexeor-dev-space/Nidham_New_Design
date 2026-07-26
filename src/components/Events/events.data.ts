@@ -10,15 +10,28 @@ import type { EventItem } from "./types";
  *
  * To add an event: append an entry here and it appears in the portfolio
  * automatically. Mark it `featured: true` to also surface it on the Home page.
- * The card adapts to the fields present — give it a `videoUrl` for a
- * "Watch Highlights" button, a `galleryHref` for "View Gallery", a
- * `learnMoreHref` for "Learn More"; omit them and those actions simply vanish.
+ * The card adapts to the fields present — give it a `videoSrc` (self-hosted
+ * file) or a `videoUrl` (embed) for a play button over the artwork, a
+ * `galleryHref` for "View Gallery", a `learnMoreHref` for "Learn More"; omit
+ * them and those actions simply vanish.
  */
 
 /** In-page CTA target — the footer/contact block is present on every page. */
 const CONTACT = "#contact";
 /** Placeholder highlight reel shared by the video-backed events. */
 const HIGHLIGHTS_VIDEO = "https://www.youtube.com/embed/aqz-KE-bpKQ";
+
+/**
+ * The Melody Dreamz film — self-hosted, so it plays in the cinematic lightbox
+ * with real controls instead of an embed's chrome.
+ *
+ * 1280×720 (exactly the 16:9 the lightbox frames), H.264/AAC, 2:04, ~46 MB at
+ * 2.9 Mbps. Nothing fetches it until the play button is pressed: the `<video>`
+ * element does not exist until the modal mounts, so the weight costs the page
+ * nothing on load. It is still a heavy first play on mobile data — a compressed
+ * rendition or an HLS ladder would be the next step if that matters.
+ */
+const MELODY_DREAMZ_FILM = "/video/nidham_yt.mp4";
 
 export const EVENTS: readonly EventItem[] = [
   {
@@ -31,7 +44,8 @@ export const EVENTS: readonly EventItem[] = [
       "After an acclaimed inaugural season with playback maestro Naresh Iyer — since telecast nationally — Melody Dreamz returns with live orchestration and the region's most celebrated voices on one stage.",
     image: "/images/event/Hit-Melody-Dreamz.jpg",
     imageAlt: "Hit Melody Dreamz live music production on a lit stage.",
-    videoUrl: HIGHLIGHTS_VIDEO,
+    videoSrc: MELODY_DREAMZ_FILM,
+    videoTitle: "Hit Melody Dreamz — Event Film",
     learnMoreHref: CONTACT,
     featured: true,
   },
