@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, type MouseEvent } from "react";
 import EventCardLink from "./EventCardLink";
+import PlayButton from "./PlayButton";
 import type { EventItem } from "./types";
 
 interface EventCardProps {
@@ -48,7 +49,7 @@ export default function EventCard({ item, onWatch, compact = false }: EventCardP
     if (el) el.style.transform = "translate3d(0,0,0)";
   };
 
-  const hasVideo = Boolean(item.videoUrl) && Boolean(onWatch);
+  const hasVideo = Boolean(item.videoSrc ?? item.videoUrl) && Boolean(onWatch);
   // One link on every card. The play badge already handles "watch" for videos.
   const detailsHref = item.learnMoreHref ?? item.galleryHref;
 
@@ -73,7 +74,7 @@ export default function EventCard({ item, onWatch, compact = false }: EventCardP
             fill
             loading="lazy"
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            quality={88}
+            quality={90}
             className="object-cover transition-[transform,filter] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05] group-hover:brightness-[1.04]"
           />
         </div>
@@ -89,25 +90,23 @@ export default function EventCard({ item, onWatch, compact = false }: EventCardP
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_0%,transparent_55%,rgba(0,0,0,0.28)_100%)]"
         />
 
-        {/* Play badge — accessible full-bleed trigger; only when a video exists. */}
+        {/* Resting scrim — only on video cards, where the play button has to stay
+            legible over whatever the artwork happens to be doing behind it. It
+            lightens on hover, which is what reads as the image brightening
+            (alongside the `brightness` on the <Image> above). */}
         {hasVideo && (
-          <button
-            type="button"
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-black/30 transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-black/15"
+          />
+        )}
+
+        {/* One full-bleed trigger: the whole thumbnail is the play button. */}
+        {hasVideo && onWatch && (
+          <PlayButton
             onClick={onWatch}
-            data-cursor="button"
-            aria-label={`Watch highlights: ${item.title}`}
-            className="absolute inset-0 z-10 grid place-items-center rounded-[22px] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/80"
-          >
-            <span className="grid h-16 w-16 place-items-center rounded-full bg-black/45 ring-1 ring-white/25 backdrop-blur-sm transition-transform duration-500 ease-out group-hover:scale-110">
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                className="h-6 w-6 translate-x-[1px] fill-white"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </span>
-          </button>
+            label={`Play the event film: ${item.videoTitle ?? item.title}`}
+          />
         )}
       </div>
 

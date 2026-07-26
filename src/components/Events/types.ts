@@ -65,8 +65,19 @@ export interface EventItem {
   description: string;
   image: string;
   imageAlt: string;
+  /**
+   * A self-hosted film, e.g. "/video/nidham_yt.mp4" — a real file path, not an
+   * embed URL. This is what opens the cinematic lightbox
+   * ({@link CinematicVideoModal}) with its own controls: seek, volume, mute,
+   * fullscreen and Picture-in-Picture all need a real `<video>`, which an
+   * iframe cannot give us. Takes precedence over `videoUrl` when both are set.
+   */
+  videoSrc?: string;
+  /** Name announced for the player. Falls back to `title`. */
+  videoTitle?: string;
   /** YouTube/Vimeo embed URL, WITHOUT an autoplay param (added on open).
-   *  When present the card shows a play badge + "Watch Highlights" button. */
+   *  Opens the simpler iframe lightbox ({@link VideoModal}).
+   *  Either video field gives the card its play button. */
   videoUrl?: string;
   /** Optional "View Gallery" destination. */
   galleryHref?: string;
