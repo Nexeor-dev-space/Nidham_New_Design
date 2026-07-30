@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { cabinet, switzer, urbanist } from "@/src/lib/fonts";
+import { begies, cabinet, switzer, urbanist } from "@/src/lib/fonts";
 import Footer from "@/src/components/Footer/Footer";
 import FloatingNav from "@/src/components/FloatingNav/FloatingNav";
 import ParticleField from "@/src/components/ParticleField/ParticleField";
@@ -17,14 +17,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Both font variables are declared once here, at the root, so every
-  // descendant can reference var(--font-cabinet) / var(--font-switzer).
-  // Switzer is the default via `body`; Cabinet is opted into by the
-  // display-type tokens in src/lib/typography.ts.
+  // Every font variable is declared once here, at the root, so any descendant
+  // can reference var(--font-cabinet) / var(--font-switzer) /
+  // var(--font-urbanist) / var(--font-begies). Switzer is the default via
+  // `body`; the rest are opted into by the display-type tokens in
+  // src/lib/typography.ts.
   return (
     <html
       lang="en"
-      className={`${cabinet.variable} ${switzer.variable} ${urbanist.variable} h-full antialiased`}
+      className={`${cabinet.variable} ${switzer.variable} ${urbanist.variable} ${begies.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />

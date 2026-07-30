@@ -29,8 +29,20 @@ export const FOOTER_VISION_TEXT =
   "Partner with Nidham for thoughtfully designed and expertly delivered spaces.";
 
 export const FOOTER_CTA: FooterLink = {
-  label: "Let's talk with us",
+  label: "Let's connect with us",
   href: "/contact",
 };
 
-export const FOOTER_COPYRIGHT = "©2026 Nidham . Powered by Nexeor";
+/**
+ * Bottom-left credit line, split so the studio name can be a real link.
+ * `FOOTER_COPYRIGHT` is the static lead-in; `FOOTER_CREDIT` is the linked
+ * brand that follows it. Keep the trailing space off the copyright string —
+ * the markup supplies the gap.
+ */
+export const FOOTER_COPYRIGHT = "©2026 Nidham . Powered by";
+
+export const FOOTER_CREDIT: FooterLink = {
+  label: "Nexeor",
+  href: "https://nexeor.com/",
+  external: true,
+};

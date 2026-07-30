@@ -322,7 +322,10 @@ export default function RegisterForm() {
                         <motion.span
                           layoutId="register-type-pill"
                           transition={{ duration: 0.4, ease: EASE }}
-                          className="absolute inset-0 rounded-full bg-[#5D0139]"
+                          // Brand pink, matching BUTTON_SKIN and the nav. The
+                          // old `#5D0139` was an off-palette plum that read as
+                          // belonging to a different site.
+                          className="absolute inset-0 rounded-full bg-[#E00068] shadow-[0_6px_18px_-8px_rgba(224,0,104,0.65)]"
                         />
                       )}
                       <span className="relative">{opt.label}</span>
@@ -359,7 +362,7 @@ export default function RegisterForm() {
                   }}
                   className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45] ${
                     consent
-                      ? "border-[#6E1B45] bg-[#5D0139] text-white"
+                      ? "border-[#E00068] bg-[#E00068] text-white"
                       : errors.consent
                         ? "border-red-400/70 bg-transparent"
                         : "border-white/20 bg-transparent hover:border-white/40"
@@ -399,10 +402,6 @@ export default function RegisterForm() {
                   data-cursor="button"
                   className={`group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-[16px] px-9 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] outline-none disabled:cursor-not-allowed disabled:opacity-90 motion-safe:enabled:hover:-translate-y-[2px] motion-safe:enabled:hover:scale-[1.02] grain-overlay sm:w-auto ${BUTTON_SKIN}`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.28)_50%,transparent_70%)] transition-transform duration-[900ms] ease-out group-hover:translate-x-full motion-reduce:hidden"
-                  />
                   <span className="relative">
                     {status === "loading" ? "Submitting" : REGISTER_SUBMIT_LABEL}
                   </span>

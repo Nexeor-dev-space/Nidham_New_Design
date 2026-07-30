@@ -4,11 +4,10 @@ import type { Feature } from "./types";
 export const WHY_CHOOSE_US_TITLE = "Why Choose Us";
 
 /**
- * Default feature cards for the Nidham home page. The artwork lives in
- * `public/images/why-choose-us/` and is shared with the Events and Services
- * pages, so replacing a file there changes it in all three — keep the `alt`
- * strings here (and the gallery ones in EventsPage/constants) in step with
- * whatever the images actually depict.
+ * Default feature cards for the Nidham home page. The artwork lives directly in
+ * `public/images/` (`execution-bg.jpg`, `talent.bg.jpg`, `expertise-bg.jpg`) —
+ * keep the `alt` strings here in step with whatever the images actually
+ * depict.
  *
  * The cards crop to a fixed aspect via `object-cover`, so source dimensions do
  * not have to match each other; the layout keeps the Figma proportions
@@ -24,7 +23,7 @@ export const WHY_CHOOSE_US_FEATURES: readonly Feature[] = [
     description:
       "Creative, full-service event solutions with flawless execution.",
     image: {
-      src: "/images/why-choose-us/execution.jpg",
+      src: "/images/execution-bg.jpg",
       alt: "Long-exposure streaks of red, green and blue light running in parallel",
     },
     cursorLabel: "Explore",
@@ -35,7 +34,7 @@ export const WHY_CHOOSE_US_FEATURES: readonly Feature[] = [
     title: "Talent",
     description: "Access to top artists, influencers, and performers.",
     image: {
-      src: "/images/why-choose-us/talent.jpg",
+      src: "/images/talent.bg.jpg",
       alt: "Figures moving through a hall washed in saturated stage colour",
     },
     cursorLabel: "Discover",
@@ -46,7 +45,7 @@ export const WHY_CHOOSE_US_FEATURES: readonly Feature[] = [
     title: "Expertise",
     description: "Strong industry expertise and global connections.",
     image: {
-      src: "/images/why-choose-us/expertise.jpg",
+      src: "/images/expertise-bg.jpg",
       alt: "Loops of light painted against a night sky in a long exposure",
     },
     cursorLabel: "Read More",

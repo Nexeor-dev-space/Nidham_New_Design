@@ -433,10 +433,6 @@ export default function ContactForm() {
                         data-cursor="button"
                         className={`group relative inline-flex items-center gap-3 overflow-hidden rounded-[16px] px-9 py-4 text-[14px] font-semibold uppercase tracking-[0.14em] outline-none disabled:cursor-not-allowed disabled:opacity-90 motion-safe:enabled:hover:-translate-y-[2px] motion-safe:enabled:hover:scale-[1.02] grain-overlay ${BUTTON_SKIN}`}
                       >
-                        <span
-                          aria-hidden="true"
-                          className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.28)_50%,transparent_70%)] transition-transform duration-[900ms] ease-out group-hover:translate-x-full motion-reduce:hidden"
-                        />
                         <span className="relative">
                           {status === "loading" ? "Sending" : "Send message"}
                         </span>

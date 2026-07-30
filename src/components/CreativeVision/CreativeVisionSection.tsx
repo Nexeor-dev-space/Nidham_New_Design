@@ -16,13 +16,17 @@ import { BUTTON_SKIN } from "@/src/lib/button";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Full-bleed "Creative Vision" banner: looping background footage with a centred
+ * Full-bleed "Creative Vision" banner: background footage with a centred
  * editorial heading overlaid, composed as in the Figma. Optional label,
  * description and CTA are supported for reuse but omitted by default.
  *
- * The video is decorative — muted, looping, `aria-hidden`, and carrying no
- * caption track. The section's own `aria-label` is the heading, so the footage
- * needs no text alternative; that is also why it has no `alt`-equivalent prop.
+ * The footage has no clock of its own — its playhead is the scroll position, so
+ * it runs forward as the banner rises up the viewport and rewinds as it goes
+ * back down (see the scrub effect below).
+ *
+ * The video is decorative — muted, `aria-hidden`, and carrying no caption
+ * track. The section's own `aria-label` is the heading, so the footage needs no
+ * text alternative; that is also why it has no `alt`-equivalent prop.
  *
  * Motion (GSAP + ScrollTrigger, GPU transforms only):
  *  - Entrance runs once — a cinematic line-by-line heading reveal (fade + rise
@@ -54,20 +58,75 @@ export default function CreativeVisionSection({
   const lines = Array.isArray(title) ? title : [title];
   const fullTitle = lines.join(" ");
 
-  // Reduced motion: hold the first frame rather than loop. `autoPlay` is a
-  // markup attribute, so it has already fired by the time this runs — pausing
-  // is the only way to honour the preference without giving up the poster.
+  /**
+   * Scroll-scrubbed playback: the footage runs forward as the banner rises up
+   * the viewport and rewinds as it goes back down, rather than looping on its
+   * own clock. Same treatment as the About showreel — see AboutSection for the
+   * fuller note on why the playhead is a proxy object rather than the element.
+   *
+   * The mechanics that matter here:
+   *
+   * • `duration` is only known once metadata has loaded, and `readyState` can
+   *   already satisfy that by the time this runs (the header may be cached), so
+   *   both paths have to be handled or the trigger is never built.
+   *
+   * • Seeking is the expensive part. Writing `currentTime` on every scrub frame
+   *   queues seeks faster than the decoder retires them, so the write is skipped
+   *   while a seek is still in flight — that is what keeps it from stuttering.
+   *
+   * • Reduced motion opts out and leaves the first frame showing. `autoPlay` is
+   *   a markup attribute and has already fired by the time this runs, so the
+   *   explicit `pause()` is still needed to honour the preference.
+   */
   useEffect(() => {
     const el = videoRef.current;
-    if (!el) return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => {
-      if (mq.matches) el.pause();
-      else void el.play().catch(() => {});
+    const section = sectionRef.current;
+    if (!el || !section) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.pause();
+      return;
+    }
+
+    let ctx: gsap.Context | null = null;
+
+    const build = () => {
+      const duration = el.duration;
+      if (!duration || !Number.isFinite(duration)) return;
+
+      // Nothing should advance it but the scroll.
+      el.pause();
+
+      ctx = gsap.context(() => {
+        const playhead = { t: 0 };
+
+        gsap.to(playhead, {
+          t: duration,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+          onUpdate: () => {
+            if (!el.seeking) el.currentTime = playhead.t;
+          },
+        });
+      }, section);
     };
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+
+    if (el.readyState >= 1) {
+      build();
+    } else {
+      el.addEventListener("loadedmetadata", build, { once: true });
+    }
+
+    return () => {
+      el.removeEventListener("loadedmetadata", build);
+      ctx?.revert();
+    };
   }, []);
 
   useEffect(() => {
@@ -212,11 +271,15 @@ export default function CreativeVisionSection({
               src={video}
               poster={poster}
               aria-hidden="true"
-              autoPlay
-              loop
               muted
               playsInline
-              preload="metadata"
+              // `auto`, not `metadata`: playback is seek-driven, and seeking
+              // into an unbuffered region is what makes a scrubbed video
+              // stutter.
+              preload="auto"
+              // No `loop` and no `autoPlay`: there is no clock to wrap around
+              // or to start. The playhead is the scroll position, which the
+              // ScrollTrigger above already bounds.
               className="absolute inset-0 h-full w-full object-cover"
             />
           </div>

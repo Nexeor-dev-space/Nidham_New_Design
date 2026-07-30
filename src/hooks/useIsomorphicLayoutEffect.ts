@@ -23,7 +23,8 @@ import { useEffect, useLayoutEffect } from "react";
  * parent is the pin-spacer. On a route change that surfaces as a hard crash;
  * a full page load never hits it because nothing unmounts.
  *
- * See useHeroScroll and useAboutScroll — both pin, and both must use this.
+ * See useAboutScroll — it pins, so it must use this. Any future pinning hook
+ * has to as well.
  */
 export const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;

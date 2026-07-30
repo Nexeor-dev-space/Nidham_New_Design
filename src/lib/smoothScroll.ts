@@ -38,8 +38,20 @@ export function smoothScrollTo(
 ): void {
   const { immediate = false, offset = 0 } = opts;
 
+  // Resolve bare element ids to nodes BEFORE handing off to Lenis. Lenis
+  // treats a string as a CSS selector unless it starts with "#", so the bare
+  // ids this site passes ("contact-form", "events", …) were being fed to
+  // `document.querySelector("contact-form")` — a lookup for a <contact-form>
+  // element — which found nothing. Every scrollToId() was a silent no-op
+  // whenever Lenis was running; only the native fallback below (getElementById)
+  // ever worked. Resolving here fixes every caller at once.
+  const resolved =
+    typeof target === "string"
+      ? (document.getElementById(target.replace(/^#/, "")) ?? target)
+      : target;
+
   if (lenis) {
-    lenis.scrollTo(target, {
+    lenis.scrollTo(resolved, {
       offset,
       immediate,
       // A touch longer than the wheel's own easing so a jump to an anchor reads

@@ -42,11 +42,15 @@ export const EVENTS: readonly EventItem[] = [
     location: "Dubai Opera, UAE",
     description:
       "After an acclaimed inaugural season with playback maestro Naresh Iyer — since telecast nationally — Melody Dreamz returns with live orchestration and the region's most celebrated voices on one stage.",
-    image: "/images/event/Hit-Melody-Dreamz.jpg",
-    imageAlt: "Hit Melody Dreamz live music production on a lit stage.",
+    image: "/images/event-card-bg.png",
+    imageAlt:
+      "Live band and vocalist performing on stage under a Nidham-branded backdrop, audience seated in the foreground.",
     videoSrc: MELODY_DREAMZ_FILM,
     videoTitle: "Hit Melody Dreamz — Event Film",
-    learnMoreHref: CONTACT,
+    // The only event with a real case study behind it, so this is a route
+    // rather than the `CONTACT` anchor the others fall back to. Both the card
+    // title and its "View Details" link resolve here (see EventCard).
+    learnMoreHref: "/events/melody-dreamz",
     featured: true,
   },
   {

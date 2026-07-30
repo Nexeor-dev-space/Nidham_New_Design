@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, type MouseEvent } from "react";
 import EventCardLink from "./EventCardLink";
 import PlayButton from "./PlayButton";
@@ -122,8 +123,23 @@ export default function EventCard({ item, onWatch, compact = false }: EventCardP
           )}
         </div>
 
+        {/* The title is a link wherever the card has a destination — a heading
+            that looks like the card's subject but cannot be clicked is the most
+            common thing people try first. Where there is no destination it stays
+            plain text rather than becoming a dead control.
+            `underline-offset` + a hover rule rather than a permanent underline,
+            so it still reads as editorial type at rest. */}
         <h3 className="mt-3 font-[family-name:var(--font-cabinet)] text-[clamp(1.5rem,2.1vw,2.1rem)] font-normal leading-[1.1] tracking-[-0.02em] text-neutral-100 transition-colors duration-500 group-hover:text-white">
-          {item.title}
+          {detailsHref ? (
+            <Link
+              href={detailsHref}
+              className="rounded-sm outline-none decoration-[#E00068]/60 decoration-1 underline-offset-[6px] transition-[text-decoration-color] duration-500 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF3D8F]"
+            >
+              {item.title}
+            </Link>
+          ) : (
+            item.title
+          )}
         </h3>
 
         {item.location && (

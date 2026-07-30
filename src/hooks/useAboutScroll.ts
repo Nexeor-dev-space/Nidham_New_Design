@@ -36,7 +36,7 @@ export interface AboutScrollRefs {
  * whole effect is desktop-only and skipped under reduced motion; on smaller
  * screens the section simply keeps its clean entrance.
  *
- * Runs as a LAYOUT effect for the same load-bearing reason as useHeroScroll:
+ * Runs as a LAYOUT effect, and that is load-bearing rather than a preference:
  * the pin re-parents this section into a GSAP `pin-spacer`, so `ctx.revert()`
  * must restore it before React detaches the subtree or the unmount throws
  * NotFoundError. See useIsomorphicLayoutEffect.

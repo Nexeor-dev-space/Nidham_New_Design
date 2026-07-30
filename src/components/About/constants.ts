@@ -47,9 +47,11 @@ export const ABOUT_BUTTON_TEXT = "Explore Our Services";
 export const ABOUT_BUTTON_LINK = "/services";
 
 /**
- * The centrepiece showreel. Plays muted and loops, and only once scrolled into
- * view (see AboutSection) — it is a multi-MB file well below the fold, so it
- * must not compete with the hero video for bandwidth on first paint.
+ * The centrepiece showreel. It has no clock of its own: playback is scrubbed by
+ * scroll position, running forward as the section rises up the viewport and
+ * backward as it returns (see AboutSection). Muted, and fetched only once the
+ * section is near — it is a multi-MB file well below the fold, so it must not
+ * compete with the hero video for bandwidth on first paint.
  */
 export const ABOUT_MEDIA: AboutMedia = {
   src: "/video/youtube-bg-1.mp4",

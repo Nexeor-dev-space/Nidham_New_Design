@@ -62,7 +62,6 @@ export default function AboutSection({
   media = ABOUT_MEDIA,
 }: AboutSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const ruleRef = useRef<HTMLDivElement>(null);
   const videoRevealRef = useRef<HTMLDivElement>(null);
   const videoFloatRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
@@ -87,10 +86,12 @@ export default function AboutSection({
     const el = videoRef.current;
     if (!el) return;
 
+    // Latch only — never un-latch. The showreel is scrubbed by scroll (below),
+    // so there is nothing to pause when it leaves: the frame on screen is a
+    // function of scroll position, not of a running clock.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setNear(true);
-        else el.pause();
       },
       { rootMargin: "100% 0px", threshold: 0 },
     );
@@ -99,13 +100,79 @@ export default function AboutSection({
     return () => io.disconnect();
   }, []);
 
-  // Play once `src` is actually attached (the observer can fire a render early).
+  /**
+   * Scroll-scrubbed playback: the showreel advances as the section scrolls up
+   * the viewport and rewinds as it scrolls back down, rather than running on
+   * its own clock.
+   *
+   * This also removes a bug the autoplay version had. That one paused the
+   * element whenever it left the observer's range but only ever called `play()`
+   * in an effect keyed to `near` — and `near` latches true and never changes
+   * again. So the first time you scrolled past the section and came back, the
+   * effect did not re-run, nothing resumed it, and the showreel sat frozen on
+   * whatever frame it had reached. Scrubbing has no play/pause state at all, so
+   * the failure mode does not exist.
+   *
+   * Mechanics worth knowing:
+   *
+   * • `duration` is only known after metadata loads, and `readyState` may
+   *   already satisfy that by the time this runs (the browser can have the
+   *   header cached), so both paths have to be handled or the trigger is never
+   *   built.
+   *
+   * • The tween drives a plain proxy object, not the element. Seeking is the
+   *   expensive part, and writing `currentTime` on every scrub frame queues
+   *   seeks faster than the decoder retires them; skipping while `seeking` is
+   *   true keeps it to one in flight and is what stops the stutter.
+   *
+   * • Reduced motion opts out entirely and leaves the first frame showing —
+   *   a still, which is the honest reduced-motion answer for decorative footage.
+   */
   useEffect(() => {
     const el = videoRef.current;
-    if (!el || !near) return;
+    const section = sectionRef.current;
+    if (!el || !section || !near) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // Rejects if the browser blocks autoplay; the first frame remains.
-    void el.play().catch(() => {});
+
+    let ctx: gsap.Context | null = null;
+
+    const build = () => {
+      const duration = el.duration;
+      if (!duration || !Number.isFinite(duration)) return;
+
+      // Nothing should be advancing it but the scroll.
+      el.pause();
+
+      ctx = gsap.context(() => {
+        const playhead = { t: 0 };
+
+        gsap.to(playhead, {
+          t: duration,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+          onUpdate: () => {
+            if (!el.seeking) el.currentTime = playhead.t;
+          },
+        });
+      }, section);
+    };
+
+    if (el.readyState >= 1) {
+      build();
+    } else {
+      el.addEventListener("loadedmetadata", build, { once: true });
+    }
+
+    return () => {
+      el.removeEventListener("loadedmetadata", build);
+      ctx?.revert();
+    };
   }, [near]);
 
   useEffect(() => {
@@ -171,12 +238,6 @@ export default function AboutSection({
             },
             0.1,
           )
-            .fromTo(
-              ruleRef.current,
-              { scaleX: 0 },
-              { scaleX: 1, duration: 0.9 },
-              "-=0.45",
-            )
             // The centrepiece — settles from 0.94 rather than the site's usual
             // 1.05 image reveal: growing into place reads as arrival, where
             // shrinking into place reads as a photo settling.
@@ -237,6 +298,45 @@ export default function AboutSection({
             yoyo: true,
           });
 
+          // ----- Scroll-linked drift on the lower block ---------------------
+          // The entrance above fires once and then the copy, figures and CTA sit
+          // completely still for the rest of the scroll — which is what makes
+          // this half of the section read as flat. These give each row its own
+          // travel rate so the block keeps breathing as it crosses the viewport.
+          //
+          // Deliberately tiny and *decreasing* down the stack (18 → 12 → 8px):
+          // a uniform offset would just look like the whole block sliding. The
+          // differential is what reads as depth.
+          //
+          // `y` is safe to scrub here even though the entrance also animates it:
+          // the entrance runs `once: true` and has fully settled at `y: 0` long
+          // before these triggers engage, and each `fromTo` below pins its own
+          // start value so nothing rebases mid-flight.
+          const driftTargets: Array<[gsap.TweenTarget, number]> = [
+            [copyRef.current, 18 * factor],
+            [statEls, 12 * factor],
+            [ctaRef.current, 8 * factor],
+          ];
+
+          driftTargets.forEach(([target, distance]) => {
+            if (!target) return;
+            gsap.fromTo(
+              target,
+              { y: distance },
+              {
+                y: -distance,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: section,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                  invalidateOnRefresh: true,
+                },
+              },
+            );
+          });
+
           return () => float.kill();
         },
       );
@@ -250,7 +350,12 @@ export default function AboutSection({
       ref={sectionRef}
       aria-labelledby="about-heading"
       data-particles="about"
-      className="relative isolate w-full overflow-hidden bg-[#1F1F1F] section-y"
+      // `#201D1A` rather than the `#1F1F1F` used by most sections: Partners sits
+      // directly above and WhyChooseUs directly below, both on `#1F1F1F`, so an
+      // identical value made this section merge into its neighbours instead of
+      // reading as its own band. The warm near-black also leans toward the
+      // footer's `#5b1c3a`.
+      className="relative isolate w-full overflow-hidden bg-[#201D1A] section-y"
     >
       {/* Ambient light — two very soft washes in the brand magenta and a warm
           gold, at 5–7%. Painted as gradients rather than blurred elements: no
@@ -261,9 +366,12 @@ export default function AboutSection({
       />
 
       <div className="container-page">
-        <div className="mx-auto flex max-w-[1200px] flex-col items-center">
-          <SectionDivider label={subtitle} className="w-full" />
+        {/* Full container width, matching every other section's divider — the
+            centred `max-w-[1200px]` column below is for the About content
+            only, and must not clip this too. */}
+        <SectionDivider label={subtitle} />
 
+        <div className="mx-auto flex max-w-[1200px] flex-col items-center">
           {/* Statement headline, on the shared section-heading scale so it sits
               at the same size as every other <h2> on the site.
 
@@ -283,13 +391,6 @@ export default function AboutSection({
               </span>
             ))}
           </h2>
-
-          {/* Short rule — the beat between the statement and the showreel. */}
-          <div
-            ref={ruleRef}
-            aria-hidden="true"
-            className="mt-10 h-px w-16 origin-center bg-gradient-to-r from-transparent via-white/40 to-transparent sm:mt-12"
-          />
 
           {/* Centrepiece showreel */}
           <div
@@ -314,10 +415,15 @@ export default function AboutSection({
                   // Withheld until near — see the IntersectionObserver above.
                   src={near ? media.src : undefined}
                   aria-label={media.alt}
-                  loop
                   muted
                   playsInline
-                  preload="metadata"
+                  // `auto`, not `metadata`: playback is seek-driven, and seeking
+                  // into an unbuffered region is what makes a scrubbed video
+                  // stutter. The `src` is still withheld until the section is
+                  // near, so this costs nothing on first paint.
+                  preload="auto"
+                  // No `loop`: there is no clock to wrap around. The playhead is
+                  // the scroll position, which the timeline already bounds.
                   className="h-full w-full object-cover contrast-[1.04] saturate-[1.03]"
                 />
                 {/* Very subtle vignette for depth. */}
@@ -337,7 +443,7 @@ export default function AboutSection({
           {/* Intro copy — the one element with its own measure. */}
           <div
             ref={copyRef}
-            className="mt-14 flex max-w-[42rem] flex-col gap-6 text-center sm:mt-16"
+            className="mt-8 flex max-w-[42rem] flex-col gap-6 text-center sm:mt-10"
           >
             {paragraphs.map((paragraph) => (
               <p
@@ -350,7 +456,7 @@ export default function AboutSection({
           </div>
 
           {/* Figures */}
-          <ul className="mt-16 grid w-full max-w-3xl grid-cols-1 gap-12 sm:mt-20 sm:grid-cols-3 sm:gap-8">
+          <ul className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-12 sm:mt-12 sm:grid-cols-3 sm:gap-8">
             {stats.map((stat) => {
               const shown =
                 stat.value !== null
@@ -395,7 +501,7 @@ export default function AboutSection({
           </ul>
 
           {/* CTA */}
-          <div ref={ctaRef} className="mt-16 w-full sm:mt-20 sm:w-auto">
+          <div ref={ctaRef} className="mt-10 w-full sm:mt-12 sm:w-auto">
             <Magnetic className="block w-full sm:inline-block sm:w-auto">
               <Link
                 href={buttonLink}

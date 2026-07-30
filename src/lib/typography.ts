@@ -47,6 +47,51 @@ export const SECTION_HEADING =
 export const HERO_HEADING =
   "font-[family-name:var(--font-cabinet)] text-[clamp(2.7rem,8.5vw,9.5rem)] font-normal leading-[0.85] tracking-[-0.035em] text-neutral-100";
 
+/**
+ * `HERO_TAGLINE` — the homepage's cinematic two-word tagline, set on one line,
+ * dead centre over the full-screen hero video. Deliberately *not*
+ * `HERO_HEADING`: that token is an editorial multi-line headline sitting on a
+ * solid surface, whereas this is a single pair of words that has to hold its
+ * own against moving footage.
+ *   • font family  — Begies (var(--font-begies)), the hero's own display face;
+ *                    everything else on the site stays on Cabinet Grotesk
+ *   • weight       — normal (400), and it must stay there: Begies ships one
+ *                    static cut at `usWeightClass 400` with no variable axis,
+ *                    so any heavier value would be synthesised by the browser
+ *                    and smear the outlines at this size (see src/lib/fonts.ts)
+ *   • size         — one clamp per device band, so each band stays inside its
+ *                    specified range across its *whole* width, not just at its
+ *                    reference size:
+ *                      <768px   → 40–52px
+ *                      768–1023 → 64–72px
+ *                      1024–1439→ 72–88px  (interpolating the two named bands)
+ *                      ≥1440    → 88–104px
+ *                    A single continuous ramp cannot do this: the bands step
+ *                    (72px at 1439 → 88px at 1440), and any smooth curve
+ *                    through the endpoints overshoots mid-band — an earlier
+ *                    single `clamp` measured 77px at 1280px, above its band's
+ *                    ceiling. The cost is a small jump at each breakpoint,
+ *                    visible only while resizing across it.
+ *   • wrapping     — never. The single line *is* the composition, so the size
+ *                    ramp is tuned to fit rather than letting it break — see
+ *                    HERO_REVEAL/useHeroReveal for the 320px floor check.
+ *   • line-height  — 1 (tight, but with room for descenders a 0.95 would crop)
+ *   • letter-space — -0.01em, i.e. all but neutral. Display type this large
+ *                    needs a hair of negative tracking to close the gaps the
+ *                    font leaves at text sizes, but anything more starts to
+ *                    read as a compressed logotype rather than calm display.
+ *   • shadow       — a wide, very soft black bloom. Invisible over dark frames,
+ *                    and the only thing keeping the words legible when the
+ *                    footage cuts to a bright one — which is what lets the
+ *                    overlay stay this light instead of being cranked up.
+ */
+export const HERO_TAGLINE =
+  "whitespace-nowrap font-[family-name:var(--font-begies)] font-normal leading-[1] tracking-[-0.01em] text-white [text-shadow:0_2px_40px_rgba(0,0,0,0.45),0_0_16px_rgba(0,0,0,0.35)] " +
+  "text-[clamp(2.5rem,11.5vw,3.25rem)] " +
+  "md:text-[clamp(4rem,8.4vw,4.5rem)] " +
+  "lg:text-[clamp(4.5rem,6.3vw,5.5rem)] " +
+  "min-[1440px]:text-[clamp(5.5rem,6.2vw,6.5rem)]";
+
 /** Uniform gap between an eyebrow label and the heading below it. */
 export const SECTION_HEADING_GAP = "mt-6";
 

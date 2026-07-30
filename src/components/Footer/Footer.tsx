@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Magnetic from "@/src/components/CustomCursor/Magnetic";
 import {
   FOOTER_COPYRIGHT,
+  FOOTER_CREDIT,
   FOOTER_CTA,
   FOOTER_LEGAL,
   FOOTER_NAV,
@@ -16,7 +17,6 @@ import {
 } from "./constants";
 import type { FooterLink, FooterProps } from "./types";
 import { GSAP_EASE, ST_START } from "@/src/lib/motion";
-import { BUTTON_SKIN } from "@/src/lib/button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -132,6 +132,7 @@ export default function Footer({
   visionText = FOOTER_VISION_TEXT,
   cta = FOOTER_CTA,
   copyright = FOOTER_COPYRIGHT,
+  credit = FOOTER_CREDIT,
 }: FooterProps) {
   const rootRef = useRef<HTMLElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
@@ -211,7 +212,7 @@ export default function Footer({
       ref={rootRef}
       id="contact"
       data-particles="footer"
-      className="w-full bg-[#321a2d] text-[#A99AA1]"
+      className="w-full bg-[#5b1c3a] text-[#A99AA1]"
     >
       <div className="container-page py-16 sm:py-20 lg:py-24">
         {/* Top — three columns */}
@@ -241,13 +242,20 @@ export default function Footer({
             </p>
             <div className="mt-8 w-full sm:w-auto lg:mt-10">
               <Magnetic className="block w-full sm:inline-block sm:w-auto">
+                {/* The one place on the site that deviates from BUTTON_SKIN.
+                    That skin is brand pink, and against this footer's deep
+                    magenta it is pink-on-pink — the button loses its edge. White
+                    is the only fill that reads as the primary action here.
+                    Hover resolves *into* the brand pink so the language still
+                    matches the rest of the site.
+                    `py-2.5` keeps the box at 44px, the minimum touch target. */}
                 <Link
                   href={cta.href}
                   data-cursor="button"
-                  className={`group/cta relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-[16px] px-8 py-4 text-[16px] outline-none motion-safe:hover:-translate-y-0.5 sm:w-auto ${BUTTON_SKIN}`}
+                  className="group/cta relative inline-flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-[14px] border border-white bg-white px-7 py-2.5 text-[15px] font-semibold text-[#8C003B] outline-none transition-[background-color,border-color,color,box-shadow,translate] duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#E00068] hover:bg-[#E00068] hover:text-white hover:shadow-[0_18px_40px_-14px_rgba(224,0,104,0.65)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-safe:hover:-translate-y-0.5 sm:w-auto"
                 >
                   <span className="relative z-10">{cta.label}</span>
-                  <PhoneIcon className="relative z-10 h-5 w-5 transition-transform duration-300 ease-out group-hover/cta:translate-x-0.5" />
+                  <PhoneIcon className="relative z-10 h-4 w-4 transition-transform duration-300 ease-out group-hover/cta:translate-x-0.5" />
                 </Link>
               </Magnetic>
             </div>
@@ -273,7 +281,16 @@ export default function Footer({
               ref={copyrightRef}
               className="text-[13px] uppercase tracking-[0.16em] text-[#8E8087]"
             >
-              {copyright}
+              {copyright}{" "}
+              <a
+                href={credit.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${credit.label} (opens in a new tab)`}
+                className="text-neutral-300 underline decoration-white/25 underline-offset-4 transition-colors duration-300 hover:text-white hover:decoration-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF3D8F]"
+              >
+                {credit.label}
+              </a>
             </p>
             <ul ref={legalRef} className="flex items-center gap-8">
               {legal.map((link) => (

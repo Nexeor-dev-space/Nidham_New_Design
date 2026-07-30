@@ -1,36 +1,35 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
+import { useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import BrandButton from "@/src/components/ui/BrandButton";
 import { useGsapReveal } from "@/src/hooks/useGsapReveal";
-import { scrollToId } from "@/src/lib/nav";
 import {
+  CONTACT_PHONE_HREF,
   CTA_BUTTON_LABEL,
   CTA_HEADLINE_LINES,
-  FORM_TARGET_ID,
 } from "./constants";
 
 /**
  * Closing CTA — a large, cinematic section that mirrors the homepage brand
- * button exactly (magnetic + shimmer + ripple + arrow). The headline reveals on
- * scroll; ambient magenta glow keeps it consistent with the rest of the page.
- * The action glides back up to the form on this page.
+ * button exactly (magnetic + ripple + arrow). The headline reveals on scroll;
+ * ambient magenta glow keeps it consistent with the rest of the page.
+ *
+ * The action is a real `tel:` link — it dials the team rather than scrolling
+ * back to the form, which already has its own CTA in the hero. No onClick and
+ * no preventDefault: the default anchor behaviour IS the feature, and on
+ * desktop browsers without a dialer the OS-level chooser is the correct
+ * fallback.
  */
 export default function ContactCTA() {
   const reduce = useReducedMotion() ?? false;
   const scopeRef = useRef<HTMLElement>(null);
   useGsapReveal(scopeRef);
 
-  const toForm = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    scrollToId(FORM_TARGET_ID, reduce);
-  };
-
   return (
     <section
       ref={scopeRef}
-      aria-label="Start your project"
+      aria-label="Talk to our team"
       data-particles="footer"
       className="relative w-full overflow-hidden bg-[#1F1F1F] section-y"
     >
@@ -57,7 +56,7 @@ export default function ContactCTA() {
         </h2>
 
         <div data-reveal="up" className="mt-10 sm:mt-12">
-          <BrandButton label={CTA_BUTTON_LABEL} size="lg" onClick={toForm} />
+          <BrandButton label={CTA_BUTTON_LABEL} size="lg" href={CONTACT_PHONE_HREF} />
         </div>
       </div>
     </section>
