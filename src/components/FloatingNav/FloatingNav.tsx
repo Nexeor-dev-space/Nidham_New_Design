@@ -43,10 +43,11 @@ const SECTION_IDS = NAV_ITEMS.map((item) => item.section).filter(
 /**
  * A floating, premium pill navigation pinned to the bottom-center of the
  * viewport, closing on the Register CTA — the pill's primary action, sharing the
- * hero navbar's signature amber button skin so the two stay identical. It hands
- * off from the hero's top nav the instant that nav scrolls out of view (tracked
- * via the `#hero-nav-sentinel` marker), so navigation is always visible. The
- * active section is tracked on scroll and marked with a sliding indicator
+ * hero navbar's signature button skin so the two stay identical. It hands off
+ * from that navbar the instant it scrolls out of view (see the reveal effect),
+ * so there is always exactly one navigation surface on screen and never two.
+ * The active section is tracked on scroll and marked with a sliding
+ * indicator
  * (framer-motion `layoutId`). Responsive; keyboard accessible; respects reduced
  * motion.
  */
@@ -65,25 +66,34 @@ export default function FloatingNav() {
   );
   const active = routeItem ? routeItem.key : pathname === "/" ? scrollActive : "";
 
-  // Reveal exactly when the hero's top nav leaves the viewport (seamless handoff).
+  // When the pill appears: the moment the top navbar leaves the viewport, and
+  // not before. `#hero-nav-sentinel` is a zero-height marker sitting directly
+  // beneath that navbar on every page, so watching it *is* watching the navbar.
+  //
+  // On the homepage this also keeps the pill off the hero for free, with no
+  // measuring of its own. The hero is pinned (see useHeroReveal), and a pinned
+  // element is `position: fixed` — so the navbar, and the sentinel under it,
+  // stay on screen for the entire pin. The sentinel only leaves once the pin has
+  // released and the hero is genuinely scrolling away, which is exactly when the
+  // navbar it stands for disappears.
+  //
+  // This is an IntersectionObserver and must stay one. Lenis drives scrolling
+  // from gsap's ticker and the page never emits `scroll` events, so a scroll
+  // listener here would simply never fire; IO is layout-driven and unaffected.
   useEffect(() => {
     const sentinel = document.getElementById("hero-nav-sentinel");
 
-    if (sentinel && "IntersectionObserver" in window) {
-      const io = new IntersectionObserver(
-        ([entry]) => setVisible(!entry.isIntersecting),
-        { threshold: 0 },
-      );
-      io.observe(sentinel);
-      return () => io.disconnect();
-    }
+    // Nothing to anchor to (or no IO): leave the pill in its initial hidden
+    // state rather than guessing — every real page carries the marker.
+    if (!sentinel || !("IntersectionObserver" in window)) return;
 
-    // Fallback: reveal shortly after scrolling begins.
-    const onScroll = () => setVisible(window.scrollY > 120);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(sentinel);
+    return () => io.disconnect();
+  }, [pathname]);
 
   const handleClick = (
     event: React.MouseEvent<HTMLAnchorElement>,
@@ -123,11 +133,11 @@ export default function FloatingNav() {
               </li>
             ))}
 
-            {/* Register — the pill's primary action. Same signature amber skin
-                and shimmer as the hero navbar CTA (so the two never drift), sized
-                a touch smaller and pill-shaped to sit inside the nav. Hover adds
-                a 1.04 scale and slides the arrow; BUTTON_SKIN carries the colour
-                swap, glow and shadow expansion on the shared 350ms curve. */}
+            {/* Register — the pill's primary action. Same BUTTON_SKIN as the hero
+                navbar CTA (so the two never drift), sized a touch smaller and
+                pill-shaped to sit inside the nav. Hover adds a 1.04 scale and
+                slides the arrow; BUTTON_SKIN carries the colour swap, glow and
+                shadow expansion on the shared 350ms curve. */}
             <li>
               <a
                 href={REGISTER_CTA.href}
@@ -135,11 +145,6 @@ export default function FloatingNav() {
                 data-cursor="button"
                 className={`group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] outline-none grain-overlay ${BUTTON_SKIN} motion-safe:hover:scale-[1.04] sm:px-5 sm:py-2.5 sm:text-[13px] sm:tracking-[0.12em]`}
               >
-                {/* Soft diagonal light sweep on hover — a sheen, not a flash. */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.28)_50%,transparent_70%)] transition-transform duration-[900ms] ease-out group-hover:translate-x-full motion-reduce:hidden"
-                />
                 <span className="relative">{REGISTER_CTA.label}</span>
                 <span
                   aria-hidden="true"

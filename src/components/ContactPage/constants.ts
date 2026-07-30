@@ -106,7 +106,9 @@ export const CTA_HEADLINE_LINES = [
   "Ready to build",
   "something memorable?",
 ] as const;
-export const CTA_BUTTON_LABEL = "Start Your Project";
+/** Dials the team directly (see CONTACT_PHONE_HREF) rather than scrolling to
+ *  the form — the form already has its own CTA in the hero. */
+export const CTA_BUTTON_LABEL = "Talk to Our Team";
 
 /** In-page anchor for the CTA — the form lives on this page. */
 export const FORM_TARGET_ID = "contact-form";

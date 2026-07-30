@@ -29,6 +29,27 @@ export const cabinet = localFont({
   display: "swap",
 });
 
+/**
+ * Feature display face — currently the homepage hero tagline, and nothing else.
+ *
+ * Unlike the two families above this is a single static cut, not a variable
+ * file: the OTF reports `usWeightClass 400`, no `fvar` axis, and one Regular
+ * subfamily. So it is declared at exactly `400`, and call sites must ask for
+ * `font-normal`. Asking for any other weight would make the browser synthesise
+ * one — faux-bolding a display face by smearing its outlines, which is very
+ * visible at the sizes this is used at.
+ *
+ * The matching `Begies Italic.otf` is deliberately not declared: next/font
+ * preloads every face listed in `src`, and nothing uses the italic.
+ */
+export const begies = localFont({
+  src: "../../public/fonts/Begies.otf",
+  weight: "400",
+  style: "normal",
+  variable: "--font-begies",
+  display: "swap",
+});
+
 /** Text/UI family — body, nav, buttons, cards, footer, forms, labels. */
 export const switzer = localFont({
   src: "../../public/fonts/Switzer-Variable.woff2",

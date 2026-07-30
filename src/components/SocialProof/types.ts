@@ -4,7 +4,14 @@
  * client can swap copy without touching the components.
  */
 
-/** A single client testimonial shown in the carousel. */
+/**
+ * A single client testimonial shown in the carousel.
+ *
+ * Attribution is the name alone — no role, employer or logo. The card is built
+ * to put the quote first, and a title/company line plus a brand mark turned the
+ * footer into three competing attributions. The trusted-by wall
+ * (see PartnersSection) is where company marks belong.
+ */
 export interface Testimonial {
   /** Stable unique key. */
   id: string;
@@ -12,13 +19,4 @@ export interface Testimonial {
   quote: string;
   /** Client's full name — also drives the monogram avatar initials. */
   name: string;
-  /** Client's role/title. Optional. */
-  position?: string;
-  /** Client's company / organisation. */
-  company: string;
-  /** White-on-transparent company logo path (from the shared logo set). */
-  logo?: string;
-  /** Intrinsic logo size, so next/image keeps the true aspect ratio. */
-  logoWidth?: number;
-  logoHeight?: number;
 }

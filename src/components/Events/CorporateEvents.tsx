@@ -194,14 +194,20 @@ export default function CorporateEvents({
           const frame = frameRef.current;
           const layer = motionRef.current;
           if (isDesktop && frame && layer) {
-            const xTo = gsap.quickTo(layer, "x", { duration: 0.6, ease: "power3.out" });
-            const yTo = gsap.quickTo(layer, "y", { duration: 0.6, ease: "power3.out" });
+            // 1.3s / 8px, previously 0.6s / 18px. This — not the CSS zoom — was
+            // what read as a jerk on hover: the offset is derived from the
+            // pointer's distance from centre, so entering anywhere near an edge
+            // demanded ~9px of travel immediately and got there in a little over
+            // half a second. Halving the range and doubling the settle turns it
+            // into a drift you feel rather than a movement you notice.
+            const xTo = gsap.quickTo(layer, "x", { duration: 1.3, ease: "power3.out" });
+            const yTo = gsap.quickTo(layer, "y", { duration: 1.3, ease: "power3.out" });
             const onMove = (e: MouseEvent) => {
               const r = frame.getBoundingClientRect();
               const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
               const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
-              xTo(dx * 18);
-              yTo(dy * 18);
+              xTo(dx * 8);
+              yTo(dy * 8);
             };
             const onLeave = () => {
               xTo(0);
@@ -316,8 +322,18 @@ export default function CorporateEvents({
             >
               {/* Mask + scale entrance. */}
               <div ref={maskRef} className="relative h-full w-full [will-change:transform,clip-path]">
-                {/* Hover zoom + brightness (CSS only). */}
-                <div className="h-full w-full transition-[transform,filter] duration-[900ms] ease-out will-change-transform group-hover:scale-[1.08] group-hover:brightness-105">
+                {/* Hover zoom + brightness (CSS only).
+                    Two things caused the jerk. The scale was 1.08 — on a
+                    560px-tall image that is ~45px of travel, which is a lot to
+                    cover on a hover. And the curve was `ease-out`, the CSS
+                    keyword (`cubic-bezier(0, 0, 0.58, 1)`), which starts at full
+                    speed and front-loads nearly all of that travel into the
+                    first ~150ms.
+                    Now 1.03 over 2.2s on a symmetric ease-in-out, so the
+                    movement starts from rest, stays slow, and settles slowly.
+                    `transform-gpu` forces its own compositor layer, so the first
+                    frame does not pay for a re-raster of the full-bleed image. */}
+                <div className="h-full w-full transform-gpu transition-[transform,filter] duration-[2200ms] ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform group-hover:scale-[1.03] group-hover:brightness-[1.03]">
                   <Image
                     src={image}
                     alt={imageAlt}

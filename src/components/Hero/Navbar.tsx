@@ -20,10 +20,9 @@ import { LOGO, NAV_LINKS, REGISTER_CTA } from "./constants";
  * components/Nav/NavLink), which is what keeps this from reading as a row of
  * SaaS buttons.
  *
- * Hover composes four things on one 350ms curve: a 3px lift, a 1.03 scale, a
- * warm amber glow, and a light sweep across the fill (see the shimmer span).
- * `overflow-hidden` clips that sweep to the rounded box; it does not clip the
- * focus ring, which is drawn outside the border box.
+ * Hover composes three things on one 350ms curve: a 3px lift, a 1.03 scale, and
+ * BUTTON_SKIN's colour/glow swap. There is deliberately no light-sweep sheen —
+ * it was removed site-wide as too showy for this brand.
  *
  * The transition names `translate` and `scale` — not `transform` — because
  * Tailwind v4 compiles the lift/scale utilities to those standalone CSS
@@ -84,7 +83,10 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: EASE, delay: 0.08 }}
     >
-      <div className="container-page flex items-center justify-between gap-4 py-5 sm:gap-6 sm:py-6">
+      {/* The logo is the tallest item, so it — not this padding — sets the bar's
+          height. Keep the two in step when changing either: at md the mark is
+          ~45px tall, which with `py-3` lands the bar at ~69px. */}
+      <div className="container-page flex items-center justify-between gap-4 py-3 sm:gap-6">
         {/* Left: logo — anchored to the far edge. Always routes to the homepage
             (client-side), from any page. */}
         <Link
@@ -98,7 +100,7 @@ export default function Navbar() {
             width={LOGO.width}
             height={LOGO.height}
             priority
-            className="h-auto w-[130px] sm:w-[170px] md:w-[210px]"
+            className="h-auto w-[110px] sm:w-[135px] md:w-[160px]"
           />
         </Link>
 
@@ -124,14 +126,8 @@ export default function Navbar() {
               href={REGISTER_CTA.href}
               onClick={(e) => handleNav(e, REGISTER_CTA.href)}
               data-cursor="button"
-              className={`${CTA_BASE} ${CTA_SKIN} gap-1.5 px-4 py-2 text-[11px] sm:gap-2.5 sm:px-7 sm:py-3 sm:text-[14px]`}
+              className={`${CTA_BASE} ${CTA_SKIN} gap-1.5 px-3.5 py-1.5 text-[10px] sm:gap-2 sm:px-6 sm:py-2.5 sm:text-[12px]`}
             >
-              {/* Shimmer — a soft diagonal light sweep on hover. Slower than the
-                  350ms hover so it reads as a sheen, not a flash. */}
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.28)_50%,transparent_70%)] transition-transform duration-[900ms] ease-out group-hover:translate-x-full motion-reduce:hidden"
-              />
               <span className="relative">{REGISTER_CTA.label}</span>
               <span
                 aria-hidden="true"
@@ -150,7 +146,7 @@ export default function Navbar() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             data-cursor="button"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-neutral-100 backdrop-blur-sm transition-colors duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6E1B45] md:hidden"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-neutral-100 backdrop-blur-sm transition-colors duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF3D8F] md:hidden"
           >
             <span className="sr-only">Open menu</span>
             <span aria-hidden="true" className="flex flex-col items-center gap-[5px]">

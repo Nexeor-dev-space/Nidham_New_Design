@@ -14,8 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
  * runs Lenis for the document and wires it to GSAP.
  *
  * The integration is the part that matters, because this site pins sections
- * (see useHeroScroll / useAboutScroll) and pinning is what a naive Lenis setup
- * breaks:
+ * (see useAboutScroll) and pinning is what a naive Lenis setup breaks:
  *
  *  • Lenis still moves the *native* window scroll, just eased — it does not
  *    transform a container — so ScrollTrigger reads real scroll positions and

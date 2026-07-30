@@ -5,9 +5,9 @@ import Magnetic from "@/src/components/CustomCursor/Magnetic";
 import { BUTTON_SKIN } from "@/src/lib/button";
 
 /**
- * The site's primary button: the shared amber→magenta skin (see lib/button)
- * with a 2px magnetic lift + 1.02 scale, and a slow light sweep on hover, plus
- * the arrow that slides right.
+ * The site's primary button: the shared brand skin (see lib/button) with a 2px
+ * magnetic lift + 1.02 scale, plus the arrow that slides right. (The light-sweep
+ * sheen this once carried was removed site-wide as too showy for the brand.)
  *
  * On top of that it adds the requested press **ripple** — an expanding, fading
  * circle spawned at the pointer, clipped to the pill by `overflow-hidden`
@@ -74,11 +74,6 @@ export default function BrandButton({
         onClick={handleClick}
         className={`${CTA_BASE} ${CTA_SKIN} ${pad}`}
       >
-        {/* Light sweep on hover — a slow sheen across the fill. */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.28)_50%,transparent_70%)] transition-transform duration-[900ms] ease-out group-hover:translate-x-full motion-reduce:hidden"
-        />
         <span className="relative">{label}</span>
         <span
           aria-hidden="true"

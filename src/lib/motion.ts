@@ -23,6 +23,21 @@ export const EASE_CSS = "cubic-bezier(0.22, 1, 0.36, 1)";
 /** GSAP counterpart — matched feel to `EASE`. */
 export const GSAP_EASE = "power3.out";
 
+/**
+ * The cubic-bezier equivalent of GSAP's `power3.out` — a gentler ease-out than
+ * `EASE`, for the site's cinematic beats (the hero reveal, the services grid).
+ *
+ * Kept distinct from `EASE` on purpose. `EASE` is near-exponential: it covers
+ * most of its distance in the first few frames and then coasts, which is right
+ * for a UI element answering a click and wrong for large imagery or type
+ * settling into place, where the snap reads as "arrived" rather than "moving".
+ * Use this wherever a designer has specified `power3.out`, so the Framer and
+ * GSAP halves of one sequence cannot drift apart.
+ */
+export const EASE_POWER3 = [0.165, 0.84, 0.44, 1] as const;
+/** Same curve for CSS transitions. */
+export const EASE_POWER3_CSS = "cubic-bezier(0.165, 0.84, 0.44, 1)";
+
 /** Canonical durations (seconds) — the only speeds the site should use. */
 export const DUR = {
   fast: 0.6,

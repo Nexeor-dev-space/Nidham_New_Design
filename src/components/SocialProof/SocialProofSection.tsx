@@ -44,12 +44,12 @@ export default function SocialProofSection() {
       {/* Ambient light — static brand radial washes (no layer, no edge). */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_15%_10%,rgba(199,154,46,0.06),transparent_70%),radial-gradient(55%_50%_at_85%_30%,rgba(110,27,69,0.08),transparent_72%),radial-gradient(60%_55%_at_50%_108%,rgba(93,1,57,0.07),transparent_72%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_15%_10%,rgba(224,0,104,0.07),transparent_70%),radial-gradient(55%_50%_at_85%_30%,rgba(110,27,69,0.08),transparent_72%),radial-gradient(60%_55%_at_50%_108%,rgba(93,1,57,0.07),transparent_72%)]"
       />
       {/* Two soft floating orbs — gentle depth; drift via shared chapter-float. */}
       <div
         aria-hidden
-        className="chapter-float pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(199,154,46,0.12),transparent_70%)] blur-3xl"
+        className="chapter-float pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(224,0,104,0.12),transparent_70%)] blur-3xl"
       />
       <div
         aria-hidden

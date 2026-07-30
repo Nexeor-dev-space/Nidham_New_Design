@@ -22,6 +22,8 @@ export interface FooterProps {
   visionText?: string;
   /** Center column call-to-action. */
   cta?: FooterLink;
-  /** Bottom-left copyright line. */
+  /** Bottom-left copyright line — the static lead-in before {@link credit}. */
   copyright?: string;
+  /** Linked studio credit rendered directly after {@link copyright}. */
+  credit?: FooterLink;
 }
