@@ -207,6 +207,9 @@ export function useServicesReveal(
           },
         );
       });
+      // Refresh after all triggers are created, so positions account for
+      // the Hero's pin-spacer and Lenis's scroll setup.
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     }, sectionEl);
 
     return () => ctx.revert();
