@@ -106,7 +106,7 @@ export default function ServiceTile({
         {/* Reveal-only dimmer. GSAP fades this from `dimFrom` to 0 exactly once,
             so the image gains richness as it lands. Kept separate from the wash
             above so the entrance and the hover never share a property. */}
-        <div aria-hidden="true" className={`${SVC.dim} absolute inset-0 bg-black`} />
+        <div aria-hidden="true" className={`${SVC.dim} absolute inset-0 bg-black opacity-0`} />
 
         {/* Soft inner glow, hover only — an inset ring of light just inside the
             panel's edge. */}

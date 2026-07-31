@@ -21,13 +21,13 @@ export const TESTIMONIALS: readonly Testimonial[] = [
     id: "arn",
     quote:
       "Nidham turned an ambitious brief into a flawless three-day summit. Every detail — from the run of show to the ambient lighting — was executed with a precision that let our team simply enjoy the moment.",
-    name: "Fatima Al Marri",
+    name: "Fatima Musharraf",
   },
   {
     id: "hit967",
     quote:
       "Their command of production is rare. We handed them a live broadcast concept and they returned a cinematic experience that our audience is still talking about months later.",
-    name: "Rashed Al Nuaimi",
+    name: "Rashed Nazar",
   },
   {
     id: "mediafactory",
