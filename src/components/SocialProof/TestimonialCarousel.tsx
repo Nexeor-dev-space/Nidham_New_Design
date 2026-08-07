@@ -13,7 +13,7 @@ import { EASE } from "@/src/lib/motion";
 const AUTOPLAY_MS = 6500;
 const SWIPE_THRESHOLD = 70;
 
-/** First-letter monogram from a full name, e.g. "Fatima Al Marri" → "FM". */
+/** First-letter monogram from a full name, e.g. "Fatima Musharraf" → "FM". */
 function initialsOf(name: string) {
   const parts = name.trim().split(/\s+/);
   const first = parts[0]?.[0] ?? "";

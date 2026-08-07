@@ -70,7 +70,7 @@ export const EVENT_DATE = "2026-08-19T18:00:00Z";
  * assistive tech only.
  */
 export const HERO_VIDEO = {
-  src: "/video/nidham_yt.mp4",
+  src: "/video/nidham-banner-video.mp4",
   type: "video/mp4",
   alt: "Nidham event highlights",
 } as const;

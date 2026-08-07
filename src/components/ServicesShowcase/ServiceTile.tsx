@@ -58,14 +58,13 @@ export default function ServiceTile({
       onFocus={onActivate}
       onBlur={onDeactivate}
       // `flex-grow` is the only property whose transition we care about here;
-      // every panel also transitions box-shadow, and reacting to that would fire
-      // the bounce on plain hover-out too.
+      // guarding on it keeps the bounce tied to the expansion alone.
       onTransitionEnd={(event) => {
         if (event.propertyName === "flex-grow") {
           onExpanded(event.currentTarget.querySelector(`.${SVC.media}`));
         }
       }}
-      className={`${SVC.tile} group relative min-w-0 overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-white/[0.06] transition-[flex-grow,box-shadow] ${HOVER} hover:shadow-[0_0_70px_-16px_rgba(224,0,104,0.30)] h-[20rem] sm:h-[22rem] md:h-[19rem] lg:h-[25rem] lg:basis-0 xl:h-[28rem] ${
+      className={`${SVC.tile} group relative min-w-0 overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-white/[0.06] transition-[flex-grow] ${HOVER} h-[20rem] sm:h-[22rem] md:h-[19rem] lg:h-[25rem] lg:basis-0 xl:h-[28rem] ${
         tile.spanOnTablet ? "md:col-span-2 lg:col-span-1" : ""
       }`}
     >
@@ -95,9 +94,8 @@ export default function ServiceTile({
           />
         </div>
 
-        {/* Readability wash. Deepens slightly on hover, which together with the
-            inner glow below is what makes the hovered panel read as lit from
-            within rather than merely bigger. */}
+        {/* Readability wash. Deepens slightly on hover, so the hovered panel
+            reads as a deliberate state change and not merely as bigger. */}
         <div
           aria-hidden="true"
           className={`absolute inset-0 bg-black/[0.35] transition-colors ${HOVER} group-hover:bg-black/[0.44] group-focus-visible:bg-black/[0.44]`}
@@ -107,13 +105,6 @@ export default function ServiceTile({
             so the image gains richness as it lands. Kept separate from the wash
             above so the entrance and the hover never share a property. */}
         <div aria-hidden="true" className={`${SVC.dim} absolute inset-0 bg-black opacity-0`} />
-
-        {/* Soft inner glow, hover only — an inset ring of light just inside the
-            panel's edge. */}
-        <div
-          aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity ${HOVER} [box-shadow:inset_0_0_60px_-12px_rgba(255,255,255,0.28),inset_0_0_120px_-40px_rgba(224,0,104,0.45)] group-hover:opacity-100 group-focus-visible:opacity-100`}
-        />
 
         {/* A soft bottom gradient, independent of the hover wash — it is what
             keeps the title legible at every wash level. */}
