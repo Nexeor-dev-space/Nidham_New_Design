@@ -7,16 +7,21 @@ export interface EventInfo {
   /** The value, e.g. "15 October 2026". */
   value: string;
   icon: InfoIcon;
+  /**
+   * Tints the value with the announcement amber (`#FFD83D`) instead of the
+   * default near-white — for placeholders that are waiting on an announcement
+   * rather than stating a fact. Ties the card to the "Coming Soon" pill and the
+   * ribbon's sparkle, which are the same colour.
+   */
+  accent?: boolean;
 }
 
 export interface CorporateEventsProps {
   /** Small label inside the top divider, e.g. "Events". */
   sectionLabel?: string;
-  /** Centred section title, e.g. "Corporate Events". */
+  /** Centred section title, e.g. "Our Events". */
   sectionTitle?: string;
-  /** Small left label, e.g. "Featured Event". */
-  featuredLabel?: string;
-  /** Status pill text, e.g. "Registration Open". */
+  /** Status pill text, e.g. "Coming Soon". */
   statusLabel?: string;
   /** Main heading. Pass a string[] to control the line-by-line reveal. */
   heading?: string | string[];
@@ -24,23 +29,20 @@ export interface CorporateEventsProps {
   description?: string;
   /** The three info cards (date / time / location). */
   info?: EventInfo[];
-  primaryText?: string;
-  primaryLink?: string;
-  secondaryText?: string;
-  secondaryLink?: string;
   /** Bold lead-in of the social-proof line, e.g. "Limited Seats Available". */
   seatsText?: string;
   /** Remainder of the social-proof line, e.g. "Join 1,200+ visionaries". */
   attendeesText?: string;
   image?: string;
   imageAlt?: string;
-  /** ISO datetime the live countdown targets. */
-  eventDate?: string;
-  /** Label above the countdown, e.g. "Final Countdown". */
-  countdownTitle?: string;
-  /** Link text under the countdown. */
-  countdownLinkText?: string;
-  countdownLink?: string;
+  /* The glass card over the image. Was a countdown (`eventDate`,
+     `countdownTitle`, `countdownLinkText`, `countdownLink`), then a notice with
+     a CTA (`noticeLinkText`, `noticeLink`) — both retired; see AnnouncementCard. */
+  /** Small pulsing status pill, e.g. "Official Announcement". */
+  noticeBadge?: string;
+  noticeTitle?: string;
+  /** One-sentence notice under the title. */
+  noticeBody?: string;
   id?: string;
 }
 

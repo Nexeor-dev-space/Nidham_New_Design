@@ -1,23 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import AnnouncementBar from "./AnnouncementBar";
 import Navbar from "./Navbar";
-import VolumeControl, {
-  DEFAULT_VOLUME,
-  type AudioSettings,
-} from "./VolumeControl";
 import { useHeroReveal } from "@/src/hooks/useHeroReveal";
 import { navigateTo } from "@/src/lib/nav";
 import { HERO_TAGLINE } from "@/src/lib/typography";
-import {
-  HERO_CTA,
-  HERO_TAGLINE_TEXT,
-  HERO_VIDEO,
-  VOLUME_DELAY,
-} from "./constants";
+import { HERO_CTA, HERO_TAGLINE_TEXT, HERO_VIDEO } from "./constants";
 
 /**
  * Homepage hero — a five-stage cinematic open, not a conventional banner.
@@ -36,8 +27,7 @@ import {
  *
  * Stages 2–5 are GSAP's job, not Framer's: they are driven by scroll position
  * and have to *pin the page* while they run. Framer stays in charge of things
- * that really are mount animations — the volume control's entrance, and
- * everything in Navbar/AnnouncementBar.
+ * that really are mount animations — everything in Navbar/AnnouncementBar.
  *
  * Three things are load-bearing and easy to undo by accident:
  *
@@ -95,45 +85,17 @@ export default function Hero() {
   // say), the rejection is expected, not an error: the frame stays as a still.
   // The pinned reveal never touches this element, so playback is continuous
   // through every stage — pinned or not, revealed or not.
+  //
+  // The video has no volume control and stays muted for its entire life on the
+  // page — there used to be a control here, plus an IntersectionObserver that
+  // muted the film when it scrolled out of view and restored the visitor's
+  // choice when it scrolled back. Both went with the control: with nothing that
+  // can ever unmute it, there is no choice left to restore.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     video.muted = true;
     void video.play().catch(() => {});
-  }, []);
-
-  // Audio state. Hero owns the <video>, so Hero owns every write to it;
-  // VolumeControl is a pure control that reports what the visitor asked for.
-  // Held in a ref rather than state because nothing here renders from it — a
-  // slider drag must not re-render the hero once per frame.
-  const audio = useRef<AudioSettings>({ muted: true, volume: DEFAULT_VOLUME });
-
-  const handleAudioChange = useCallback((next: AudioSettings) => {
-    audio.current = next;
-    const video = videoRef.current;
-    if (!video) return;
-    video.volume = next.volume;
-    video.muted = next.muted;
-  }, []);
-
-  // Sound never outlives the hero: the film is muted the moment it leaves the
-  // viewport and the visitor's choice is restored when it comes back. Audio
-  // continuing while someone reads the footer is the single most annoying thing
-  // a hero video can do. This only ever *restores* a choice already made — it
-  // cannot turn sound on by itself. Reading `audio.current` inside the callback
-  // (rather than depending on it) is what keeps the observer subscribed once.
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !("IntersectionObserver" in window)) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        video.muted = entry.isIntersecting ? audio.current.muted : true;
-      },
-      { threshold: 0 },
-    );
-    io.observe(video);
-    return () => io.disconnect();
   }, []);
 
   return (
@@ -182,15 +144,6 @@ export default function Hero() {
             vignettes on top of it, so it reads evenly behind dead-centre type
             rather than being heavier at one edge. */}
         <div aria-hidden="true" className="absolute inset-0 bg-black/[0.32]" />
-
-        {/* Sound — a utility, not part of the narrative, so it belongs to
-            Stage 1 and fades in on its own short mount delay rather than
-            waiting on the scroll-gated reveal. */}
-        <VolumeControl
-          onChange={handleAudioChange}
-          delay={VOLUME_DELAY}
-          reduce={reduce}
-        />
       </div>
 
       {/* The copy: Stages 3–4, revealed by useHeroReveal.
