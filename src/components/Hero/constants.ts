@@ -191,10 +191,6 @@ export const HERO_PIN_FACTOR = {
   mobile: 0.9,
 } as const;
 
-/** Seconds before the sound control fades in — it belongs to Stage 1, so it is
- *  available while the film plays alone, just not instantly. */
-export const VOLUME_DELAY = 1.2;
-
 /**
  * The hero's single call to action — a plain underline link, not the site's
  * brand-pink `BUTTON_SKIN`. That skin is the page's one *primary* action
