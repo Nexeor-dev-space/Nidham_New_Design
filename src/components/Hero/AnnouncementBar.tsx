@@ -1,23 +1,25 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ANNOUNCEMENT, EVENT_DATE } from "./constants";
-import { useCountdown } from "./useCountdown";
-import type { TimeLeft } from "./types";
-
-const COUNTDOWN_UNITS: ReadonlyArray<{ key: keyof TimeLeft; label: string }> = [
-  { key: "days", label: "Days" },
-  { key: "hours", label: "Hrs" },
-  { key: "minutes", label: "Mins" },
-  { key: "seconds", label: "Secs" },
-];
+import { ANNOUNCEMENT } from "./constants";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * The top ribbon.
+ *
+ * It used to carry a live countdown to `EVENT_DATE` beside the message. That was
+ * removed with the switch to Dance off Dubai: the event has no announced date —
+ * the featured section reads "To Be Announced" — and a ticking clock is a date
+ * claim, so the two contradicted each other on the same screen. It also no
+ * longer links anywhere — see `ANNOUNCEMENT.label`. Everything else about the
+ * bar is unchanged: colour, height, entrance/exit, dismiss.
+ *
+ * To bring it back once a date exists, restore `useCountdown(EVENT_DATE)` and
+ * the unit list; both are still in the codebase.
+ */
 export default function AnnouncementBar() {
-  const timeLeft = useCountdown(EVENT_DATE);
   const [open, setOpen] = useState(true);
 
   return (
@@ -34,20 +36,28 @@ export default function AnnouncementBar() {
     >
       <div className="relative mx-auto flex min-h-[56px] max-w-[1760px] flex-col items-center justify-center gap-2 px-3 py-2.5 text-center text-[15px] sm:flex-row sm:gap-5 sm:px-12 sm:py-0 sm:pr-16 lg:px-14 lg:pr-20">
         <p className="flex w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:w-auto">
-          <Image
-            src="/images/calendar-icon.png"
-            alt=""
+          {/* Sparkle, drawn rather than fetched. The calendar PNG that was here
+              promised a date this event does not have yet, and cost a request
+              for a 20px mark. `#FFD83D` is the same amber as the announcement
+              card's "Coming Soon" dot, so the ribbon and the card read as one
+              announcement. */}
+          <svg
+            viewBox="0 0 24 24"
             aria-hidden="true"
-            width={20}
-            height={20}
-            className="h-[18px] w-[18px] shrink-0 object-contain sm:h-5 sm:w-5"
-          />
-          <a
-            href={ANNOUNCEMENT.cta.href}
-            className="font-medium text-white underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="h-[18px] w-[18px] shrink-0 text-[#FFD83D] sm:h-5 sm:w-5"
+            fill="currentColor"
           >
-            {ANNOUNCEMENT.cta.label} &rarr;
-          </a>
+            <path d="M12 1.8l2.35 6.35a1 1 0 0 0 .59.59L21.3 11.1a.75.75 0 0 1 0 1.4l-6.36 2.36a1 1 0 0 0-.59.59L12 21.8a.75.75 0 0 1-1.4 0l-2.36-6.35a1 1 0 0 0-.59-.59L1.3 12.5a.75.75 0 0 1 0-1.4l6.35-2.36a1 1 0 0 0 .59-.59L10.6 1.8a.75.75 0 0 1 1.4 0z" />
+            <path d="M19.2 2.6l.62 1.68 1.68.62-1.68.62-.62 1.68-.62-1.68-1.68-.62 1.68-.62.62-1.68z" opacity="0.65" />
+          </svg>
+
+          {/* Plain text, not a link — there is nowhere for it to send anyone
+              yet. It previously routed to /register with a hover-underline and
+              a sliding arrow; both were link affordances on non-interactive
+              text, which reads as a broken link. */}
+          <span className="font-semibold tracking-[0.01em] text-white">
+            {ANNOUNCEMENT.label}
+          </span>
           <span aria-hidden="true" className="hidden text-white/30 sm:inline">
             |
           </span>
@@ -55,43 +65,6 @@ export default function AnnouncementBar() {
             {ANNOUNCEMENT.message}
           </span>
         </p>
-
-        <div className="flex w-full justify-center sm:w-auto">
-          <span className="sr-only">Time remaining until registration closes:</span>
-          <span
-            aria-hidden={timeLeft === null}
-            className="inline-flex items-center gap-1.5 rounded-md border border-white/15 px-3 py-1 font-medium tabular-nums"
-          >
-            {timeLeft ? (
-              COUNTDOWN_UNITS.map((unit, index) => (
-                <span key={unit.key} className="inline-flex items-baseline gap-1">
-                  {index > 0 && (
-                    <span className="mr-1 text-white/25">:</span>
-                  )}
-                  <span className="relative inline-flex overflow-hidden">
-                    <AnimatePresence mode="popLayout" initial={false}>
-                      <motion.span
-                        key={timeLeft[unit.key]}
-                        className="font-semibold text-white"
-                        initial={{ y: "-70%", opacity: 0 }}
-                        animate={{ y: "0%", opacity: 1 }}
-                        exit={{ y: "70%", opacity: 0 }}
-                        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        {timeLeft[unit.key]}
-                      </motion.span>
-                    </AnimatePresence>
-                  </span>
-                  <span className="text-[0.72rem] uppercase tracking-wider text-white/55">
-                    {unit.label}
-                  </span>
-                </span>
-              ))
-            ) : (
-              <span className="text-white/50">-- : -- : -- : --</span>
-            )}
-          </span>
-        </div>
 
         {/* Dismiss — collapses the ribbon for the current session. */}
         <button

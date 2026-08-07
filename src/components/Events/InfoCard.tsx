@@ -44,7 +44,13 @@ export default function InfoCard({ info }: { info: EventInfo }) {
         <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-400">
           {info.label}
         </p>
-        <p className="mt-1 text-sm font-medium text-neutral-100">{info.value}</p>
+        <p
+          className={`mt-1 text-sm font-medium ${
+            info.accent ? "text-[#FFD83D]" : "text-neutral-100"
+          }`}
+        >
+          {info.value}
+        </p>
       </div>
     </li>
   );
