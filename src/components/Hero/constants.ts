@@ -46,20 +46,35 @@ export const REGISTER_CTA = {
   href: "/register",
 } as const;
 
-/** Announcement bar copy + registration CTA (routes to the register page). */
+/**
+ * Announcement bar copy.
+ *
+ * The bar renders a sparkle icon, then `label` as plain (non-link) bold text,
+ * then a divider, then `message` — so the whole reads as one sentence: "✦ Dance
+ * off Dubai 2026 | Coming Soon • Stay Tuned for Official Announcements".
+ *
+ * `label` used to be a `cta: { label, href }` that linked to `/register`, with
+ * an underline and a sliding arrow. Made plain text: there is no Dance off
+ * Dubai page yet for it to send anyone to, and the "Notify Me" buttons further
+ * down the homepage already carry that action — this line only needs to state
+ * the headline, not link anywhere.
+ */
 export const ANNOUNCEMENT = {
-  emoji: "\u{1F4C5}",
-  cta: { label: "Reserve Your Seat", href: "/register" },
-  message: "Now Registering: Dance Competition Forum 2026",
+  label: "Dance off Dubai 2026",
+  message: "Coming Soon • Stay Tuned for Official Announcements",
 } as const;
 
 /**
- * Target datetime both countdowns tick down to (ISO 8601) — the announcement
- * ribbon and the featured event's CountdownCard, via `EVENTS_DATE`.
+ * Target datetime for a countdown (ISO 8601).
  *
- * This is a *fixed* instant, so the displayed remainder shrinks in real time:
- * set 20 days out from 2026-07-30, it will read 20 days only on that date.
- * Update it to the real event datetime.
+ * **Nothing reads this right now.** Dance off Dubai has no announced date — the
+ * featured section says "To Be Announced" — so both countdowns that used to tick
+ * down to this instant have been removed: the ribbon's, and the featured card's,
+ * which is now `AnnouncementCard`. A live countdown beside "To Be Announced"
+ * states a date the site is simultaneously saying it does not have.
+ *
+ * Deliberately kept rather than deleted, together with `useCountdown`: the day a
+ * real date is announced, set it here and restore the two renderers.
  */
 export const EVENT_DATE = "2026-08-19T18:00:00Z";
 

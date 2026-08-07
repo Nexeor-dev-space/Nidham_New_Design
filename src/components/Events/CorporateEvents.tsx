@@ -5,23 +5,19 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import InfoCard from "./InfoCard";
-import CountdownCard from "./CountdownCard";
-import EventButton from "./EventButton";
+import AnnouncementCard from "./AnnouncementCard";
 import SectionDivider from "@/src/components/ui/SectionDivider";
 import {
   EVENTS_ATTENDEES_TEXT,
-  EVENTS_COUNTDOWN_LINK_TEXT,
-  EVENTS_COUNTDOWN_TITLE,
-  EVENTS_DATE,
+  EVENTS_NOTICE_BADGE,
+  EVENTS_NOTICE_BODY,
+  EVENTS_NOTICE_TITLE,
   EVENTS_DESCRIPTION,
-  EVENTS_FEATURED_LABEL,
   EVENTS_HEADING,
   EVENTS_IMAGE,
   EVENTS_IMAGE_ALT,
   EVENTS_INFO,
-  EVENTS_PRIMARY_TEXT,
   EVENTS_SEATS_TEXT,
-  EVENTS_SECONDARY_TEXT,
   EVENTS_SECTION_LABEL,
   EVENTS_SECTION_TITLE,
   EVENTS_STATUS_LABEL,
@@ -46,23 +42,17 @@ const AVATARS = [
 export default function CorporateEvents({
   sectionLabel = EVENTS_SECTION_LABEL,
   sectionTitle = EVENTS_SECTION_TITLE,
-  featuredLabel = EVENTS_FEATURED_LABEL,
   statusLabel = EVENTS_STATUS_LABEL,
   heading = EVENTS_HEADING,
   description = EVENTS_DESCRIPTION,
   info = EVENTS_INFO,
-  primaryText = EVENTS_PRIMARY_TEXT,
-  primaryLink = "#",
-  secondaryText = EVENTS_SECONDARY_TEXT,
-  secondaryLink = "#",
   seatsText = EVENTS_SEATS_TEXT,
   attendeesText = EVENTS_ATTENDEES_TEXT,
   image = EVENTS_IMAGE,
   imageAlt = EVENTS_IMAGE_ALT,
-  eventDate = EVENTS_DATE,
-  countdownTitle = EVENTS_COUNTDOWN_TITLE,
-  countdownLinkText = EVENTS_COUNTDOWN_LINK_TEXT,
-  countdownLink = "#",
+  noticeBadge = EVENTS_NOTICE_BADGE,
+  noticeTitle = EVENTS_NOTICE_TITLE,
+  noticeBody = EVENTS_NOTICE_BODY,
   id,
 }: CorporateEventsProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -153,16 +143,10 @@ export default function CorporateEvents({
               0.75,
             )
             .fromTo(
-              q(".ev-actions"),
-              { autoAlpha: 0, y: 20 * factor, scale: 0.97 },
-              { autoAlpha: 1, y: 0, scale: 1, duration: 0.6 },
-              0.95,
-            )
-            .fromTo(
               q(".ev-social"),
               { autoAlpha: 0, y: 18 * factor },
               { autoAlpha: 1, y: 0, duration: 0.6 },
-              1.05,
+              0.95,
             )
             .fromTo(
               countdownRef.current,
@@ -253,10 +237,6 @@ export default function CorporateEvents({
           {/* Left — content panel. */}
           <div className="flex flex-col bg-[#2A2A2A] p-8 sm:p-10 lg:p-14 xl:p-16">
             <div className="ev-meta flex flex-wrap items-center gap-4 [will-change:transform]">
-              <span className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-100">
-                <span aria-hidden="true" className="h-px w-8 bg-neutral-500" />
-                {featuredLabel}
-              </span>
               <span className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-200">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#C79A2E]" />
                 {statusLabel}
@@ -282,15 +262,6 @@ export default function CorporateEvents({
                 <InfoCard key={item.id} info={item} />
               ))}
             </ul>
-
-            <div className="ev-actions mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 [will-change:transform]">
-              <EventButton href={primaryLink} variant="primary">
-                {primaryText}
-              </EventButton>
-              <EventButton href={secondaryLink} variant="secondary">
-                {secondaryText}
-              </EventButton>
-            </div>
 
             <div className="ev-social mt-auto flex items-center gap-4 pt-10 [will-change:transform]">
               <div aria-hidden="true" className="flex -space-x-3">
@@ -354,11 +325,10 @@ export default function CorporateEvents({
                 ref={countdownRef}
                 className="pointer-events-auto w-full [will-change:transform] lg:w-[86%]"
               >
-                <CountdownCard
-                  eventDate={eventDate}
-                  title={countdownTitle}
-                  linkText={countdownLinkText}
-                  linkHref={countdownLink}
+                <AnnouncementCard
+                  badge={noticeBadge}
+                  title={noticeTitle}
+                  body={noticeBody}
                 />
               </div>
             </div>
